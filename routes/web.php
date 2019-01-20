@@ -16,6 +16,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::prefix('admin')->group(function(){
+    //The dashboard
+    Route::get('/', 'AdminController@dashboard');
+});
+
 //Authentication routes
 Auth::routes();
 
