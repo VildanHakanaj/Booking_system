@@ -15,16 +15,25 @@ class CreateUsersTable extends Migration
     {
         //Create the user table
         Schema::create('users', function (Blueprint $table) {
+
+            //Id of the user
             $table->increments('id');
+
+            //Need information
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+
+
             //I made the address and number nullable so the user can fill those in after they login
             $table->string('home_address')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('password');
+
             //Give admin privileges to the user if true
-            $table->boolean('admin');
+            $table->boolean('admin')->default(0);
+
+            //Information on the account
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
