@@ -42,41 +42,37 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        //Get the request
+        $request->validate([
+            'name' => 'min:3|max:255',
+            'email' => 'required|unique:users|email|min:3|max:255',
+            'stdn' => 'required|unique:users|min:7|max:7'
+        ]);
 
-        $user = new User();
-        //If there is no password then hash the word password
-        //And send that
-        if(!empty($request->password)){
-            $request->validate([
-                'password' => 'min:6|max:255',
-            ]);
-            $user->password = $request->password;
+        if($request->has('password') && !empty($request->password)){
+            $password = trim($request->password);
         }else{
-            $user->password = bcrypt('password');
+            $length = 10;
+            $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $str = '';
+            $max = mb_strlen($keyspace, '8bit') - 1;
+            for ($i = 0; $i < $length; ++$i){
+                $str .= $keyspace[random_int(0, $max)];
+            }
+            $password = $str;
         }
 
-        //Validate the rest
-        $request->validate(
-            [
-                'name'      => 'required|max:255|required',
-                'stdn'      => 'unique:users|required',
-                'email'     => 'unique:users|required|email|min:3|max:255',
-            ]);
-        //Create the user
+        $user = new user();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->stdn = $request->stdn;
+        $user->password = bcrypt($password);
 
-        if($user->admin == 1){
-
+        if($request->admin){
             $user->admin = $request->admin;
-            dd($user->admin);
-
         }
-
         $user->save();
-
-        return redirect(route('users.index'));
+        return redirect(route('users.show', $user->id));
     }
 
     /**
