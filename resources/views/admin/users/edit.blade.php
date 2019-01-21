@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <h1 class="text-muted">Edit User</h1>
-        {!! Form::open(['route' => ['users.edit', $user->id], 'method' => 'PATCH']) !!}
+        {!! Form::open(['route' => ['users.edit', $user->id], 'method' => 'PUT']) !!}
         <div class="form-group">
             {!! Form::label('name', 'Name') !!}
             {!! Form::text('name', $user->name, ['class'=> 'form-control']) !!}
