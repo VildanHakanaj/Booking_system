@@ -30,6 +30,7 @@ class UsersController extends Controller
      */
     public function create()
     {
+        //Show the form to insert users
         return view('admin.users.create');
     }
 
@@ -41,7 +42,41 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $user = new User();
+        //If there is no password then hash the word password
+        //And send that
+        if(!empty($request->password)){
+            $request->validate([
+                'password' => 'min:6|max:255',
+            ]);
+            $user->password = $request->password;
+        }else{
+            $user->password = bcrypt('password');
+        }
+
+        //Validate the rest
+        $request->validate(
+            [
+                'name'      => 'required|max:255|required',
+                'stdn'      => 'unique:users|required',
+                'email'     => 'unique:users|required|email|min:3|max:255',
+            ]);
+        //Create the user
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->stdn = $request->stdn;
+
+        if($user->admin == 1){
+
+            $user->admin = $request->admin;
+            dd($user->admin);
+
+        }
+
+        $user->save();
+
+        return redirect(route('users.index'));
     }
 
     /**

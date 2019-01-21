@@ -1,22 +1,48 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <h1 class="text-muted my-5 col-md-6 offset-3">Add a new user</h1>
-        <form class="col-md-6 offset-3">
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        <h1 class="text-muted my-5 col-md-8 offset-2">Add a new user</h1>
+        @if($errors->any())
+        <div class="alert alert-danger col-md-8 offset-2" role="alert">
+            @foreach($errors->all() as $error)
+                <li>{{$error}}</li>
+            @endforeach
+        </div>
+        @endif
+        {!! Form::open(['route' => 'users.store', 'class' => 'col-md-8 offset-2']) !!}
+
+        <div class="form-group">
+            {!! Form::label('name', 'Name') !!}
+            {!! Form::text('name', null, ['value' => old('name'), 'class' => 'form-control', 'required', 'placeholder' => 'First Name Last Name']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('stdn', 'Student Number') !!}
+            {!! Form::text('stdn', null, ['class' => 'form-control', 'required', 'placeholder' => '#0592373']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('email', 'Email') !!}
+            {!! Form::email('email', null, ['class' => 'form-control', 'required', 'placeholder' => 'email@mail.com']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('password', 'Password') !!}
+            {!! Form::password('password', ['class' => 'form-control', 'placeholder' => '***']) !!}
+            <small class="form-text text-muted"> Leave empty for password to be auto generated</small>
+        </div>
+        <div class="form-group">
+            {!! Form::select('type',[
+            'Students' => ['C' => 'Current Student', 'I' => 'Intern'],
+            'Other' => ['F' => 'Faculty', 'A' => 'Alumni'],
+            ])!!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('admin', 'Admin') !!}
+            {!! Form::checkbox('admin') !!}
+        </div>
+        {!! Form::submit('Add User', ['class' => 'btn btn-primary btn-lg d-block w-100']) !!}
+        {!! Form::close() !!}
     </div>
-    @endsection
+@endsection

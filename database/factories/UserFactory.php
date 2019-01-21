@@ -17,6 +17,7 @@ $factory->define(App\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
+        'stdn' => $faker->unique()->randomNumber(7),
         'home_address' => $faker->address,
         'phone_number' => $faker->phoneNumber,
         'email_verified_at' => now(),
