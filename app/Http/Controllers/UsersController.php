@@ -48,7 +48,6 @@ class UsersController extends Controller
         /*
          * [ ] Remove the self generating password
          * [ ] leave the password blank if the admin doesn't set one
-         * [ ] 
          * */
         //Get the request
         $request->validate([
@@ -63,7 +62,7 @@ class UsersController extends Controller
         if($request->has('password') && !empty($request->password)){
 
             //Enter the password
-            $user->password = bcrypt($password);
+            $user->password = bcrypt($request->password);
 
         }
 
@@ -72,11 +71,18 @@ class UsersController extends Controller
         $user->email = $request->email;
         $user->stdn = $request->stdn;
 
+        //Check if the admin checkbox is checked
         if($request->admin){
+
             $user->admin = $request->admin;
+
         }
+
+        //Save the user
         $user->save();
+        //Save the message in the session
         Session::flash('sucess', 'Users successfully created');
+
         return redirect(route('users.show', $user->id));
     }
 
