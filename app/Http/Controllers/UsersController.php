@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Session;
 class UsersController extends Controller
 {
 
@@ -38,16 +39,22 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        /*
+         * [ ] Remove the self generating password
+         * [ ] leave the password blank if the admin doesn't set one
+         * [ ]
+         * */
         //Get the request
         $request->validate([
             'name' => 'min:3|max:255',
             'email' => 'required|unique:users|email|min:3|max:255',
-            'stdn' => 'required|unique:users|min:7|max:7'
+            'stdn' => 'required|unique:users|min:7|max:255'
         ]);
 
         //Check if the admin has entered a password for the user
@@ -78,6 +85,7 @@ class UsersController extends Controller
             $user->admin = $request->admin;
         }
         $user->save();
+
         return redirect(route('users.show', $user->id));
     }
 
@@ -126,7 +134,7 @@ class UsersController extends Controller
             'stdn' => 'required|min:3|max:255',
             'email' => 'email|required|min:3|max:255',
             'home_addres' => 'min:3|max:255',
-            'phone_number' => 'min:7|max:255',
+            'phone_number' => 'min:10|max:255',
         ]);
 
         $user->name = $request->name;
@@ -134,13 +142,14 @@ class UsersController extends Controller
         $user->home_address= $request->home_address;
         $user->phone_number = $request->phone_number;
         $user->password = $password ?? '';
+
         if($request->admin){
             $user->admin = $request->admin;
         }
 
         $user->save();
         Session::flash('sucess', 'Successfully updated the user');
-        return redirect('admin/show' . $user->id);
+        return redirect(route('users.show', $user->id));
     }
 
     /**

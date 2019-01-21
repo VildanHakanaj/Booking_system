@@ -2,13 +2,7 @@
 @section('content')
     <div class="container">
         <h1 class="text-muted col-md-8 offset-2">Edit User</h1>
-        @if($errors->any())
-            <div class="alert alert-danger col-md-8 offset-2" role="alert">
-                @foreach($errors->all() as $error)
-                    <li>{{$error}}</li>
-                @endforeach
-            </div>
-        @endif
+        @include('layouts.messages.alert')
         {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'PUT', 'class' => 'col-md-8 offset-2']) !!}
         <div class="form-group">
             {!! Form::label('name', 'Name') !!}

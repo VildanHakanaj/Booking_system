@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-    <h3 class="text-primary"><a href="{{URL::previous()}}">< Go Back</a></h3>
+
+    <h3 class="text-primary"><a href="{{route('users.index')}}">< Go Back</a></h3>
+    @include('layouts.messages.sucess')
     <div class="card bg-light mb-3 list-group">
         <div class="card-header"><h1 class="text-muted">{{$user->name}}</h1></div>
         <div class="card-body">
