@@ -49,6 +49,8 @@ class UsersController extends Controller
             'stdn' => 'required|unique:users|min:7|max:7'
         ]);
 
+        //Check if the admin has entered a password for the user
+        //or if it should be generated
         if($request->has('password') && !empty($request->password)){
             $password = trim($request->password);
         }else{
