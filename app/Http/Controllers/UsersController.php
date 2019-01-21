@@ -112,7 +112,35 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        dd($user);
+
+        //Check if the user wants to change the password
+        if($request->has('password') && !empty($request->password)) {
+            $request->validate([
+                'password' => 'min:6|max:255|confirmed',
+            ]);
+
+            $password = bcrypt($request->password);
+        }
+        $request->validate([
+            'name' => 'required|min:3|max:255',
+            'stdn' => 'required|min:3|max:255',
+            'email' => 'email|required|min:3|max:255',
+            'home_addres' => 'min:3|max:255',
+            'phone_number' => 'min:7|max:255',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->home_address= $request->home_address;
+        $user->phone_number = $request->phone_number;
+        $user->password = $password ?? '';
+        if($request->admin){
+            $user->admin = $request->admin;
+        }
+
+        $user->save();
+        Session::flash('sucess', 'Successfully updated the user');
+        return redirect('admin/show' . $user->id);
     }
 
     /**

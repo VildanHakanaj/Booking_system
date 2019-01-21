@@ -1,8 +1,15 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <h1 class="text-muted">Edit User</h1>
-        {!! Form::open(['route' => ['users.edit', $user->id], 'method' => 'PUT']) !!}
+        <h1 class="text-muted col-md-8 offset-2">Edit User</h1>
+        @if($errors->any())
+            <div class="alert alert-danger col-md-8 offset-2" role="alert">
+                @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </div>
+        @endif
+        {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'PUT', 'class' => 'col-md-8 offset-2']) !!}
         <div class="form-group">
             {!! Form::label('name', 'Name') !!}
             {!! Form::text('name', $user->name, ['class'=> 'form-control']) !!}
@@ -10,6 +17,10 @@
         <div class="form-group">
             {!! Form::label('email', 'email') !!}
             {!! Form::text('email', $user->email, ['class'=> 'form-control']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('stdn', 'Student Number') !!}
+            {!! Form::text('stdn', $user->stdn, ['class'=> 'form-control']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('home_address', 'Home Address') !!}
@@ -27,6 +38,10 @@
         <div class="form-group">
             {!! Form::label('password_confirmation', 'Confirm Password') !!}
             {!! Form::password('password_confirmation', ['class'=> 'form-control']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('admin', 'Admin') !!}
+            {!! Form::checkbox('admin', 'checked') !!}
         </div>
         <div class="form-group">
             {!! Form::submit('Save User', ['class' => 'btn btn-lg btn-success']) !!}
