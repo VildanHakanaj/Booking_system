@@ -54,6 +54,7 @@ class UsersController extends Controller
         if($request->has('password') && !empty($request->password)){
             $password = trim($request->password);
         }else{
+            //Random password generator
             $length = 10;
             $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $str = '';
@@ -64,6 +65,8 @@ class UsersController extends Controller
             $password = $str;
         }
 
+
+        //Log in the user
         $user = new user();
         $user->name = $request->name;
         $user->email = $request->email;
