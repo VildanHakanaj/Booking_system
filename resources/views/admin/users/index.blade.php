@@ -26,7 +26,7 @@
                         <td><a href="{{route('users.show', $user->id)}}">{{$user->name}}</a></td>
                         <td>{{$user->email}}</td>
                         <td>{{$user->admin == 1 ? 'Admin' : 'User'}}</td>
-                        <td><a href="#" class="btn btn-outline-primary">Edit</a></td>
+                        <td><a href="{{route('users.edit', $user->id)}}" class="btn btn-outline-primary">Edit</a></td>
                         <td><a href="#" class="btn btn-outline-danger">Close</a></td>
                     </tr>
                 @endforeach
