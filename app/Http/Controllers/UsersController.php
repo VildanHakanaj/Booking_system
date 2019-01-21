@@ -48,7 +48,7 @@ class UsersController extends Controller
         /*
          * [ ] Remove the self generating password
          * [ ] leave the password blank if the admin doesn't set one
-         * [ ]
+         * [ ] 
          * */
         //Get the request
         $request->validate([
@@ -57,35 +57,26 @@ class UsersController extends Controller
             'stdn' => 'required|unique:users|min:7|max:255'
         ]);
 
+        $user = new user();
+
         //Check if the admin has entered a password for the user
-        //or if it should be generated
         if($request->has('password') && !empty($request->password)){
-            $password = trim($request->password);
-        }else{
-            //Random password generator
-            $length = 10;
-            $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $str = '';
-            $max = mb_strlen($keyspace, '8bit') - 1;
-            for ($i = 0; $i < $length; ++$i){
-                $str .= $keyspace[random_int(0, $max)];
-            }
-            $password = $str;
+
+            //Enter the password
+            $user->password = bcrypt($password);
+
         }
 
-
         //Log in the user
-        $user = new user();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->stdn = $request->stdn;
-        $user->password = bcrypt($password);
 
         if($request->admin){
             $user->admin = $request->admin;
         }
         $user->save();
-
+        Session::flash('sucess', 'Users successfully created');
         return redirect(route('users.show', $user->id));
     }
 
