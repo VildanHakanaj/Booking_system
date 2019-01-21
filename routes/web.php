@@ -18,11 +18,14 @@ Route::get('/', function () {
 
 Route::prefix('admin')->group(function(){
     //The dashboard
-    Route::get('/', 'AdminController@dashboard');
+    Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
+    Route::resource('users', 'UsersController');
 });
+
+
 
 //Authentication routes
 Auth::routes();
 
 //The dashboard
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'PagesController@index')->name('home');
