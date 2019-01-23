@@ -40,6 +40,7 @@ class RegisterController extends Controller
         $this->middleware('admin');
     }
 
+
     /**
      * Get a validator for an incoming registration request.
      *

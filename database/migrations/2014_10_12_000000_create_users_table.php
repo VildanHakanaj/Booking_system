@@ -34,6 +34,7 @@ class CreateUsersTable extends Migration
 
             //Give admin privileges to the user if true
             $table->boolean('admin')->default(0);
+            $table->string('token')->nullable();
 
             //Information on the account
             $table->timestamp('email_verified_at')->nullable();

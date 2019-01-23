@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Session;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 class UsersController extends Controller
 {
 
@@ -45,11 +47,20 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+
         /*
-         * [ ] Remove the self generating password
-         * [ ] leave the password blank if the admin doesn't set one
+         *TODO
+         * [ x ] Remove the self generating password
+         * [ x ] Leave the password blank if the admin doesn't set one
+         * [ x ] Look into the observer class and try to
+         * [  ]  Notify the user by sending the token in the email so the user can register.
+         *
+         *
+         *
+         *
+         *
          * */
-        //Get the request
+        //Validate the request
         $request->validate([
             'name' => 'min:3|max:255',
             'email' => 'required|unique:users|email|min:3|max:255',
@@ -60,26 +71,29 @@ class UsersController extends Controller
 
         //Check if the admin has entered a password for the user
         if($request->has('password') && !empty($request->password)){
-
             //Enter the password
             $user->password = bcrypt($request->password);
-
         }
 
         //Log in the user
         $user->name = $request->name;
         $user->email = $request->email;
         $user->stdn = $request->stdn;
+        //Generate a random token
+        $user->token = str_random(25);
 
         //Check if the admin checkbox is checked
         if($request->admin){
-
             $user->admin = $request->admin;
-
         }
 
         //Save the user
         $user->save();
+
+
+        //Send the user an email
+        $user->sendVerificationEmail();
+
         //Save the message in the session
         Session::flash('sucess', 'Users successfully created');
 

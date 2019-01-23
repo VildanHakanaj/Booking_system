@@ -27,5 +27,11 @@ Route::prefix('admin')->group(function(){
 //Authentication routes
 Auth::routes();
 
+Route::prefix('auth')->group(function(){
+    Route::get('verifyAccount/{token}', 'VerifyAccount@verifyAccount')->name('auth.verifyAccount');
+    Route::get('verifyAccount/{id}/edit', 'VerifyAccount@update')->name('auth.update');
+});
+
+Route::get('auth/completeRegistration/{id}', 'VerifyAccount@completeRegistration')->name('auth.finishRegister');
 //The dashboard
 Route::get('/home', 'PagesController@index')->name('home');
