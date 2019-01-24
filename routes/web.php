@@ -11,15 +11,19 @@
 |
 */
 
-//The main index routs
+
+//The main index path
 Route::get('/', function () {
     return view('welcome');
 });
 
+//Administrator paths
 Route::prefix('admin')->group(function(){
+
     //The dashboard
     Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
     Route::resource('users', 'UsersController');
+
 });
 
 
@@ -27,11 +31,13 @@ Route::prefix('admin')->group(function(){
 //Authentication routes
 Auth::routes();
 
+//Complete the registration for the user.
 Route::prefix('auth')->group(function(){
-    Route::get('verifyAccount/{token}', 'VerifyAccount@verifyAccount')->name('auth.verifyAccount');
-    Route::get('verifyAccount/{id}/edit', 'VerifyAccount@update')->name('auth.update');
+
+    Route::get('verifyAccount/{token}', 'VerifyAccount@verifyAccount')->name('verify.verifyAccount');
+    Route::post('verifyAccount/{user}', 'VerifyAccount@update')->name('verify.update');
+    Route::get('completeRegistration/{user}', 'VerifyAccount@completeRegistration')->name('auth.finishRegister');
 });
 
-Route::get('auth/completeRegistration/{id}', 'VerifyAccount@completeRegistration')->name('auth.finishRegister');
 //The dashboard
 Route::get('/home', 'PagesController@index')->name('home');

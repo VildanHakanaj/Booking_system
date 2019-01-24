@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        {!! Form::open(['route' => ['auth.', $user->id], 'method' => 'PUT', 'class' => 'col-md-8 offset-2') !!}
+        {!! Form::open(['route' => ['verify.update', $user->id], 'method' => 'PUT', 'class' => 'col-md-8 offset-2']) !!}
             <div class="form-group">
                 {!! From::label('home_address', 'Home Address') !!}
                 {!! Form::text('home_address', null, ['class' => 'form-control']) !!}

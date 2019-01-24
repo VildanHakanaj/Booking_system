@@ -16,7 +16,7 @@ class VerifyAccount extends Controller
         $user->token = null;
         $user->save();
 
-        return view('auth.completeRegistration')->with('user', $user);
+        return view('verify.edit')->with('user', $user);
     }
 
     public function update(User $user){
