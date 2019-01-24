@@ -40,7 +40,6 @@
         <div class="form-group">
             {!! Form::submit('Save User', ['class' => 'btn btn-lg btn-success']) !!}
         </div>
-
         {!! Form::close() !!}
     </div>
 @endsection

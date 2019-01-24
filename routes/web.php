@@ -22,6 +22,8 @@ Route::prefix('admin')->group(function(){
 
     //The dashboard
     Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
+
+    //Users pages resources
     Route::resource('users', 'UsersController');
 
 });
@@ -35,9 +37,12 @@ Auth::routes();
 Route::prefix('auth')->group(function(){
 
     Route::get('verifyAccount/{token}', 'VerifyAccount@verifyAccount')->name('verify.verifyAccount');
-    Route::post('verifyAccount/{user}', 'VerifyAccount@update')->name('verify.update');
-    Route::get('completeRegistration/{user}', 'VerifyAccount@completeRegistration')->name('auth.finishRegister');
+    Route::Put('verifyAccount/{user}', 'VerifyAccount@update')->name('verify.update');
+    Route::get('completeRegistration/{user}', 'VerifyAccount@completeRegistration')->name('verify.finishRegister');
 });
-
+//
+//Route::get('/completeRegistration', function(){
+//    return view('auth.verifyAccount.edit');
+//});
 //The dashboard
 Route::get('/home', 'PagesController@index')->name('home');

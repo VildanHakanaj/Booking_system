@@ -43,7 +43,7 @@ class VerifyEmail extends Notification
     {
         return (new MailMessage)
                     ->line('Please finish the registration.')
-                    ->action('Complete Registration', route('auth.verifyAccount', $this->user->token))
+                    ->action('Complete Registration', route('verify.verifyAccount', $this->user->token))
                     ->line('Thank you for using our application!');
     }
 
