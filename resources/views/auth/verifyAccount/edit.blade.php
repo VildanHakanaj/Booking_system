@@ -1,14 +1,9 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <h1 class="col-md-8 offset-2 text-muted my-5">Complete registration</h1>
-        <div class="alert alert-danger col-md-8 offset-2">
-            <ul>
-                <li>
-                    Note: If you leave this page without filling out the fields you will not be able to login.
-                </li>
-            </ul>
-        </div>
+        <h1 class="col-md-8 offset-2 text-muted">Welcome {{$user->name}}</h1>
+        <h3 class="col-md-8 offset-2 text-muted my-5">Complete registration</h3>
+        {{--Error messages--}}
         @include('layouts.messages.alert')
         {!! Form::open(['route' => ['verify.update', $user->id], 'method' => 'PUT', 'class' => 'col-md-8 offset-2']) !!}
         <div class="form-group">

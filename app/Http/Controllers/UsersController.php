@@ -121,15 +121,12 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        /*
+         * TODO
+         *  Refactor the code for the user Builder
+         * */
 
-        //Check if the user wants to change the password
-        if($request->has('password') && !empty($request->password)) {
-            $request->validate([
-                'password' => 'min:6|max:255|confirmed',
-            ]);
-
-            $password = bcrypt($request->password);
-        }
+        //Validate the request
         $request->validate([
             'name' => 'required|min:3|max:255',
             'stdn' => 'required|min:3|max:255',
@@ -138,12 +135,12 @@ class UsersController extends Controller
             'phone_number' => 'min:10|max:255',
         ]);
 
+        //Get all the request data
         $user->name = $request->name;
         $user->email = $request->email;
         $user->home_address= $request->home_address;
         $user->phone_number = $request->phone_number;
-        $user->password = $password ?? '';
-
+        //Check if the user will be an admin
         if($request->admin){
             $user->admin = $request->admin;
         }
@@ -156,11 +153,16 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     *
+     * TODO
+     * Remove the destroy route from the user
+     * or redirect the user to somee error page
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+//        return redirect(route('errors.notAuthorized'));
     }
 }

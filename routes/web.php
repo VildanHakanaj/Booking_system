@@ -13,9 +13,7 @@
 
 
 //The main index path
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'PagesController@index');
 
 //Administrator paths
 Route::prefix('admin')->group(function(){
@@ -40,9 +38,12 @@ Route::prefix('auth')->group(function(){
     Route::Put('verifyAccount/{user}', 'VerifyAccount@update')->name('verify.update');
     Route::get('completeRegistration/{user}', 'VerifyAccount@completeRegistration')->name('verify.finishRegister');
 });
+
+
+
 //
 //Route::get('/completeRegistration', function(){
 //    return view('auth.verifyAccount.edit');
 //});
 //The dashboard
-Route::get('/home', 'PagesController@index')->name('home');
+Route::get('/index', 'PagesController@index')->name('home');

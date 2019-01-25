@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
 
-        <h1 class="text-muted">Welcome {{Auth::user()->name}} </h1>
+        
 
     </div>
     @endsection
