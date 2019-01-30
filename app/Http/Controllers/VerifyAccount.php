@@ -36,9 +36,12 @@ class VerifyAccount extends Controller
 
         //Verify the token
         $user->token = null;
+
         //save the user
         $user->save();
-        //Send them to the login page
-        return redirect(route('login'));
+
+        auth()->login($user);
+//        Send them to the login page
+        return redirect('/');
     }
 }
