@@ -36,11 +36,10 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
                             {{--If the user is an Admin--}}
-                            @if(Auth::user()->isAdmin())
+                            @if(Auth::check() && Auth::user()->admin== 1)
                                 <a href="{{route('admin.dashboard')}}" class="dropdown-item">Dashboard</a>
                                 <div class="dropdown-divider"></div>
                             @endif
-
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -57,20 +56,9 @@
         </div>
     </div>
 </nav>
+{{--Show if user is an admin--}}
+@if(Auth::check() && Auth::user()->admin == 1)
+@include('layouts.partials.dashNav')
+@endif
 
-<div class="nav-scroller bg-white shadow-sm">
-    <nav class="nav nav-underline col-md-10 offset-1">
-        <a class="nav-link active" href="#">Dashboard</a>
-        <a class="nav-link" href="#">
-            Friends
-            <span class="badge badge-pill bg-light align-text-bottom">27</span>
-        </a>
-        <a class="nav-link" href="#">Explore</a>
-        <a class="nav-link" href="#">Suggestions</a>
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
-    </nav>
-</div>
+la senoria mexicana es inteligente
