@@ -60,5 +60,3 @@
 @if(Auth::check() && Auth::user()->admin == 1)
 @include('layouts.partials.dashNav')
 @endif
-
-la senoria mexicana es inteligente

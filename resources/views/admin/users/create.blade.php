@@ -13,17 +13,17 @@
 
         <div class="form-group">
             {!! Form::label('name', 'Name') !!}
-            {!! Form::text('name', null, ['value' => old('name'), 'class' => 'form-control', 'required', 'placeholder' => 'First Name Last Name']) !!}
+            {!! Form::text('name', null, ['value' => old('name'), 'class' => 'form-control', 'placeholder' => 'First Name Last Name']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('stdn', 'Student Number') !!}
-            {!! Form::text('stdn', null, ['class' => 'form-control', 'required', 'placeholder' => '#0592373']) !!}
+            {!! Form::text('stdn', null, ['class' => 'form-control', 'placeholder' => '#0592373']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('email', 'Email') !!}
-            {!! Form::email('email', null, ['class' => 'form-control', 'required', 'placeholder' => 'email@mail.com']) !!}
+            {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'email@mail.com']) !!}
         </div>
         <div class="form-group">
             <div class="custom-file">

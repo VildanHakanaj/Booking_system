@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Session;
+use Validator;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 class UsersController extends Controller
@@ -48,38 +49,73 @@ class UsersController extends Controller
     public function store(Request $request)
     {
 
-        /*
-         *TODO::
-         * [ x ] Look into the observer class and try to
-         *
-         *
-         */
-        //Validate the request
-        $request->validate([
-            'name' => 'min:3|max:255',
-            'email' => 'required|unique:users|email|min:3|max:255',
-            'stdn' => 'required|unique:users|min:7|max:255'
-        ]);
+
+
 
         //Create a new user instance
         $user = new user();
 
-        //Create the new user.
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->stdn = $request->stdn;
+
+
+        /*
+         *TODO
+         * [x] Parse the file
+         *      [x] Create a user request
+         *      [x] Validate the request
+         * [ ] Create a reasons instance
+         * Before the user is registered
+         * [ ] Find a way to see if the reason is a full year or just a half semester
+         * If the its a full year
+         *      [ ] Set the expiry date to the end of the school year.
+         *      [ ] what if the user is registered in the winter time and has to do the full year
+         * If its half a semester
+         *      [ ] set the expiry date based on the current date to the future date of the semesters finish.
+         *      [ ] This can be accomplished with the laravel relationship
+         * If there is no relation
+         *      [ ] Make sure the user is set as an alumni
+         * After everything is done
+         * [ ] Validate the reason to book
+         * [ ] Create the relation to the user
+         * */
+
+
+        if(!empty($request->roster)){
+
+            $data = $user->parseFile();
+
+//            $request->validate([
+//                'name' => 'min:3|max:255',
+//                'email' => 'required|unique:users|email|min:3|max:255',
+//                'stdn' => 'required|unique:users|min:7|max:255'
+//            ]);
+
+            $user->stdn= $data['stdn'];
+            $user->name = $data['name'];
+            $user->email= $data['email'];
+
+        }else{
+            //Validate the request
+            $request->validate([
+                'name' => 'min:3|max:255',
+                'email' => 'required|unique:users|email|min:3|max:255',
+                'stdn' => 'required|unique:users|min:7|max:255'
+            ]);
+            //Create the new user.
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->stdn = $request->stdn;
+
+
+            //Check if the admin checkbox is checked
+            if($request->admin){
+                $user->admin = $request->admin;
+            }
+        }
 
         //Generate a random token
         $user->token = str_random(25);
-
-        //Check if the admin checkbox is checked
-        if($request->admin){
-            $user->admin = $request->admin;
-        }
-
         //Save the user
         $user->save();
-
         //Send the user an email
         $user->sendVerificationEmail();
 
