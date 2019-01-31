@@ -17,7 +17,7 @@ class CreateReasonsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('description');
-            $table->boolean('active');
+            $table->boolean('active')->default(1);
             $table->timestamp('expires_at');
             $table->timestamps();
         });

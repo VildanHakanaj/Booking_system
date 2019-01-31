@@ -29,18 +29,41 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * Checks if the user is an admin or not
+     *
+     * @return boolean
+     * */
     public function isAdmin(){
         return $this->admin == 1 ? true : false;
     }
 
+    /**
+     * Checks if the user has completed the registration
+     *
+     * @return boolean
+     *
+     * */
     public function verified(){
         return $this->token == null;
     }
 
+    /**
+     *
+     * Sends the user the email to complete registration
+     *
+     *
+     * */
     public function sendVerificationEmail(){
         $this->notify(new VerifyEmail($this));
     }
 
+    /**
+     *  parses the file and extracts all the data from the file
+     *
+     *  @return array
+     *
+     */
     public function parseFile(){
         $handler = fopen('C:\Users\ahaka\OneDrive\Documents\Internship\Milestones\roster.csv', 'r');
 
@@ -70,7 +93,7 @@ class User extends Authenticatable
                 ];
             }
         }
-        return $userRoster;
+        return [$userRoster, $reason];
     }
 
 }

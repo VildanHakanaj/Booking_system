@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Session;
-use Validator;
+use App\Reason;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 class UsersController extends Controller
@@ -24,7 +24,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        //Paginate the user by 10
+        $users = User::paginate(10);
         return view('admin.users.index')->with('users', $users);
     }
 
@@ -48,23 +49,17 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-
-
-
-
         //Create a new user instance
         $user = new user();
-
-
-
+        $reason = new Reason();
         /*
          *TODO
          * [x] Parse the file
          *      [x] Create a user request
          *      [x] Validate the request
-         * [ ] Create a reasons instance
+         * [x] Create a reasons instance
          * Before the user is registered
-         * [ ] Find a way to see if the reason is a full year or just a half semester
+         * [x] Find a way to see if the reason is a full year or just a half semester
          * If the its a full year
          *      [ ] Set the expiry date to the end of the school year.
          *      [ ] what if the user is registered in the winter time and has to do the full year
@@ -78,22 +73,40 @@ class UsersController extends Controller
          * [ ] Create the relation to the user
          * */
 
-
         if(!empty($request->roster)){
 
+            //Get the array with data
             $data = $user->parseFile();
 
-//            $request->validate([
-//                'name' => 'min:3|max:255',
-//                'email' => 'required|unique:users|email|min:3|max:255',
-//                'stdn' => 'required|unique:users|min:7|max:255'
-//            ]);
+            //Get both of the data for the user and the reason
+            $userData = $data[0];
+            $reasonData =   $data[1];
 
-            $user->stdn= $data['stdn'];
-            $user->name = $data['name'];
-            $user->email= $data['email'];
+
+            /*
+             * Try to validate the user fields from the file
+             * */
+
+            //Bind the user data
+            $user->stdn= $userData['stdn'];
+            $user->name = $userData['name'];
+            $user->email= $userData['email'];
+            $reason->title = $reasonData['reason'];
+
+            //Set the course expiry date
+            $resp = $reason->typeOfCourse($reason->title);
+
+            if($resp == 1){
+                $date = (date('Y') + 1) . '-04' . '-21';
+                $reason->expires_at = date('Y');
+                $reason->expires_at = $date;
+            }else if($resp == 0){
+                $date = (date('Y')) . '-12' . '-31';;
+                $reason->expires_at = $date;
+            }
 
         }else{
+
             //Validate the request
             $request->validate([
                 'name' => 'min:3|max:255',
@@ -111,6 +124,9 @@ class UsersController extends Controller
                 $user->admin = $request->admin;
             }
         }
+
+        $reason->description = "This is the description of the course";
+        $reason->save();
 
         //Generate a random token
         $user->token = str_random(25);

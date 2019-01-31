@@ -34,6 +34,7 @@
                 No users in the table
             @endif
             </tbody>
+            {{$users->links()}}
         </table>
     </div>
 @endsection

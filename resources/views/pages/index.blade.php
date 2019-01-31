@@ -3,7 +3,12 @@
     <div class="container">
 
         {{--Seach nav--}}
-
+        <div class="col-md-8 offset-2">
+            <div class="jumbotron">
+                <h1 class="text-muted">Welcome to the booking station</h1>
+                <small class="text-muted text-center">This is the section where the user will see the content to book</small>
+            </div>
+        </div>
         {{--Sidebar previous booking--}}
 
         {{--Sidebar for new addition--}}
