@@ -28,18 +28,26 @@ class Reason extends Model
 
                     //Add the course for the next year
                     $this->expires_at = date('Y') + 1 . "-" . date('04-31');
+                    echo "Fall";
+                    dd($this->expires_at);
                 }
             }else{
 
                 //Add the course in the current semester
                 $this->expires_at = date('Y-12-31');
                 dd($this->expires_at);
-
             }
 
         }else if(strpos($string[1], 'Y')){
+            if(date('m') > 2 && date('m') <= 12){
+                $this->expires_at = date('Y') + 1 . date('-04-31');
+                dd( "Full year added in fall" . $this->expires_at);
+            }else{
 
-            dd('Full year');
+                $this->expires_at = date('Y-04-31');
+                dd('Full year added in winter' . $this->expires_at);
+
+            }
 
         }
 

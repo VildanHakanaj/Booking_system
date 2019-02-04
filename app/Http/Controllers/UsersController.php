@@ -100,16 +100,11 @@ class UsersController extends Controller
             //Bind the reason data
             $reason->title  = $reasonData['reason'];
             $reason->setExpiry($reasonData['reason']);
+//            dd($reason->expires_at);
             //Set the course expiry date
-            dd("Here");
 
-            //Explode the string
-
-
-
-
-
-            return redirect()->back();
+            $data['user'] = $user;
+            $data['reason'] = $reason;
 
         }else{  //Check the request call
 
@@ -131,13 +126,16 @@ class UsersController extends Controller
             }
         }
 
-        $reason->description = "This is the description of the course";
-        $reason->save();
 
+        $reason->description = "This is the description of the course";
+
+        $reason->save();
+        dd("saved");
         //Generate a random token
         $user->token = str_random(25);
         //Save the user
         $user->save();
+
         //Send the user an email
         $user->sendVerificationEmail();
 
