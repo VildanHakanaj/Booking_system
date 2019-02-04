@@ -6,28 +6,43 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reason extends Model
 {
+    //functions go here
 
-    /**
-     *
-     * Finds if the course is a full year or half year
-     *
-     * @return integer
-     * -1 if no type is found
-     * 1 if the type is full year
-     * 0 if the type is half year
-     *
-     * */
-    public function typeOfCourse($string){
+    public function setExpiry($data){
 
-        //Explode the course title
-        $data = explode('-', $string);
-        //Find if the course number has a y or h at the end
-        if(strpos($data[1], 'Y')){
-            return 1;
-        }elseif(strpos($data[1], 'H')){
-            return 0;
+        $string = explode('-', $data);
+
+        //Check if the course is a half credit
+        if(stripos($string[1], 'H')){
+
+            //Check if its a winter course
+            if(stripos($string[sizeof($string) - 1], 'W') > -1){
+
+                //Check if the user is added during winter for a winter course
+                if((date('m')) > 1 && (date('m')) <= 4){
+
+                    //Set the current date
+                    $this->expires_at = date('Y-04-31');
+
+                }else{
+
+                    //Add the course for the next year
+                    $this->expires_at = date('Y') + 1 . "-" . date('04-31');
+                }
+            }else{
+
+                //Add the course in the current semester
+                $this->expires_at = date('Y-12-31');
+                dd($this->expires_at);
+
+            }
+
+        }else if(strpos($string[1], 'Y')){
+
+            dd('Full year');
+
         }
 
-        return -1;
     }
+
 }

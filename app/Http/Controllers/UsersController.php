@@ -49,65 +49,71 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //Create a new user instance
+        //User instance
         $user = new user();
+        //Reason model
         $reason = new Reason();
+
         /*
          *TODO
-         * [x] Parse the file
+         * Parsing the file
+         * [x] Write the method to Parse the file
          *      [x] Create a user request
          *      [x] Validate the request
          * [x] Create a reasons instance
          * Before the user is registered
          * [x] Find a way to see if the reason is a full year or just a half semester
          * If the its a full year
-         *      [ ] Set the expiry date to the end of the school year.
+         *      [x] Set the expiry date to the end of the school year.
          *      [ ] what if the user is registered in the winter time and has to do the full year
          * If its half a semester
-         *      [ ] set the expiry date based on the current date to the future date of the semesters finish.
-         *      [ ] This can be accomplished with the laravel relationship
+         *      [x] set the expiry date based on the current date to the future date of the semesters finish.
          * If there is no relation
          *      [ ] Make sure the user is set as an alumni
          * After everything is done
          * [ ] Validate the reason to book
          * [ ] Create the relation to the user
+         *      [ ] This can be accomplished with the laravel relationship
+         * Questions
+         * [ ] If the students gets added in the winter time
+         * [ ] If the student gets added for a full year course in the winter
+         *      [ ] Should the expiry date be in the current year or next year.
+         *
+         *
+         *
          * */
 
+        //Check if the roster is passed
         if(!empty($request->roster)){
 
             //Get the array with data
             $data = $user->parseFile();
 
             //Get both of the data for the user and the reason
-            $userData = $data[0];
+            $userData   =   $data[0];
             $reasonData =   $data[1];
+            //Get the user data
+            $user->stdn     = $userData['stdn'];
+            $user->name     = $userData['name'];
+            $user->email    = $userData['email'];
 
-
-            /*
-             * Try to validate the user fields from the file
-             * */
-
-            //Bind the user data
-            $user->stdn= $userData['stdn'];
-            $user->name = $userData['name'];
-            $user->email= $userData['email'];
-            $reason->title = $reasonData['reason'];
-
+            //Bind the reason data
+            $reason->title  = $reasonData['reason'];
+            $reason->setExpiry($reasonData['reason']);
             //Set the course expiry date
-            $resp = $reason->typeOfCourse($reason->title);
+            dd("Here");
 
-            if($resp == 1){
-                $date = (date('Y') + 1) . '-04' . '-21';
-                $reason->expires_at = date('Y');
-                $reason->expires_at = $date;
-            }else if($resp == 0){
-                $date = (date('Y')) . '-12' . '-31';;
-                $reason->expires_at = $date;
-            }
+            //Explode the string
 
-        }else{
 
-            //Validate the request
+
+
+
+            return redirect()->back();
+
+        }else{  //Check the request call
+
+                //Validate the request
             $request->validate([
                 'name' => 'min:3|max:255',
                 'email' => 'required|unique:users|email|min:3|max:255',

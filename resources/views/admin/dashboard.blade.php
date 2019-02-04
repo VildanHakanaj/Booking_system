@@ -9,11 +9,11 @@
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Users
-                        <span class="badge badge-primary badge-pill">11</span>
+                        <span class="badge badge-primary badge-pill">{{$userCount}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Dapibus ac facilisis in
-                        <span class="badge badge-primary badge-pill">2</span>
+                        Products
+                        <span class="badge badge-primary badge-pill">32</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Morbi leo risus

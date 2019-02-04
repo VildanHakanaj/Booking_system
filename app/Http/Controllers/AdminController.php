@@ -12,7 +12,11 @@ class AdminController extends Controller
         $this->middleware('admin');
     }
 
+    /*
+     * Display the dashboard for the admin
+     * */
     function dashboard(){
-        return view('admin.dashboard');
+        $userCount = \App\User::all()->count();
+        return view('admin.dashboard', compact('userCount'));
     }
 }
