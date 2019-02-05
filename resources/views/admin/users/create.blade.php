@@ -9,6 +9,9 @@
                 @endforeach
             </div>
         @endif
+        {{--Messages displayed--}}
+        @include('layouts.messages.alert')
+        @include('layouts.messages.error')
         {!! Form::open(['route' => 'users.store', 'class' => 'col-md-8 offset-2']) !!}
 
         <div class="form-group">

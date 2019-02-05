@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\User;
-use Session;
 use App\Reason;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
+use App\User;
+use Illuminate\Http\Request;
+use Session;
+
 class UsersController extends Controller
 {
 
@@ -51,6 +50,7 @@ class UsersController extends Controller
     {
         //User instance
         $user = new user();
+
         //Reason model
         $reason = new Reason();
 
@@ -65,7 +65,7 @@ class UsersController extends Controller
          * [x] Find a way to see if the reason is a full year or just a half semester
          * If the its a full year
          *      [x] Set the expiry date to the end of the school year.
-         *      [ ] what if the user is registered in the winter time and has to do the full year
+         *      [x] what if the user is registered in the winter time and has to do the full year
          * If its half a semester
          *      [x] set the expiry date based on the current date to the future date of the semesters finish.
          * If there is no relation
@@ -100,20 +100,19 @@ class UsersController extends Controller
             //Bind the reason data
             $reason->title  = $reasonData['reason'];
             $reason->setExpiry($reasonData['reason']);
-//            dd($reason->expires_at);
             //Set the course expiry date
-
             $data['user'] = $user;
             $data['reason'] = $reason;
 
         }else{  //Check the request call
 
-                //Validate the request
+            //Validate the request
             $request->validate([
                 'name' => 'min:3|max:255',
                 'email' => 'required|unique:users|email|min:3|max:255',
                 'stdn' => 'required|unique:users|min:7|max:255'
             ]);
+
             //Create the new user.
             $user->name = $request->name;
             $user->email = $request->email;
@@ -127,12 +126,22 @@ class UsersController extends Controller
         }
 
 
-        $reason->description = "This is the description of the course";
+        //Check if the reason exist already.
+        if(!$reason->where('title', $reason->title)){
+            $reason->description = "This is the description of the course";
+            $reason->save();
+        }
 
-        $reason->save();
-        dd("saved");
+
         //Generate a random token
         $user->token = str_random(25);
+
+        //Check if the user exists.
+        if($user->where('email', $user->email)->first()){
+            Session::flash('error', 'The user already exists');
+            return redirect()->back();
+        }
+
         //Save the user
         $user->save();
 
@@ -202,6 +211,8 @@ class UsersController extends Controller
         }
 
         $user->save();
+
+
         Session::flash('sucess', 'Successfully updated the user');
         return redirect(route('users.show', $user->id));
     }

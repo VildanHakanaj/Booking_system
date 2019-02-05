@@ -30,6 +30,18 @@ class User extends Authenticatable
     ];
 
     /**
+     * One user has one reason_to_book
+     *
+     * */
+
+//    public function reasonToBook(){
+//
+//       return  $this->hasOne();
+//
+//    }
+
+
+    /**
      * Checks if the user is an admin or not
      *
      * @return boolean
