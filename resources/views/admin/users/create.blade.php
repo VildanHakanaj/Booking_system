@@ -2,48 +2,57 @@
 @section('content')
     <div class="container">
         <h1 class="text-muted my-5 col-md-8 offset-2">Add a new user</h1>
-        @if($errors->any())
-            <div class="alert alert-danger col-md-8 offset-2" role="alert">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </div>
-        @endif
-        {{--Messages displayed--}}
         @include('layouts.messages.alert')
-        @include('layouts.messages.error')
-        {!! Form::open(['route' => 'users.store', 'class' => 'col-md-8 offset-2']) !!}
+        {!! Form::open(['route' => 'users.store', 'class' => 'col-md-8 offset-2', 'files' => true]) !!}
+        <div class="row">
+            <div class="col-md-6">
 
-        <div class="form-group">
-            {!! Form::label('name', 'Name') !!}
-            {!! Form::text('name', null, ['value' => old('name'), 'class' => 'form-control', 'placeholder' => 'First Name Last Name']) !!}
-        </div>
+                <h3 class="text-muted">User</h3>
+                <div class="form-group">
+                    {!! Form::label('name', 'Name') !!}
+                    {!! Form::text('name', null, ['value' => old('name'), 'class' => 'form-control', 'placeholder' => 'First Name Last Name']) !!}
+                </div>
 
-        <div class="form-group">
-            {!! Form::label('stdn', 'Student Number') !!}
-            {!! Form::text('stdn', null, ['class' => 'form-control', 'placeholder' => '#0592373']) !!}
-        </div>
+                <div class="form-group">
+                    {!! Form::label('stdn', 'Student Number') !!}
+                    {!! Form::text('stdn', null, ['class' => 'form-control', 'placeholder' => '#0592373']) !!}
+                </div>
 
-        <div class="form-group">
-            {!! Form::label('email', 'Email') !!}
-            {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'email@mail.com']) !!}
-        </div>
-        <div class="form-group">
-            <div class="custom-file">
-                {!! Form::label('roster', 'Add roster', ['class' => 'custom-file-label']) !!}
-                {!! Form::file('roster', ['class' => 'custom-file-input']) !!}
+                <div class="form-group">
+                    {!! Form::label('email', 'Email') !!}
+                    {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'email@mail.com']) !!}
+                </div>
+                <div class="form-group">
+                    {!! Form::label('admin', 'Admin') !!}
+                    {!! Form::checkbox('admin') !!}
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            {!! Form::select('type',[
-            'Students' => ['C' => 'Current Student', 'I' => 'Intern'],
-            'Other' => ['F' => 'Faculty', 'A' => 'Alumni'],
-            ])!!}
-        </div>
+            <div class="col-md-6">
+                {{-- REASON --}}
+                <h3 class="text-muted">Reason</h3>
+                <div class="form-group">
+                    {!! Form::label('title', 'Reason Title')!!}
+                    {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'COIS-3420H-A-W01']) !!}
+                    {{--<small class="helper">Please enter the correct format</small>--}}
+                </div>
 
-        <div class="form-group">
-            {!! Form::label('admin', 'Admin') !!}
-            {!! Form::checkbox('admin') !!}
+                <div class="form-group">
+                    {!! Form::label('description', 'Description') !!}
+                    {!! Form::text('description', null, ['class' => 'form-control']) !!}
+                </div>
+
+                <div class="form-group">
+                    {!! Form::label('expires_at', 'Expiry Date') !!}
+                    {!! Form::date('expires_at', \Carbon\Carbon::now(), ['class' => 'form-control']) !!}
+                </div>
+
+                <div class="form-group">
+                    <div class="custom-file">
+                        {!! Form::label('roster', 'Add roster') !!}
+                        {!! Form::file('roster', null, ['class' => 'custom-file-input']) !!}
+                    </div>
+                </div>
+            </div>
         </div>
 
         {!! Form::submit('Add User', ['class' => 'btn btn-primary btn-lg d-block w-100']) !!}

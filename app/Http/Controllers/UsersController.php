@@ -55,6 +55,7 @@ class UsersController extends Controller
         $reason = new Reason();
 
         /*
+         *
          *TODO
          * Parsing the file
          * [x] Write the method to Parse the file
@@ -68,20 +69,14 @@ class UsersController extends Controller
          *      [x] what if the user is registered in the winter time and has to do the full year
          * If its half a semester
          *      [x] set the expiry date based on the current date to the future date of the semesters finish.
-         * If there is no relation
-         *      [ ] Make sure the user is set as an alumni
          * After everything is done
-         * [ ] Validate the reason to book
+         * [x] Validate the reason to book
          * [ ] Create the relation to the user
          *      [ ] This can be accomplished with the laravel relationship
-         * Questions
-         * [ ] If the students gets added in the winter time
-         * [ ] If the student gets added for a full year course in the winter
-         *      [ ] Should the expiry date be in the current year or next year.
-         *
-         *
-         *
+         * ASSUMPTION
+         * [ ] The admin will never add duplicate users.
          * */
+
 
         //Check if the roster is passed
         if(!empty($request->roster)){
@@ -92,25 +87,32 @@ class UsersController extends Controller
             //Get both of the data for the user and the reason
             $userData   =   $data[0];
             $reasonData =   $data[1];
+
             //Get the user data
             $user->stdn     = $userData['stdn'];
             $user->name     = $userData['name'];
             $user->email    = $userData['email'];
 
-            //Bind the reason data
-            $reason->title  = $reasonData['reason'];
-            $reason->setExpiry($reasonData['reason']);
-            //Set the course expiry date
-            $data['user'] = $user;
-            $data['reason'] = $reason;
+            //Check if the reason exist already.
+            if(!$reason->where('title', $reasonData['reason'])->first()){
 
-        }else{  //Check the request call
+                $reason->title = $reasonData['reason'];
+                $reason->setExpiry($reasonData['reason']);
+                $reason->description = "This is the description of the course";
+
+                $reason->save();
+            }
+
+
+        }else{  //Check the inputs submitted
 
             //Validate the request
             $request->validate([
+
                 'name' => 'min:3|max:255',
                 'email' => 'required|unique:users|email|min:3|max:255',
-                'stdn' => 'required|unique:users|min:7|max:255'
+                'stdn' => 'required|unique:users|min:7|max:255',
+
             ]);
 
             //Create the new user.
@@ -118,28 +120,38 @@ class UsersController extends Controller
             $user->email = $request->email;
             $user->stdn = $request->stdn;
 
-
             //Check if the admin checkbox is checked
-            if($request->admin){
-                $user->admin = $request->admin;
+            if(!$request->admin){
+                //Validate the Reason input
+                $request->validate([
+                    'title' => 'required|unique:reasons|max:255',
+                    'description' => 'required|min:7|max:255',
+                    'expires_at' => 'required||min:7|max:255|date'
+                ]);
+
+                //Create the reason model
+                $reason->title = $request->title;
+                $reason->description = $request->description;
+                $reason->expires_at= $request->expires_at;
+
+                $reason->save();
             }
         }
 
-
-        //Check if the reason exist already.
-        if(!$reason->where('title', $reason->title)){
-            $reason->description = "This is the description of the course";
-            $reason->save();
+        //Check if the user is an admin
+        if($request->admin){
+            $user->admin = $request->admin;
         }
-
 
         //Generate a random token
         $user->token = str_random(25);
 
         //Check if the user exists.
         if($user->where('email', $user->email)->first()){
+
             Session::flash('error', 'The user already exists');
             return redirect()->back();
+
         }
 
         //Save the user
@@ -149,7 +161,7 @@ class UsersController extends Controller
         $user->sendVerificationEmail();
 
         //Save the message in the session
-        Session::flash('sucess', 'Users successfully created');
+        Session::flash('success', 'User successfully created');
 
         //Redirect the admin to the show user.
         return redirect(route('users.show', $user->id));
@@ -189,6 +201,7 @@ class UsersController extends Controller
         /*
          * TODO
          *  Refactor the code for the user Builder
+         *
          * */
 
         //Validate the request
@@ -205,15 +218,17 @@ class UsersController extends Controller
         $user->email = $request->email;
         $user->home_address= $request->home_address;
         $user->phone_number = $request->phone_number;
+
         //Check if the user will be an admin
         if($request->admin){
             $user->admin = $request->admin;
         }
 
+        //Save the user
         $user->save();
 
 
-        Session::flash('sucess', 'Successfully updated the user');
+        Session::flash('success', 'Successfully updated the user');
         return redirect(route('users.show', $user->id));
     }
 

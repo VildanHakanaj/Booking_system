@@ -1,7 +1,7 @@
-@if(Session::has('sucess'))
+@if(Session::has('success'))
     <div class="alert alert-success">
         <ul>
-            <li>{{Session::get('message') }}</li>
+            <li>{{Session::get('success')}}</li>
         </ul>
     </div>
     @endif
