@@ -75,6 +75,8 @@ class User extends Authenticatable
      *
      *  @return array
      *
+     *TODO
+     * [ ] Figure how to get the file from the computer
      */
     public function parseFile(){
         $handler = fopen('C:\Users\ahaka\OneDrive\Documents\Internship\Milestones\roster.csv', 'r');
@@ -107,5 +109,13 @@ class User extends Authenticatable
         }
         return [$userRoster, $reason];
     }
+
+    public function createUser($data){
+        $this->stdn     = $data['stdn'];
+        $this->name     = $data['name'];
+        $this->email    = $data['email'];
+
+    }
+
 
 }

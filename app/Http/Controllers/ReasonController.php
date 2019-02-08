@@ -14,7 +14,7 @@ class ReasonController extends Controller
      */
     public function index()
     {
-        //
+        //Show all the reasons
     }
 
     /**
@@ -24,7 +24,7 @@ class ReasonController extends Controller
      */
     public function create()
     {
-        //
+        //Create a new Reason
     }
 
     /**
@@ -35,7 +35,8 @@ class ReasonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Store the new reason
+        //Validate the reason
     }
 
     /**

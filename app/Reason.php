@@ -41,4 +41,12 @@ class Reason extends Model
 
         }
     }
+
+    public function createReason($data){
+
+        $this->title          = $data['reason'];
+        $this->setExpiry($data['reason']);
+        $this->description    = $data['reason'];
+
+    }
 }

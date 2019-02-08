@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Reason;
 use App\User;
+use App\ReasonToBook;
 use Illuminate\Http\Request;
 use Session;
 
@@ -49,10 +50,13 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         //User instance
-        $user = new user();
+        $user = new User();
 
         //Reason model
         $reason = new Reason();
+
+        //Reason relations User
+        $reasonRel = new ReasonToBook();
 
         /*
          *
@@ -85,22 +89,17 @@ class UsersController extends Controller
             $data = $user->parseFile();
 
             //Get both of the data for the user and the reason
-            $userData   =   $data[0];
-            $reasonData =   $data[1];
+            $userData       =   $data[0];
+            $reasonData     =   $data[1];
 
             //Get the user data
-            $user->stdn     = $userData['stdn'];
-            $user->name     = $userData['name'];
-            $user->email    = $userData['email'];
-
-            //Check if the reason exist already.
+            $user->createUser($userData);
+            //Check if the reason doesn't exist already.
             if(!$reason->where('title', $reasonData['reason'])->first()){
 
-                $reason->title = $reasonData['reason'];
-                $reason->setExpiry($reasonData['reason']);
-                $reason->description = "This is the description of the course";
-
+                $reason->createReason($reasonData);
                 $reason->save();
+
             }
 
 
@@ -109,32 +108,30 @@ class UsersController extends Controller
             //Validate the request
             $request->validate([
 
-                'name' => 'min:3|max:255',
-                'email' => 'required|unique:users|email|min:3|max:255',
-                'stdn' => 'required|unique:users|min:7|max:255',
+                'name'      => 'min:3|max:255',
+                'email'     => 'required|unique:users|email|min:3|max:255',
+                'stdn'      => 'required|unique:users|min:7|max:255',
 
             ]);
 
             //Create the new user.
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->stdn = $request->stdn;
+            $user->createUser($request);
 
             //Check if the admin checkbox is checked
             if(!$request->admin){
                 //Validate the Reason input
                 $request->validate([
-                    'title' => 'required|unique:reasons|max:255',
-                    'description' => 'required|min:7|max:255',
-                    'expires_at' => 'required||min:7|max:255|date'
+                    'title'         => 'required|unique:reasons|max:255',
+                    'description'   => 'required|min:7|max:255',
+                    'expires_at'    => 'required||min:7|max:255|date'
                 ]);
 
                 //Create the reason model
-                $reason->title = $request->title;
-                $reason->description = $request->description;
-                $reason->expires_at= $request->expires_at;
-
+                $request->createReason($request);
                 $reason->save();
+
+                //Add the relation between user an reason
+                $reasonRel->addRelation($user, $reason);
             }
         }
 
