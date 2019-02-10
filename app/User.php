@@ -115,5 +115,10 @@ class User extends Authenticatable
         $this->name     = $data['name'];
         $this->email    = $data['email'];
 
-}
+    }
+
+    public function reasons(){
+        return $this->hasMany('App\ReasonToBook');
+    }
+
 }
