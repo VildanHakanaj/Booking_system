@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class ReasonToBook extends Model
 {
 
+    protected $table = 'reason_to_book';
+
     /*
      *
      *TODO
@@ -23,7 +25,7 @@ class ReasonToBook extends Model
      *      [ ] Should the admin stop a relation
      * */
 
-    public function addRelation($user, $reason){
+    public function createRelation($user, $reason){
         $this->user_id = $user->id;
         $this->reason_id = $reason->id;
         $this->save();

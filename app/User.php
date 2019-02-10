@@ -115,7 +115,5 @@ class User extends Authenticatable
         $this->name     = $data['name'];
         $this->email    = $data['email'];
 
-    }
-
-
+}
 }

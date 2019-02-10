@@ -86,7 +86,7 @@ class UsersController extends Controller
         if(!empty($request->roster)){
 
             //Get the array with data
-            $data = $user->parseFile();
+            $data           = $user->parseFile();
 
             //Get both of the data for the user and the reason
             $userData       =   $data[0];
@@ -94,6 +94,7 @@ class UsersController extends Controller
 
             //Get the user data
             $user->createUser($userData);
+
             //Check if the reason doesn't exist already.
             if(!$reason->where('title', $reasonData['reason'])->first()){
 
@@ -117,7 +118,7 @@ class UsersController extends Controller
             //Create the new user.
             $user->createUser($request);
 
-            //Check if the admin checkbox is checked
+            //If the user is not an admin
             if(!$request->admin){
                 //Validate the Reason input
                 $request->validate([
@@ -131,7 +132,7 @@ class UsersController extends Controller
                 $reason->save();
 
                 //Add the relation between user an reason
-                $reasonRel->addRelation($user, $reason);
+                $reasonRel->createRelation($user, $reason);
             }
         }
 
@@ -153,6 +154,9 @@ class UsersController extends Controller
 
         //Save the user
         $user->save();
+
+        $reasonRel->createRelation( $user, $reason );
+        $reasonRel->save();
 
         //Send the user an email
         $user->sendVerificationEmail();
