@@ -14,7 +14,10 @@ class ReasonController extends Controller
      */
     public function index()
     {
-        //Show all the reasons
+
+        $reasons = Reason::paginate(10);
+        return view('admin.reasons.index')->with('reasons', $reasons);
+
     }
 
     /**
@@ -24,7 +27,7 @@ class ReasonController extends Controller
      */
     public function create()
     {
-        //Create a new Reason
+        return view('admin.reasons.create');
     }
 
     /**
@@ -35,6 +38,11 @@ class ReasonController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|min:2|max:255',
+            'title' => 'min:2|max:255',
+            'expires_at' => 'date',
+        ]);
         //Store the new reason
         //Validate the reason
     }
@@ -47,7 +55,7 @@ class ReasonController extends Controller
      */
     public function show(Reason $reason)
     {
-        //
+        return view('admin.reasons.show')->with('reason', $reason);
     }
 
     /**

@@ -9,5 +9,9 @@
             Products
             <span class="badge badge-primary ">50</span>
         </a>
+        <a class="nav-link" href="{{route('reason.index')}}">
+            Reasons
+            <span class="badge badge-primary ">{{$reasons->count()}}</span>
+        </a>
     </nav>
 </div>

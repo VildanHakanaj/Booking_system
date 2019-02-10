@@ -24,6 +24,8 @@ Route::prefix('admin')->group(function(){
     //Users pages resources
     Route::resource('users', 'UsersController');
 
+    Route::resource('reason', 'ReasonController');
+
 });
 
 
