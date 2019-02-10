@@ -176,7 +176,13 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.users.show')->with('user', $user);
+        $reasons = array();
+        foreach($user->reasons as $reason){
+            if($reason->active == 1){
+                $reasons[] = Reason::find($reason->reason_id);
+            }
+        }
+        return view('admin.users.show')->with('user', $user)->with('reasons', $reasons);
     }
 
     /**
