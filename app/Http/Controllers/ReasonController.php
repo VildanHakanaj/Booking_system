@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 
 class ReasonController extends Controller
 {
+
+
+
+    /*
+     *TODO
+     * [ ] Polish the create page
+     * [ ] Finish the store method
+     * [ ] Start the update function
+     * */
+
     /**
      * Display a listing of the resource.
      *
