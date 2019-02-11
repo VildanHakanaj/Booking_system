@@ -36,8 +36,16 @@ class UsersController extends Controller
      */
     public function create()
     {
+        /*
+         *TODO::
+         * [ ] Get all the reasons
+         * [ ] Send the reasons as a variable
+         * [ ] Add the other
+         * */
+
+        $reasons = Reason::all();
         //Show the form to insert users
-        return view('admin.users.create');
+        return view('admin.users.create' )->with( 'reasons', $reasons );
     }
 
     /**
@@ -51,12 +59,11 @@ class UsersController extends Controller
     {
         //User instance
         $user = new User();
-
         //Reason model
         $reason = new Reason();
-
         //Reason relations User
         $reasonRel = new ReasonToBook();
+
 
         /*
          *
@@ -73,14 +80,19 @@ class UsersController extends Controller
          *      [x] what if the user is registered in the winter time and has to do the full year
          * If its half a semester
          *      [x] set the expiry date based on the current date to the future date of the semesters finish.
-         * After everything is done
          * [x] Validate the reason to book
          * [ ] Create the relation to the user
          *      [ ] This can be accomplished with the laravel relationship
+         * [ ] The user by default will have the other in the reason relation
+         * [ ] Then add the other reason if applicable
+         * Admin can add by two ways
+         *      1. [ ] Manually specify the reason
+         *      2. [ ] Choose from an existing reason
+         * [ ]
          * ASSUMPTION
          * [ ] The admin will never add duplicate users.
+         *
          * */
-
 
         //Check if the roster is passed
         if(!empty($request->roster)){
@@ -92,7 +104,7 @@ class UsersController extends Controller
             $userData       =   $data[0];
             $reasonData     =   $data[1];
 
-            //Get the user data
+            //Create the user from the roster.
             $user->createUser($userData);
 
             //Check if the reason doesn't exist already.
@@ -104,7 +116,7 @@ class UsersController extends Controller
             }
 
 
-        }else{  //Check the inputs submitted
+        }else{  /*========END OF THE ROSTER CHECK=============*/
 
             //Validate the request
             $request->validate([
@@ -119,21 +131,28 @@ class UsersController extends Controller
             $user->createUser($request);
 
             //If the user is not an admin
-            if(!$request->admin){
-                //Validate the Reason input
-                $request->validate([
-                    'title'         => 'required|unique:reasons|max:255',
-                    'description'   => 'required|min:7|max:255',
-                    'expires_at'    => 'required||min:7|max:255|date'
-                ]);
+            // Then check for the reason
+            if(!$request->admin){/*========== CHECK IF NOT ADMIN ==========*/
+                //Check if the reason is other.
+                //Means the user will have no reasons expect the default one
+                if($request->reasons !== 'Other'){
 
+                    $reason = Reason::where('title', $request->reasons);
+
+                }else{
+                    $request->validate([
+                        'title'         => 'required|unique:reasons|max:255',
+                        'description'   => 'required|min:7|max:255',
+                        'expires_at'    => 'required||min:7|max:255|date'
+                    ]);
+                }
                 //Create the reason model
                 $request->createReason($request);
                 $reason->save();
 
                 //Add the relation between user an reason
                 $reasonRel->createRelation($user, $reason);
-            }
+            }/*==========END OF NOT ADMIN CHECK ==========*/
         }
 
         //Check if the user is an admin
@@ -144,7 +163,7 @@ class UsersController extends Controller
         //Generate a random token
         $user->token = str_random(25);
 
-        //Check if the user exists.
+        //Check if the user exist
         if($user->where('email', $user->email)->first()){
 
             Session::flash('error', 'The user already exists');
@@ -152,11 +171,18 @@ class UsersController extends Controller
 
         }
 
-        //Save the user
+        //Save the user in the database
         $user->save();
 
+        //Create the relation.
         $reasonRel->createRelation( $user, $reason );
-        $reasonRel->save();
+
+
+        //Save the relation in the database if it doesnt exists.
+        if(!$reason->isUnique()){
+            $reasonRel->save();
+        }
+
 
         //Send the user an email
         $user->sendVerificationEmail();

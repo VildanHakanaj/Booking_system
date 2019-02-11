@@ -6,7 +6,6 @@
         {!! Form::open(['route' => 'users.store', 'class' => 'col-md-8 offset-2', 'files' => true]) !!}
         <div class="row">
             <div class="col-md-6">
-
                 <h3 class="text-muted">User</h3>
                 <div class="form-group">
                     {!! Form::label('name', 'Name') !!}
@@ -30,6 +29,22 @@
             <div class="col-md-6">
                 {{-- REASON --}}
                 <h3 class="text-muted">Reason</h3>
+                <div class="form-group">
+
+                    {!! Form::label('reasons', 'Choose a reason') !!}
+
+                    <select name="reasons" id="reasons" class="form-control">
+                        @if($reasons->count() > 0)
+                            <option value="other">Other</option>
+                            @foreach($reasons as $reason)
+                                <option value="{{$reason->title}}">{{$reason->title}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+
+                <h5 class="text-center">OR</h5>
+
                 <div class="form-group">
                     {!! Form::label('title', 'Reason Title')!!}
                     {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'COIS-3420H-A-W01']) !!}

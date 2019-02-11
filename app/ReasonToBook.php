@@ -30,4 +30,10 @@ class ReasonToBook extends Model
         $this->reason_id = $reason->id;
         $this->save();
     }
+
+    public function isUnique($user_id, $reason_id){
+
+        if($this->where('user_id', $user_id)->where('reason_id', $reason_id)) return false;
+        return false;
+    }
 }
