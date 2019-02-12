@@ -2,7 +2,9 @@
 @section('content')
     <div class="container">
         <h1 class="text-muted my-5 col-md-8 offset-2">Add a new user</h1>
+
         @include('layouts.messages.alert')
+
         {!! Form::open(['route' => 'users.store', 'class' => 'col-md-8 offset-2', 'files' => true]) !!}
         <div class="row">
             <div class="col-md-6">
@@ -37,30 +39,13 @@
                         @if($reasons->count() > 0)
                             <option value="other">Other</option>
                             @foreach($reasons as $reason)
-                                <option value="{{$reason->title}}">{{$reason->title}}</option>
+                                @if($reason->title != 'other')
+                                    <option value="{{$reason->title}}">{{$reason->title}}</option>
+                                @endif();
                             @endforeach
                         @endif
                     </select>
                 </div>
-
-                <h5 class="text-center">OR</h5>
-
-                <div class="form-group">
-                    {!! Form::label('title', 'Reason Title')!!}
-                    {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'COIS-3420H-A-W01']) !!}
-                    {{--<small class="helper">Please enter the correct format</small>--}}
-                </div>
-
-                <div class="form-group">
-                    {!! Form::label('description', 'Description') !!}
-                    {!! Form::text('description', null, ['class' => 'form-control']) !!}
-                </div>
-
-                <div class="form-group">
-                    {!! Form::label('expires_at', 'Expiry Date') !!}
-                    {!! Form::date('expires_at', \Carbon\Carbon::now(), ['class' => 'form-control']) !!}
-                </div>
-
                 <div class="form-group">
                     <div class="custom-file">
                         {!! Form::label('roster', 'Add roster') !!}

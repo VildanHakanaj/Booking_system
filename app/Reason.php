@@ -49,4 +49,8 @@ class Reason extends Model
         $this->description    = $data['reason'];
 
     }
+
+    public function isUnique($title){
+        return ($this->where('title', $title)->first()) ? false : true;
+    }
 }
