@@ -25,7 +25,7 @@ class UsersController extends Controller
     public function index()
     {
         //Paginate the user by 10
-        $users = User::paginate(10);
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
         return view('admin.users.index')->with('users', $users);
     }
 
@@ -61,8 +61,6 @@ class UsersController extends Controller
         $user                   = new User();               //User instance
 
         $reason                 = new Reason();             //Reason model
-        $defaultReason          = new Reason();             //Default Reason model
-        $defaultReason          = Reason::where('title', 'other')->first();
 
         $reason_to_book         = new ReasonToBook();       //Reason relations User
         $reason_to_book_default = new ReasonToBook();       //Reason relations User for the default
@@ -85,7 +83,7 @@ class UsersController extends Controller
             ]);
 
 
-            $request->validate([                        //Validate the file data for user 
+            $request->validate([                        //Validate the file data for user
                 'name'  => 'required|min:2|max:255',
                 'email' => 'required|email|unique:users',
                 'stdn'  => 'required|min:7|max:255|unique:users',
@@ -109,7 +107,7 @@ class UsersController extends Controller
 
             $user->createUser($request);            //Create the new user.
 
-            $reason = Reason::where('title', $request->reasons)->first();            //Get the reason.
+            $reason = Reason::where('title', $request->reasons)->first();            //Get the reason if exists.
         }
 
         /*********************************************
@@ -129,7 +127,7 @@ class UsersController extends Controller
         if(!$user->isAdmin()){
 
             $reason_to_book_default->createRelation($user, Reason::where('title', 'other')->first());        //Add the default other to the user
-            $user->reasons()->save($reason_to_book_default);
+            $user->reasons()->save($reason_to_book_default);            //Save the relation between the user and the reason
 
             if($reason->isUnique($reason->title)){            //check if the reason doesn't exists
                 $reason->save();

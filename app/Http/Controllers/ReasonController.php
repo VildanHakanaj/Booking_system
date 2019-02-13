@@ -24,10 +24,8 @@ class ReasonController extends Controller
      */
     public function index()
     {
-
-        $reasons = Reason::paginate(10);
+        $reasons = Reason::orderBy('created_at', 'desc')->paginate(10);
         return view('admin.reasons.index')->with('reasons', $reasons);
-
     }
 
     /**

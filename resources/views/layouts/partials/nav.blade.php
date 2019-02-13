@@ -58,5 +58,5 @@
 </nav>
 {{--Show if user is an admin--}}
 @if(Auth::check() && Auth::user()->admin == 1)
-@include('layouts.partials.dashNav')
+    @include('layouts.partials.dashNav')
 @endif

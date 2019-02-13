@@ -24,11 +24,10 @@ Route::prefix('admin')->group(function(){
     //Users pages resources
     Route::resource('users', 'UsersController');
 
+    //Reasons pages resources
     Route::resource('reason', 'ReasonController');
 
 });
-
-
 
 //Authentication routes
 Auth::routes();
