@@ -5,7 +5,7 @@
         <h3 class="col-md-8 offset-2 text-muted my-5">Complete registration</h3>
         {{--Error messages--}}
         @include('layouts.messages.alert')
-        {!! Form::open(['route' => ['verify.update', $user->id], 'method' => 'PUT', 'class' => 'col-md-8 offset-2']) !!}
+        {!! Form::open(['route' => ['verify.update', $user->id],'method' => 'PUT', 'class' => 'col-md-8 offset-2']) !!}
         <div class="form-group">
             {!! Form::label('home_address', 'Home Address') !!}
             {!! Form::text('home_address', null, ['class' => 'form-control']) !!}

@@ -8,10 +8,9 @@ use App\ReasonToBook;
 use Illuminate\Http\Request;
 use Session;
 
+define('DEFAULT_REASON', 'other');
 class UsersController extends Controller
 {
-
-    private const DEFAULT_REASON = 'other';
 
     public function __construct()
     {
@@ -60,6 +59,14 @@ class UsersController extends Controller
          *      [ ] If the user already exists but the reason doesn't
          *      [ ] If the user and the reason already exists
          *      [ ] If the reason exits but the user doesn't
+         *  Password Protection
+         *      [ ] Store a random string hashed for each user.
+         *      [ ] The user will then update that password.
+         *      [ ] Override the old password with their new one.
+         *  Student Number
+         *      [ ] Use a regex for the number
+         *          [ ] Check if it has a #
+         *          [ ] Check if the stdn has more than it should
          * */
         $user                   = new User();               //User instance
 
@@ -123,8 +130,8 @@ class UsersController extends Controller
             }
         }
 
-        /*********************************************
-         * ADDING THE USER AND REASON TO THE DATABASE
+        /**********************************************
+         * ADDING THE USER AND REASON TO THE DATABASE *
          **********************************************/
 
         if($request->admin){        //Check if the user is an admin
