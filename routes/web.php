@@ -34,13 +34,10 @@ Auth::routes();
 
 //Complete the registration for the user.
 Route::prefix('auth')->group(function(){
-
     Route::get('verifyAccount/{token}', 'VerifyAccount@verifyAccount')->name('verify.verifyAccount');
     Route::Put('verifyAccount/{user}', 'VerifyAccount@update')->name('verify.update');
     Route::get('completeRegistration/{user}', 'VerifyAccount@completeRegistration')->name('verify.finishRegister');
 });
-
-
 
 //
 //Route::get('/completeRegistration', function(){

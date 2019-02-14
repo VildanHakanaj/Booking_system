@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 
 class ReasonController extends Controller
 {
-
-
-
     /*
      *TODO
      *  [ ] Find a way to update the reason
@@ -34,7 +31,9 @@ class ReasonController extends Controller
      */
     public function create()
     {
+
         return view('admin.reasons.create');
+
     }
 
     /**
@@ -52,7 +51,6 @@ class ReasonController extends Controller
         ]);
 
         $reason = Reason::create($request->all());
-
         return redirect(route('reason.show', $reason));
 
     }
@@ -94,16 +92,14 @@ class ReasonController extends Controller
             'description' => 'min:2|max:255|text',
             'expires_at' => 'date',
         ]);
-
         $reason->create($request->all());
 
         return redirect()->back();
-
     }
 
     /**
      * Remove the specified resource from storage.
-     *
+     *[ ] Will not implement what i can implement with this might be to archive the data
      * @param  \App\Reason  $reason
      * @return \Illuminate\Http\Response
      */

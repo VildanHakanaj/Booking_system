@@ -11,6 +11,8 @@ use Session;
 class UsersController extends Controller
 {
 
+    private const DEFAULT_REASON = 'other';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -52,12 +54,19 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //User instance
+        /*
+         *TODO
+         *  Edge case
+         *      [ ] If the user already exists but the reason doesn't
+         *      [ ] If the user and the reason already exists
+         *      [ ] If the reason exits but the user doesn't
+         * */
         $user                   = new User();               //User instance
 
         $reason                 = new Reason();             //Reason model
 
         $reason_to_book         = new ReasonToBook();       //Reason relations User
+
         $reason_to_book_default = new ReasonToBook();       //Reason relations User for the default
 
 
@@ -67,16 +76,13 @@ class UsersController extends Controller
             $userData       =   $data[0];               //Get the data for the user
             $reasonData     =   $data[1];               //Get the data for the reason
 
-
             $user->createUser($userData);               //Create the user from the roster.
 
-
-            $request->merge([                           //Override the request with the file data
+            $request->merge([                           //Override the request with the data from the file
                 'name'  => $user->name,
                 'email' => $user->email,
                 'stdn'  => $user->stdn,
             ]);
-
 
             $request->validate([                        //Validate the file data for user
                 'name'  => 'required|min:2|max:255',
@@ -90,7 +96,6 @@ class UsersController extends Controller
                 $reason = Reason::where('title', $reasonData['reason'])->first();                //Get the existing reason
             }
 
-
         }else{  /*======== END OF THE ROSTER =============*/
 
             /*==================== VALIDATE AND CREATE THE USER MANUALLY ==================== */
@@ -101,8 +106,21 @@ class UsersController extends Controller
             ]);
 
             $user->createUser($request);            //Create the new user.
+            /*
+             *TODO
+             *  [ ] Check if the user hasn't chosen a reason
+             *      1. The user is other.
+             *          [ ] The user uses just the other reason
+             *          [ ] or the admin can't add users without the reason.
+             *      2. The user has a reason.
+             *         [ ] Select the reason from the database
+             * */
 
-            $reason = Reason::where('title', $request->reasons)->first();            //Get the reason if exists.
+            if(strcmp($request->title, DEFAULT_REASON) < 0){                        //Check if the reason is set to something other then the default.
+
+                $reason = Reason::where('title', $request->reasons)->first();            //Get the reason if exists.
+
+            }
         }
 
         /*********************************************
@@ -110,7 +128,9 @@ class UsersController extends Controller
          **********************************************/
 
         if($request->admin){        //Check if the user is an admin
-            $user->admin = $request->admin;
+
+            $user->admin = $request->admin;            //Set the admin status to true
+
         }
 
         $user->token = str_random(25);        //Generate a random token for later verification of the user
@@ -119,20 +139,25 @@ class UsersController extends Controller
 
 
         /*============RELATION CREATION============*/
-        if(!$user->isAdmin()){
-            
+
+        if(!$user->isAdmin()){        //Check if the user is not an admin so it can have reasons.
+
             if($reason->isUnique($reason->title)){            //check if the reason doesn't exists
+
                 $reason->save();
+
             }
 
             $reason_to_book_default->createRelation($user, Reason::where('title', 'other')->first());        //Add the default other to the user
+
             $user->reasons()->save($reason_to_book_default);            //Save the relation between the user and the reason
 
             //Check if the reason already exists
             if($reason_to_book->isUnique($user->id, $reason->where('title', $reason->title)->pluck('id')->first())){
 
-                $reason_to_book->createRelation($user, $reason->where('title', $reason->title)->first());
-                $user->reasons()->save($reason_to_book);
+                $reason_to_book->createRelation($user, $reason->where('title', $reason->title)->first());                //Create the instance of the reason to book
+
+                $user->reasons()->save($reason_to_book);                //Create the relation between the user and the reason.
 
             }
 
@@ -144,8 +169,7 @@ class UsersController extends Controller
 
         Session::flash('success', 'User successfully created');        //Save the message in the session
 
-        return redirect(route('users.show', $user->id));        //Redirect the admin to the show user.
-
+        return redirect(route('users.show', $user->id));        //Redirect the admin to the show user
     }
 
     /**
