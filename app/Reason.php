@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reason extends Model
 {
 
+    protected $fillable = ['title', 'description', 'expires_at'];
     /**
      * Creates the expiry date for the reason
      *

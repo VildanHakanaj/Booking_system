@@ -28,6 +28,7 @@ class ReasonToBook extends Model
     public function createRelation($user, $reason){
         $this->user_id = $user->id;
         $this->reason_id = $reason->id;
+
     }
 
 

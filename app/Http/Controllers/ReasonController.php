@@ -12,9 +12,8 @@ class ReasonController extends Controller
 
     /*
      *TODO
-     * [ ] Polish the create page
-     * [ ] Finish the store method
-     * [ ] Start the update function
+     *  [ ] Find a way to update the reason
+     *
      * */
 
     /**
@@ -47,12 +46,15 @@ class ReasonController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|min:2|max:255',
-            'title' => 'min:2|max:255',
-            'expires_at' => 'date',
+            'title'         => 'unique:reasons|required|min:2|max:255',
+            'description'   => 'min:2|max:255',
+            'expires_at'    => 'required|date',
         ]);
-        //Store the new reason
-        //Validate the reason
+
+        $reason = Reason::create($request->all());
+
+        return redirect(route('reason.show', $reason));
+
     }
 
     /**
@@ -74,7 +76,7 @@ class ReasonController extends Controller
      */
     public function edit(Reason $reason)
     {
-        //
+        return view('admin.reasons.edit')->with('reason', $reason);
     }
 
     /**
@@ -86,7 +88,17 @@ class ReasonController extends Controller
      */
     public function update(Request $request, Reason $reason)
     {
-        //
+        //validate the request
+        $request->validate([
+            'title' => 'required|unique:reasons|min:2|max:255',
+            'description' => 'min:2|max:255|text',
+            'expires_at' => 'date',
+        ]);
+
+        $reason->create($request->all());
+
+        return redirect()->back();
+
     }
 
     /**

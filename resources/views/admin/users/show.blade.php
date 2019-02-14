@@ -17,15 +17,17 @@
 
                         @if(!empty($reasons))
                             @foreach($reasons as $reason)
-                                <li>Title: {{$reason['title']}} -- Status @if($reason['active'] == 1) Active @else Not Active @endif </li>
+                                <li>Title: {{$reason['title']}} -- Status @if($reason['active'] == 1) Active @else Not Active @endif</li>
                             @endforeach
+                            <a href="#" class="btn btn-success ">Edit reasons</a>
+                        @else
+                            <p>No Reasons associated with this user</p>
                         @endif
                     </ul>
                 </li>
             </div>
             <div class="d-block text-center w-100 my-3">
-                <a href="#" class="btn btn-primary w-25">Edit</a>
-                <a href="#" class="btn btn-danger w-25">Delete</a>
+                <a href="{{route('users.edit', $user->id)}}" class="btn btn-primary btn-lg w-50">Edit</a>
             </div>
         </div>
     </div>

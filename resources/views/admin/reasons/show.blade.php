@@ -14,8 +14,7 @@
                 <li class="list-group-item">Updated At: {{$reason->updated_at}}</li>
             </div>
             <div class="d-block text-center w-100 my-3">
-                <a href="#" class="btn btn-primary w-25">Edit</a>
-                <a href="#" class="btn btn-danger w-25">Delete</a>
+                <a href="{{route('reason.edit', $reason->id)}}" class="btn btn-primary w-25">Edit</a>
             </div>
         </div>
     </div>

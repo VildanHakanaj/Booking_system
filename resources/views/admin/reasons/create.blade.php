@@ -5,7 +5,7 @@
         @include('layouts.messages.alert')
         {!! Form::open(['route' => 'reason.store', 'class' => 'col-md-8 offset-2']) !!}
         {{-- REASON --}}
-        <h3 class="text-muted">Reason</h3>
+
         <div class="form-group">
             {!! Form::label('title', 'Reason Title')!!}
             {!! Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'COIS-3420H-A-W01']) !!}

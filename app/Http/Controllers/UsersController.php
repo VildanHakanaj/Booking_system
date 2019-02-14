@@ -36,14 +36,9 @@ class UsersController extends Controller
      */
     public function create()
     {
-        /*
-         *TODO::
-         * [ ] Get all the reasons
-         * [ ] Send the reasons as a variable
-         * [ ] Add the other
-         * */
-
+        //Get all the reasons
         $reasons = Reason::all();
+
         //Show the form to insert users
         return view('admin.users.create' )->with( 'reasons', $reasons );
     }
@@ -125,19 +120,22 @@ class UsersController extends Controller
 
         /*============RELATION CREATION============*/
         if(!$user->isAdmin()){
-
-            $reason_to_book_default->createRelation($user, Reason::where('title', 'other')->first());        //Add the default other to the user
-            $user->reasons()->save($reason_to_book_default);            //Save the relation between the user and the reason
-
+            
             if($reason->isUnique($reason->title)){            //check if the reason doesn't exists
                 $reason->save();
             }
 
+            $reason_to_book_default->createRelation($user, Reason::where('title', 'other')->first());        //Add the default other to the user
+            $user->reasons()->save($reason_to_book_default);            //Save the relation between the user and the reason
+
             //Check if the reason already exists
             if($reason_to_book->isUnique($user->id, $reason->where('title', $reason->title)->pluck('id')->first())){
+
                 $reason_to_book->createRelation($user, $reason->where('title', $reason->title)->first());
                 $user->reasons()->save($reason_to_book);
+
             }
+
 
         }
         /*==========END OF THE RELATION CREATION==========*/
@@ -158,13 +156,16 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+
         $reasons = array();
         foreach($user->reasons as $reason){
             if($reason->active == 1){
                 $reasons[] = Reason::find($reason->reason_id);
             }
         }
+
         return view('admin.users.show')->with('user', $user)->with('reasons', $reasons);
+
     }
 
     /**
