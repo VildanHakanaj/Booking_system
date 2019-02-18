@@ -4,14 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Reason;
 use Illuminate\Http\Request;
+use Session;
 
 class ReasonController extends Controller
 {
-    /*
-     *TODO
-     *  [ ] Find a way to update the reason
-     *
-     * */
 
     /**
      * Display a listing of the resource.
@@ -21,6 +17,7 @@ class ReasonController extends Controller
     public function index()
     {
         $reasons = Reason::orderBy('created_at', 'desc')->paginate(10);
+
         return view('admin.reasons.index')->with('reasons', $reasons);
     }
 
@@ -51,6 +48,7 @@ class ReasonController extends Controller
         ]);
 
         $reason = Reason::create($request->all());
+        Session::flash('success', "The reason was sucesfully created");
         return redirect(route('reason.show', $reason));
 
     }
@@ -86,14 +84,15 @@ class ReasonController extends Controller
      */
     public function update(Request $request, Reason $reason)
     {
+        dd("here");
         //validate the request
         $request->validate([
             'title' => 'required|unique:reasons|min:2|max:255',
             'description' => 'min:2|max:255|text',
             'expires_at' => 'date',
         ]);
-        $reason->create($request->all());
 
+        $reason->create($request->all());
         return redirect()->back();
     }
 

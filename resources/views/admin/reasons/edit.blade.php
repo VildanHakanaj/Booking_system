@@ -1,14 +1,13 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <h1 class="text-muted my-5 col-md-8 offset-2">Add a new reason</h1>
+        <h1 class="text-muted my-5 col-md-8 offset-2">Edit Reason</h1>
         @include('layouts.messages.alert')
-        {!! Form::open(['route' => 'reason.store', 'class' => 'col-md-8 offset-2']) !!}
+        {!! Form::open(['route' => ['reason.update', $reason->id], 'class' => 'col-md-8 offset-2']) !!}
 
         <div class="form-group">
             {!! Form::label('title', 'Reason Title')!!}
             {!! Form::text('title', $reason->title, ['class' => 'form-control', 'placeholder' => 'COIS-3420H-A-W01']) !!}
-            {{--<small class="helper">Please enter the correct format</small>--}}
         </div>
 
         <div class="form-group">
@@ -22,7 +21,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::submit('Add Reason', ['class' => 'btn btn-primary btn-lg d-block w-100']) !!}
+            {!! Form::submit('Update Reason', ['class' => 'btn btn-primary btn-lg d-block w-100']) !!}
         </div>
 
         {!! Form::close() !!}

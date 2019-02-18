@@ -9,22 +9,12 @@ class ReasonToBook extends Model
 
     protected $table = 'reason_to_book';
 
-    /*
+    /**
+     * Creates the relation between user and reason
      *
-     *TODO
-     * [ ] Add the user relation to it
-     * [ ] Create the relation
-     * [ ] Show the relationr
-     * [ ] index the relation
-     * [ ] Create the relation of the user with the reason
-     * Look Up
-     * [ ] The relations of the user between the reason
-     *  Question
-     *      [ ] Should the admin change the relation
-     *      [ ] Should the admin delete a relation
-     *      [ ] Should the admin stop a relation
+     * @param $user
+     * @param $reason
      * */
-
     public function createRelation($user, $reason){
         $this->user_id = $user->id;
         $this->reason_id = $reason->id;
@@ -37,6 +27,8 @@ class ReasonToBook extends Model
      *
      * @param $user_id
      * $param $reason_id
+     *
+     * @return
      * */
     public function isUnique($user_id, $reason_id){
         return (!$this->where('user_id', $user_id)->where('reason_id', $reason_id)->first())? true : false;

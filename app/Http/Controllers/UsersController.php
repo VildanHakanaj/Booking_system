@@ -113,15 +113,6 @@ class UsersController extends Controller
             ]);
 
             $user->createUser($request);            //Create the new user.
-            /*
-             *TODO
-             *  [ ] Check if the user hasn't chosen a reason
-             *      1. The user is other.
-             *          [ ] The user uses just the other reason
-             *          [ ] or the admin can't add users without the reason.
-             *      2. The user has a reason.
-             *         [ ] Select the reason from the database
-             * */
 
             if(strcmp($request->title, DEFAULT_REASON) < 0){                        //Check if the reason is set to something other then the default.
 
@@ -219,11 +210,6 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        /*
-         * TODO
-         *  Refactor the code for the user Builder
-         *
-         * */
 
         //Validate the request
         $request->validate([
