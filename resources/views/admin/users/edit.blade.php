@@ -3,7 +3,9 @@
     <div class="container">
         <h1 class="text-muted col-md-8 offset-2">Edit User</h1>
         @include('layouts.messages.alert')
+
         {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'PUT', 'class' => 'col-md-8 offset-2']) !!}
+
         <div class="form-group">
             {!! Form::label('name', 'Name') !!}
             {!! Form::text('name', $user->name, ['class'=> 'form-control']) !!}

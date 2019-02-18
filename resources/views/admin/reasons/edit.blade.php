@@ -3,7 +3,7 @@
     <div class="container">
         <h1 class="text-muted my-5 col-md-8 offset-2">Edit Reason</h1>
         @include('layouts.messages.alert')
-        {!! Form::open(['route' => ['reason.update', $reason->id], 'class' => 'col-md-8 offset-2']) !!}
+        {!! Form::open(['route' => ['reason.update', $reason->id], 'method' => 'PUT', 'class' => 'col-md-8 offset-2']) !!}
 
         <div class="form-group">
             {!! Form::label('title', 'Reason Title')!!}

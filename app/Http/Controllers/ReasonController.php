@@ -84,15 +84,15 @@ class ReasonController extends Controller
      */
     public function update(Request $request, Reason $reason)
     {
-        dd("here");
         //validate the request
         $request->validate([
             'title' => 'required|unique:reasons|min:2|max:255',
-            'description' => 'min:2|max:255|text',
+            'description' => 'min:2|max:255',
             'expires_at' => 'date',
         ]);
 
-        $reason->create($request->all());
+        $reason->update();
+
         return redirect()->back();
     }
 
