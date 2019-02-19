@@ -8,7 +8,10 @@ class ReasonToBook extends Model
 {
 
     protected $table = 'reason_to_book';
-
+    protected $fillable = [
+        'user_id',
+        'reason_id'
+    ];
     /**
      * Creates the relation between user and reason
      *

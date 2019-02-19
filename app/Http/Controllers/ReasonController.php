@@ -9,6 +9,12 @@ use Session;
 class ReasonController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +23,6 @@ class ReasonController extends Controller
     public function index()
     {
         $reasons = Reason::orderBy('created_at', 'desc')->paginate(10);
-
         return view('admin.reasons.index')->with('reasons', $reasons);
     }
 
@@ -86,14 +91,19 @@ class ReasonController extends Controller
     {
         //validate the request
         $request->validate([
-            'title' => 'required|unique:reasons|min:2|max:255',
+            'title' => 'required|min:2|max:255',
             'description' => 'min:2|max:255',
             'expires_at' => 'date',
         ]);
 
-        $reason->update();
+        $reason->title = $request->title;
+        $reason->description = $request->description;
+        $reason->expires_at = $request->expires_at;
 
-        return redirect()->back();
+        $reason->save();
+
+        Session::flash('success', "Reason was successfully updated");
+        return redirect(route('reason.show', $reason->id));
     }
 
     /**

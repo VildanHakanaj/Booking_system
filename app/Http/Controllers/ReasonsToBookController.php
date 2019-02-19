@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Reason;
+use App\ReasonToBook;
 
 class ReasonsToBookController extends Controller
 {
@@ -21,9 +24,11 @@ class ReasonsToBookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $user = User::where('id', $id)->first();
+        $reasons = Reason::all();
+        return view('admin.reasonToBook.create')->with('user', $user)->with('reasons', $reasons);
     }
 
     /**
@@ -34,7 +39,20 @@ class ReasonsToBookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $reasonToBook = new ReasonToBook();
+        $request->validate(
+            [
+                'user_id' => 'required',
+                'reason_id' => 'required'
+            ]
+        );
+
+
+        if(!ReasonToBook::where('id', 12)->where('reason_id', $request->reason)->first()){
+            $reasonToBook->create($request->all());
+        }
+
+        return redirect()->route('users.show');
     }
 
     /**

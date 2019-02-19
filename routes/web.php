@@ -27,6 +27,9 @@ Route::prefix('admin')->group(function(){
     //Reasons pages resources
     Route::resource('reason', 'ReasonController');
 
+    Route::resource('reasonToBook', 'ReasonsToBookController');
+    //To add the reason
+    Route::get('reasonToBook/create/{id}', 'ReasonsToBookController@create')->name('reasonToBook.create');
 });
 
 //Authentication routes

@@ -22,7 +22,7 @@
                         @else
                             <p>No Reasons associated with this user</p>
                         @endif
-                            <a href="#" class="btn btn-success ">Add reasons</a>
+                            <a href="{{route('reasonToBook.create', $user->id)}}" class="btn btn-success ">Add reasons</a>
                     </ul>
                 </li>
             </div>
