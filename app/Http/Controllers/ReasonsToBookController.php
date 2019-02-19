@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Reason;
 use App\ReasonToBook;
+use mysql_xdevapi\Session;
 
 class ReasonsToBookController extends Controller
 {
@@ -40,19 +41,22 @@ class ReasonsToBookController extends Controller
     public function store(Request $request)
     {
         $reasonToBook = new ReasonToBook();
-        $request->validate(
+
+        $request->validate(        //Validate the reason to book
             [
                 'user_id' => 'required',
                 'reason_id' => 'required'
             ]
         );
 
+        //Check if the reason doesnt exist first
 
-        if(!ReasonToBook::where('id', 12)->where('reason_id', $request->reason)->first()){
-            $reasonToBook->create($request->all());
+        if(!ReasonToBook::where('user_id', $request->user_id)->where('reason_id', $request->reason_id)->first()){
+            $reasonToBook->create($request->all());            //Insert the reason
+            Session::flash('success', 'Reason To book successfully added');
         }
 
-        return redirect()->route('users.show');
+        return redirect()->route('users.show', $request->user_id);        //Redirect back to the user show
     }
 
     /**

@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('content')
 
-    <div class="row col-md-6 offset-3">
 
+    <div class="row col-md-6 offset-3">
+        @include('layouts.messages.success')
+        <h1>Add a reason to book for {{$user->name}}</h1>
         {!! Form::open(['route' => 'reasonToBook.store', 'method' => 'POST', 'class' => 'w-100']) !!}
 
         <input type="hidden" name="user_id" value="{{$user->id}}">
