@@ -46,4 +46,14 @@ class ReasonToBook extends Model
     public function addDefault($user, $reason){
         $this->createRelation($user, $reason);
     }
+
+    /*
+     *TODO
+     * [ ] Fix the relation between the reasons to book and the users.
+     * */
+    public function user(){
+
+        $this->belongsTo('App\User');
+
+    }
 }

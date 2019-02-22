@@ -17,13 +17,18 @@ class ReasonsToBookController extends Controller
      */
     public function index()
     {
-        //
+        //Get all the reasons to book relations
+        $reasonsToBook = ReasonToBook::all();
+        foreach($reasonsToBook as $reason){
+            dd($reason->user(), $reason);
+        }
+        return view('admin.reasonToBook.index')->with('reasonsToBook', $reasonsToBook);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     *  @return \Illuminate\Http\Response
      */
     public function create($id)
     {

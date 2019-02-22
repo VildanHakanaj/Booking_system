@@ -243,7 +243,7 @@ class UsersController extends Controller
      * Remove the specified resource from storage.
      *
      *
-     * TODO
+     *
      * Remove the destroy route from the user
      * or redirect the user to somee error page
      *

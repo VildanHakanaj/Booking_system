@@ -11,7 +11,24 @@
 |
 */
 
-
+/*
+ *TODO
+ * [ ] Create the products table
+ * [ ] Create the factory for the products table
+ * [ ] Run the migrations and seeds for the database
+ * [ ] Create the layout of the products
+ * [ ] Create the CRUD pages for the products
+ * [ ] Create the search engine for available products
+ * QUESTION
+ * [ ] Should i have two table one for individual products
+ *      and one for kits (two or more products bundled together)
+ * [ ] Should i check if the user has any reasons to book.
+ * [ ] Since the user will always have the other category will they ever have no permission to book.
+ * **NOTE**
+ * FOR THIS TASK TAKE A LOOK AT THE NOTEBOOK FROM THE FIRST MEETING
+ * ALSO LOOK AT THE CALENDAR THEY ALREADY USE TO SEE WHAT KIND OF CAMERA THEY HAVE
+ *
+ * */
 //The main index path
 Route::get('/', 'PagesController@index');
 
