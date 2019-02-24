@@ -21,7 +21,6 @@ class ReasonToBook extends Model
     public function createRelation($user, $reason){
         $this->user_id = $user->id;
         $this->reason_id = $reason->id;
-
     }
 
 
@@ -34,7 +33,9 @@ class ReasonToBook extends Model
      * @return
      * */
     public function isUnique($user_id, $reason_id){
-        return (!$this->where('user_id', $user_id)->where('reason_id', $reason_id)->first())? true : false;
+
+        return ($this->where('user_id', $user_id)->where('reason_id', $reason_id)->first()) ? false : true;
+
     }
 
     /**

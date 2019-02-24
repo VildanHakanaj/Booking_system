@@ -102,6 +102,11 @@ class User extends Authenticatable
         $this->stdn     = $data['stdn'];
         $this->name     = $data['name'];
         $this->email    = $data['email'];
+    }
+
+    public function isUnique($email){
+
+        return ($this->where('email', $email)->first() ) ? false : true;
 
     }
 

@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Reason;
 use App\ReasonToBook;
-use mysql_xdevapi\Session;
-
+use Session;
 class ReasonsToBookController extends Controller
 {
     /**
