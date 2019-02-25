@@ -137,13 +137,11 @@ class UsersController extends Controller
 
         //Check if the user does not exist
         if($user->isUnique($user->email)){
-
             $user->save();        //Save the user
+            $user->sendVerificationEmail();        //Send the user an email
         }else{
-
             //get the existing user.
             $user = User::where('email', $user->email)->first();
-
         }
         /*===========================END OF CREATING THE USER====================*/
 
@@ -152,31 +150,23 @@ class UsersController extends Controller
         if(!$user->isAdmin()){        //Check if the user is not an admin so it can have reasons.
 
             if($reason->isUnique($reason->title)){            //check if the reason doesn't exists
-
                 $reason->save();
 
             }
 
             //Check if the relation doesn't exist yet
             if($reason_to_book_default->isUnique($user->id, Reason::where('title', 'Other')->pluck('id'))){
-
                 $reason_to_book_default->createRelation($user, Reason::where('title', 'Other')->first());        //Add the default other to the user
                 $user->reasons()->save($reason_to_book_default);            //Save the relation between the user and the reason
-
             }
+
             //Check if the relation already exists
             if($reason_to_book->isUnique($user->id, $reason->where('title', $reason->title)->pluck('id')->first())){
-
                 $reason_to_book->createRelation($user, $reason->where('title', $reason->title)->first());                //Create the instance of the reason to book
                 $user->reasons()->save($reason_to_book);                //Create the relation between the user and the reason.
-
             }
-
-
         }
         /*==========END OF THE RELATION CREATION==========*/
-
-        $user->sendVerificationEmail();        //Send the user an email
 
         Session::flash('success', 'User successfully created');        //Save the message in the session
 
@@ -188,7 +178,7 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
