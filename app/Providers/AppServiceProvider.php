@@ -18,7 +18,9 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('layouts.partials.dashNav', function($view){
 
-            $view->with('users', \App\User::all())->with('reasons', \App\Reason::all());
+            $view->with('users', \App\User::all())
+                ->with('reasons', \App\Reason::all())
+                ->with('products', \App\Product::all());
 
         });
 

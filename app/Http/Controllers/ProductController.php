@@ -14,8 +14,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::orderBy('created_at', 'desc')->paginate(10);
+        return view('admin.products.index')->with('products', $products);
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -24,7 +27,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.products.create');
     }
 
     /**
@@ -35,7 +38,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = new Product();
+        //validate the request
+        $request->validate([
+            'title'         => 'required|unique:products|min:2|max:255',
+            'brand'         => 'required|min:2|max:255',
+            'desc'          => 'required|min:5',
+            'serial_number' => 'required|min:2|max:255',
+            'bookable'      => 'required'
+        ]);
+
+        $product->title = $request->title;
+        $product->brand = $request->brand;
+        $product->desc = $request->desc;
+        $product->serial_number = $request->serial_number ;
+        $product->bookable = $request->bookable;
+
+
     }
 
     /**

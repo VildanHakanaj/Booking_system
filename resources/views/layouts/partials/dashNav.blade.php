@@ -5,9 +5,9 @@
             Users
             <span class="badge badge-primary ">{{$users->count()}}</span>
         </a>
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{route('products.index')}}">
             Products
-            <span class="badge badge-primary ">50</span>
+            <span class="badge badge-primary ">{{$products}}</span>
         </a>
         <a class="nav-link" href="{{route('reason.index')}}">
             Reasons

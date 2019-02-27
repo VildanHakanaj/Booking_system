@@ -120,9 +120,6 @@ class UsersController extends Controller
             }
         }
 
-        /*Check if user or reason are unique or not*/
-
-
 
         /**********************************************
          * ADDING THE USER AND REASON TO THE DATABASE *
