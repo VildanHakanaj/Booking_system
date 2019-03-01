@@ -12,6 +12,17 @@ define('DEFAULT_REASON', 'other');
 class UsersController extends Controller
 {
 
+    /**
+     *
+     *FIXME::
+     * [ ] Fix the users roster file
+     *      [ ] Needs to allow the roster to add more than one user
+     * [ ] Add a btn to the user to make them inactive or active
+     *      [ ] Remove all the relations between users.
+     *
+     *
+     *
+     * */
     public function __construct()
     {
         $this->middleware('auth');

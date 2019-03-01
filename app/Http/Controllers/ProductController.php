@@ -60,11 +60,14 @@ class ProductController extends Controller
         $product->desc = $request->desc;
         $product->serial_number = $request->serial_number;
 
+        //Check if the has set the product to be bookable or not
         if ($request->bookable) {
 
             $product->bookable = 1;
+
         }
 
+        //Add the product
         $product->save();
 
         Session::flash('success', 'Product was inserted successfully');

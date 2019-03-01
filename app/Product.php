@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    //
+    public function kit(){
+        return $this->belongsTo('\App\Kit');
+    }
 }
