@@ -7,7 +7,7 @@
         </a>
         <a class="nav-link" href="{{route('products.index')}}">
             Products
-            <span class="badge badge-primary ">{{$products}}</span>
+            <span class="badge badge-primary ">{{$products->count()}}</span>
         </a>
         <a class="nav-link" href="{{route('reason.index')}}">
             Reasons

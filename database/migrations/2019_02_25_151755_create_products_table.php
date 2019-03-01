@@ -19,10 +19,10 @@ class CreateProductsTable extends Migration
             $table->text('brand');
             $table->longText('desc');
             $table->text('serial_number');
-            $table->tinyInteger('status');
-            $table->tinyInteger('bookable');
-            $table->longText('notes');
-            $table->date('maintenance');
+            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('bookable')->default(0);
+            $table->longText('notes')->nullable();
+            $table->date('maintenance')->nullable();
             $table->timestamps();
         });
     }

@@ -28,18 +28,10 @@
                     {!! Form::label('serial_number', 'Serial Number') !!}
                     {!! Form::text('serial_number', null, ['class' => 'form-control', 'placeholder' => '12546F454A64GG']) !!}
                 </div>
-
-                <!-- Material unchecked -->
-                <div class="form-check">
-                    <input type="radio" class="form-check-input" id="materialUnchecked" name="materialExampleRadios">
-                    <label class="form-check-label" for="materialUnchecked">Material unchecked</label>
+                <div class="form-group">
+                    {!! Form::checkbox('bookable', null) !!}
+                    {!! Form::label('bookable', 'Bookable')!!}
                 </div>
-                <!-- Material checked -->
-                <div class="form-check">
-                    <input type="radio" class="form-check-input" id="materialChecked" name="materialExampleRadios" checked>
-                    <label class="form-check-label" for="materialChecked">Material checked</label>
-                </div>
-
             </div>
         </div>
 
