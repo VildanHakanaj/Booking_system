@@ -191,7 +191,6 @@ class UsersController extends Controller
 
         return redirect(route('users.show', $user->id));        //Redirect the admin to the show user
         /*==========END OF THE USER NOTIFICATION==========*/
-
     }
 
     /**
@@ -205,7 +204,7 @@ class UsersController extends Controller
         //Use a join to select the relation and the reason.
         $reasons = DB::table('reason_to_book')
             ->select('reason_to_book.active', 'reasons.title', 'reasons.id')
-            ->join('reasons', 'reason_to_book.id',  '=' , 'reasons.id')
+            ->join('reasons', 'reason_to_book.reason_id',  '=' , 'reasons.id')
             ->where('user_id', $user->id)->get();
 
         return view('admin.users.show')->with('user', $user)->with('reasons', $reasons);

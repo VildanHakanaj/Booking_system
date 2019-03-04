@@ -15,16 +15,21 @@
                     <ul>
                         @if(!empty($reasons))
                             @foreach($reasons as $reason)
-                                <li id="deactivate" class="w-50 my-2">Title: {{$reason->title}}
-                                    -- Status @if($reason->active == 1) Active @else Not Active @endif
+                                <li class="w-25 my-2">Title: {{ $reason->title }}
+                                    @if($reason->active == 1)
+                                        <a href="{{route('reasonToBook.deactivate', [$user->id, $reason->id])}}"
+                                           class="btn btn-sm btn-danger float-right">Disable</a>
+                                    @else
+                                        <a href="{{route('reasonToBook.deactivate', [$user->id, $reason->id])}}"
+                                           class="btn btn-sm btn-success float-right">Activate</a>
+                                    @endif
+                                </li>
 
-                                    <a href="{{route('reasonToBook.deactivate', [$user->id, $reason->id])}}"
-                                       class="btn btn-sm btn-danger float-right">Disable</a></li>
                             @endforeach
                         @else
                             <p>No Reasons associated with this user</p>
                         @endif
-                            <a href="{{ route('reasonToBook.create', $user->id) }}" class="btn btn-success ">Add reasons</a>
+                        <a href="{{ route('reasonToBook.create', $user->id) }}" class="btn btn-success ">Add reasons</a>
                     </ul>
                 </li>
             </div>

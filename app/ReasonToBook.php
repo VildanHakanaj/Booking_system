@@ -57,4 +57,9 @@ class ReasonToBook extends Model
         $this->belongsTo('App\User');
 
     }
+
+    public function toggleActive(){
+        $this->active == 1 ? $this->active = 0 : $this->active = 1;
+        $this->save();
+    }
 }
