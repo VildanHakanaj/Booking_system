@@ -91,27 +91,36 @@ class UsersController extends Controller
 
         /*==================== CHECK IF WE HAVE ROSTER ====================*/
         if (isset($request->roster)) {
-            $data = $user->parseFile();       //Get the array with data
-            $userData = $data[0];               //Get the data for the user
-            $reasonData = $data[1];               //Get the data for the reason
+            //Get the array with data
+            $data = $user->parseFile();
+            //Get the data for the user
+            $userData = $data[0];
+            //Get the data for the reason
+            $reasonData = $data[1];
 
-            $user->createUser($userData);               //Create the user from the roster.
-            $request->merge([                           //Override the request with the data from the file
+            //Create the user from the roster.
+            $user->createUser($userData);
+            //Override the request with the data from the file
+            $request->merge([
                 'name' => $user->name,
                 'email' => $user->email,
                 'stdn' => $user->stdn,
             ]);
 
-            $request->validate([                        //Validate the file data for user
+            //Validate the file data for user
+            $request->validate([
                 'name' => 'required|min:2|max:255',
                 'email' => 'required|email',
                 'stdn' => 'required|min:7|max:255',
             ]);
 
-            if ($reason->isUnique($reasonData['reason'])) {               //Check if the reason already exists
-                $reason->createReason($reasonData);                     //Create the reason
+            //Check if the reason already exists
+            if ($reason->isUnique($reasonData['reason'])) {
+                //Create the reason
+                $reason->createReason($reasonData);
             } else {
-                $reason = Reason::where('title', $reasonData['reason'])->first();                //Get the existing reason
+                //Get the existing reason
+                $reason = Reason::where('title', $reasonData['reason'])->first();
             }
 
         } else {  /*======== END OF THE ROSTER =============*/
@@ -260,18 +269,20 @@ class UsersController extends Controller
          *FIXME::
          *  [ ] If the user tries to reactivate the user
          *      it might reactivate the old values
-         *
-         *
          * */
 
-
-        $reasons = ReasonToBook::where('user_id', $id)->update(['active' => 0]);
-
-//        $reasons = ReasonToBook::where('user_id', $id)->pluck('active');
+        $reasons = array();
+        ReasonToBook::where('user_id', $id)->update(['active' => 0]);
+        $reasons_to_book = ReasonToBook::where('user_id', $id);
+        foreach($reasons_to_book as $reason_to_book){
+            if($reason_to_book->active == 1){
+                $reasons[] = Reason::where('user_id', $id);
+            }
+        }
 
         Session::flash('success', 'User successfully deactivated');
 
-        return redirect()->back();
+        return redirect()->back()->with($reasons);
     }
 
     /**
