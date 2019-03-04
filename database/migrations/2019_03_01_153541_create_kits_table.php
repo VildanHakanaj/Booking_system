@@ -13,9 +13,13 @@ class CreateKitsTable extends Migration
      */
     public function up()
     {
+
         Schema::create('kits', function (Blueprint $table) {
+
             $table->increments('id');
+            $table->integer('product_id');
             $table->timestamps();
+
         });
     }
 

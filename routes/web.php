@@ -40,6 +40,7 @@ Route::prefix('admin')->group(function(){
 
     //Users pages resources
     Route::resource('users', 'UsersController');
+    Route::get('users/deactivate/{id}', 'UsersController@deactivate')->name('users.deactivate');
 
     //Reasons pages resources
     Route::resource('reason', 'ReasonController');
@@ -48,7 +49,10 @@ Route::prefix('admin')->group(function(){
     //To add the reason
     Route::get('reasonToBook/create/{id}', 'ReasonsToBookController@create')->name('reasonToBook.create');
 
+
+
     Route::resource('products', 'ProductController');
+
 });
 
 //Authentication routes

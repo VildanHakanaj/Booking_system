@@ -9,6 +9,22 @@ use Session;
 class ProductController extends Controller
 {
 
+    /**
+     *TODO
+     * [ ] Ask the user if the item will be bookable to itself or a kit
+     * [ ] Use js to add the disabled choice when the user checks the box
+     * [ ] Then set the product to a kit
+     * [ ] Only show existing kits if the user will select to choose with other kits
+     * [ ] Dont force the user to place the product in a kit right away
+     * [ ] If the product is in a kit create a function to differentiate if a product is in a kit already
+     * [ ] If the product is not in a kit dont make them to be bookable
+     * [ ] Allow the admin to change the status of the kit
+     * [ ] Allow the admin to change the kit for a product
+     *      [ ] You can allow the admin to move the product into another kit
+     *          [ ] Delete the product from the current kit and just add it in the second kit.
+     *
+     * */
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -62,9 +78,7 @@ class ProductController extends Controller
 
         //Check if the has set the product to be bookable or not
         if ($request->bookable) {
-
             $product->bookable = 1;
-
         }
 
         //Add the product

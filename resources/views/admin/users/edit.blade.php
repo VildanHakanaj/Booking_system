@@ -14,27 +14,37 @@
             {!! Form::label('email', 'email') !!}
             {!! Form::text('email', $user->email, ['class'=> 'form-control']) !!}
         </div>
-        <div class="form-group">
-            {!! Form::label('stdn', 'Student Number') !!}
-            {!! Form::text('stdn', $user->stdn, ['class'=> 'form-control']) !!}
-        </div>
-        <div class="form-group">
-            {!! Form::label('home_address', 'Home Address') !!}
-            {!! Form::text('home_address', $user->home_address, ['class'=> 'form-control']) !!}
-        </div>
-        <div class="form-group">
-            {!! Form::label('phone_number', 'Phone Number') !!}
-            {!! Form::text('phone_number', $user->phone_number, ['class'=> 'form-control']) !!}
-        </div>
-        <div class="form-group">
-            {!! Form::label('password', 'Password') !!}
-            {!! Form::password('password', ['class'=> 'form-control']) !!}
-            <small class="text-muted form-text">Leave password empty if you dont want to change it.</small>
-        </div>
-        <div class="form-group">
-            {!! Form::label('password_confirmation', 'Confirm Password') !!}
-            {!! Form::password('password_confirmation', ['class'=> 'form-control']) !!}
-        </div>
+        @if(!empty($user->stdn))
+            <div class="form-group">
+                {!! Form::label('stdn', 'Student Number') !!}
+                {!! Form::text('stdn', $user->stdn, ['class'=> 'form-control']) !!}
+            </div>
+        @endif
+        @if(!empty($user->home_address))
+            <div class="form-group">
+                {!! Form::label('home_address', 'Home Address') !!}
+                {!! Form::text('home_address', $user->home_address, ['class'=> 'form-control']) !!}
+            </div>
+        @endif
+
+        @if(!empty($user->phone_number))
+            <div class="form-group">
+                {!! Form::label('phone_number', 'Phone Number') !!}
+                {!! Form::text('phone_number', $user->phone_number, ['class'=> 'form-control']) !!}
+            </div>
+        @endif
+
+        @if(!empty($user->password))
+            <div class="form-group">
+                {!! Form::label('password', 'Password') !!}
+                {!! Form::password('password', ['class'=> 'form-control']) !!}
+                <small class="text-muted form-text">Leave password empty if you dont want to change it.</small>
+            </div>
+            <div class="form-group">
+                {!! Form::label('password_confirmation', 'Confirm Password') !!}
+                {!! Form::password('password_confirmation', ['class'=> 'form-control']) !!}
+            </div>
+        @endif
         <div class="form-group">
             {!! Form::label('admin', 'Admin') !!}
             {!! Form::checkbox('admin', 'checked') !!}

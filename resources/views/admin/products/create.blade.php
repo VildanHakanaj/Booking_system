@@ -28,10 +28,27 @@
                     {!! Form::label('serial_number', 'Serial Number') !!}
                     {!! Form::text('serial_number', null, ['class' => 'form-control', 'placeholder' => '12546F454A64GG']) !!}
                 </div>
+
                 <div class="form-group">
-                    {!! Form::checkbox('bookable', null) !!}
-                    {!! Form::label('bookable', 'Bookable')!!}
+                    <input type="checkbox" name="bookable" id="bookable">
+                    <label for="bookable">
+                        Bookable
+                    </label>
                 </div>
+                <div class="form-group">
+                    <select name="kit_name" id="kit_name" disabled>
+                        <option value="1">Single</option>
+                        <option value="2">kit 1</option>
+                        <option value="3">Kit 2</option>
+                        <option value="4">Kit 3</option>
+                    </select>
+                </div>
+
+
+                {{--<div class="form-group">--}}
+                    {{--{!! Form::checkbox('bookable', null) !!}--}}
+                    {{--{!! Form::label('bookable', 'Bookable')!!}--}}
+                {{--</div>--}}
             </div>
         </div>
 
