@@ -7,6 +7,7 @@ use App\User;
 use App\ReasonToBook;
 use Illuminate\Http\Request;
 use Session;
+use Illuminate\Support\Facades\DB;
 
 define('DEFAULT_REASON', 'other');
 
@@ -201,15 +202,13 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+        //Use a join to select the relation and the reason.
+        $reasons = DB::table('reason_to_book')
+            ->select('reason_to_book.active', 'reasons.title', 'reasons.id')
+            ->join('reasons', 'reason_to_book.id',  '=' , 'reasons.id')
+            ->where('user_id', $user->id)->get();
 
-        $reasons = array();
-        foreach ($user->reasons as $reason) {
-            if ($reason->active == 1) {
-                $reasons[] = Reason::find($reason->reason_id);
-            }
-        }
         return view('admin.users.show')->with('user', $user)->with('reasons', $reasons);
-
     }
 
     /**
@@ -256,7 +255,6 @@ class UsersController extends Controller
         //Save the user
         $user->save();
 
-
         Session::flash('success', 'Successfully updated the user');
         return redirect(route('users.show', $user->id));
     }
@@ -264,25 +262,9 @@ class UsersController extends Controller
 
     public function deactivate($id)
     {
-
-        /**
-         *FIXME::
-         *  [ ] If the user tries to reactivate the user
-         *      it might reactivate the old values
-         * */
-
-        $reasons = array();
         ReasonToBook::where('user_id', $id)->update(['active' => 0]);
-        $reasons_to_book = ReasonToBook::where('user_id', $id);
-        foreach($reasons_to_book as $reason_to_book){
-            if($reason_to_book->active == 1){
-                $reasons[] = Reason::where('user_id', $id);
-            }
-        }
-
         Session::flash('success', 'User successfully deactivated');
-
-        return redirect()->back()->with($reasons);
+        return redirect();
     }
 
     /**
