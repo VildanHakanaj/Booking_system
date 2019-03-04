@@ -256,7 +256,21 @@ class UsersController extends Controller
     public function deactivate($id)
     {
 
+        /**
+         *FIXME::
+         *  [ ] If the user tries to reactivate the user
+         *      it might reactivate the old values
+         *
+         *
+         * */
+
+
         $reasons = ReasonToBook::where('user_id', $id)->update(['active' => 0]);
+
+//        $reasons = ReasonToBook::where('user_id', $id)->pluck('active');
+
+        Session::flash('success', 'User successfully deactivated');
+
         return redirect()->back();
     }
 

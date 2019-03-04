@@ -27,7 +27,7 @@
             </div>
             <div class="d-block text-center w-100 my-3">
                 <a href="{{route('users.edit', $user->id)}}" class="btn btn-primary btn-lg w-50">Edit</a>
-                <a href="{{route('users.deactivate', $user->id)}}" class="btn btn-danger btn-lg w-50">Deactivate</a>
+                <a href="{{route('users.deactivate', $user->id)}}" class="btn btn-danger btn-lg w-50">Deactivate/Activate</a>
             </div>
         </div>
     </div>
