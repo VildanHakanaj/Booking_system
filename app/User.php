@@ -114,4 +114,11 @@ class User extends Authenticatable
         return $this->hasMany('App\ReasonToBook');
     }
 
+    public function isActive(){
+
+        return $this->reasons()->where('active', 1)->count() > 0;
+
+    }
+
+
 }
