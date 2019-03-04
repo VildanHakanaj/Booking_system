@@ -16,7 +16,7 @@
                         @if(!empty($reasons))
                             @foreach($reasons as $reason)
                                 <li id="deactivate" class="w-50 my-2">Title: {{$reason['title']}} -- Status @if($reason['active'] == 1) Active @else Not Active @endif
-                                    <a href="#" class="btn btn-sm btn-danger float-right">Disable</a></li>
+                                    <a href="{{route('reasonToBook.deactivate', [$user->id, $reason['id']])}}" class="btn btn-sm btn-danger float-right">Disable</a></li>
                             @endforeach
                         @else
                             <p>No Reasons associated with this user</p>

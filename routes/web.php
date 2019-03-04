@@ -48,6 +48,7 @@ Route::prefix('admin')->group(function(){
     Route::resource('reasonToBook', 'ReasonsToBookController');
     //To add the reason
     Route::get('reasonToBook/create/{id}', 'ReasonsToBookController@create')->name('reasonToBook.create');
+    Route::get('reasonToBook/deactivate/{user}/{reason}', 'ReasonsToBookController@deactivate')->name('reasonToBook.deactivate');
 
 
 

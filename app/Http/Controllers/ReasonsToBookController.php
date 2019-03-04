@@ -107,4 +107,11 @@ class ReasonsToBookController extends Controller
     {
         //
     }
+
+    public function deactivate(User $user, Reason $reason){
+
+        $user->reasons()->where('user_id', $user->id)
+            ->where('reason_id', $reason->id)->update(['active' => 0]);
+        return redirect()->back();
+    }
 }
