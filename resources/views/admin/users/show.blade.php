@@ -13,10 +13,10 @@
                 <li class="list-group-item">Updated At: {{$user->updated_at}}</li>
                 <li class="list-group-item">Reasons:
                     <ul>
-                        @if(!empty($reasons))
-                            @foreach($reasons as $reason)
-                                <li id="deactivate" class="w-50 my-2">Title: {{$reason['title']}} -- Status @if($reason['active'] == 1) Active @else Not Active @endif
-                                    <a href="{{route('reasonToBook.deactivate', [$user->id, $reason['id']])}}" class="btn btn-sm btn-danger float-right">Disable</a></li>
+                        @if(!empty($user->reasons))
+                            @foreach($user->reasons as $reason_to_book)
+                                <li id="deactivate" class="w-50 my-2">Title: {{\App\Reason::where('id', $reason_to_book->reason_id)->pluck('title')[0]}} -- Status @if($reason_to_book->active == 1) Active @else Not Active @endif
+                                    <a href="{{route('reasonToBook.deactivate', [$user->id, \App\Reason::where('id', $reason_to_book->reason_id)->pluck('id')[0]])}}" class="btn btn-sm btn-danger float-right">Disable</a></li>
                             @endforeach
                         @else
                             <p>No Reasons associated with this user</p>
