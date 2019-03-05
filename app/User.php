@@ -34,7 +34,8 @@ class User extends Authenticatable
      *
      * @return boolean
      * */
-    public function isAdmin(){
+    public function isAdmin()
+    {
         return $this->admin == 1 ? true : false;
     }
 
@@ -44,7 +45,8 @@ class User extends Authenticatable
      * @return boolean
      *
      * */
-    public function verified(){
+    public function verified()
+    {
         return $this->token == null;
     }
 
@@ -54,19 +56,21 @@ class User extends Authenticatable
      *
      *
      * */
-    public function sendVerificationEmail(){
+    public function sendVerificationEmail()
+    {
         $this->notify(new VerifyEmail($this));
     }
 
     /**
      *  parses the file and extracts all the data from the file
      *
-     *  @return array
+     * @return array
      *
      *TODO
      * [ ] Figure how to get the file from the computer
      */
-    public function parseFile(){
+    public function parseFile()
+    {
         $handler = fopen('C:\Users\ahaka\OneDrive\Documents\Internship\Milestones\roster.csv', 'r');
 
         //Does the file have header
@@ -76,14 +80,13 @@ class User extends Authenticatable
         $count = 0;
 
         //Parse the csv file.
-        while($csvLine = fgetcsv($handler,  1000, ',')){
-            if($header)
-            {
+        while ($csvLine = fgetcsv($handler, 1000, ',')) {
+            if ($header) {
                 $count++;
-                if($count == 2){
+                if ($count == 2) {
                     $header = false;
                 }
-            }else{
+            } else {
                 $reason = [
                     'reason' => $csvLine[4],
                 ];
@@ -91,32 +94,39 @@ class User extends Authenticatable
                 $userRoster = [
                     'stdn' => $csvLine[0],
                     'name' => $csvLine[1] . ' ' . $csvLine[2],
-                    'email'=> $csvLine[3],
+                    'email' => $csvLine[3],
                 ];
             }
         }
         return [$userRoster, $reason];
     }
 
-    public function createUser($data){
-        $this->stdn     = $data['stdn'];
-        $this->name     = $data['name'];
-        $this->email    = $data['email'];
+    public function createUser($data)
+    {
+        $this->stdn = $data['stdn'];
+        $this->name = $data['name'];
+        $this->email = $data['email'];
     }
 
-    public function isUnique($email){
+    public function isUnique($email)
+    {
 
-        return ($this->where('email', $email)->first() ) ? false : true;
+        return ($this->where('email', $email)->first()) ? false : true;
 
     }
 
-    public function reasons(){
+    public function reasons()
+    {
         return $this->hasMany('App\ReasonToBook');
     }
 
-    public function isActive(){
+    public function isActive()
+    {
 
-        return $this->reasons()->where('active', 1)->count() > 0;
+        if (!$this->isAdmin()) {
+            return $this->reasons()->where('active', 1)->count() > 0;
+        }
+        return true;
 
     }
 
