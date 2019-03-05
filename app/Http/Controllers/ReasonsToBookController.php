@@ -18,10 +18,12 @@ class ReasonsToBookController extends Controller
     public function index()
     {
         //Get all the reasons to book relations
-        $reasonsToBook = ReasonToBook::all();
-        foreach ($reasonsToBook as $reason) {
-            dd($reason->user(), $reason);
-        }
+//        $reasonsToBook = ReasonToBook::all();
+//        foreach($reasonsToBook as $reasons){
+//            dd($reasons->user);
+//        }
+
+
         return view('admin.reasonToBook.index')->with('reasonsToBook', $reasonsToBook);
     }
 
@@ -56,12 +58,8 @@ class ReasonsToBookController extends Controller
 
         //Check if the reason doesnt exist first
         if (!ReasonToBook::where('user_id', $request->user_id)->where('reason_id', $request->reason_id)->first()) {
-            dd("here");
             $reasonToBook->create($request->all());            //Insert the reason
             Session::flash('success', 'Reason To book successfully added');
-        } else {
-
-            dd("Nothing");
         }
 
         return redirect()->route('users.show', $request->user_id);        //Redirect back to the user show

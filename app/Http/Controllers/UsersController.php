@@ -263,7 +263,7 @@ class UsersController extends Controller
     {
         ReasonToBook::where('user_id', $id)->update(['active' => 0]);
         Session::flash('success', 'User successfully deactivated');
-        return redirect();
+        return redirect()->back();
     }
 
     /**

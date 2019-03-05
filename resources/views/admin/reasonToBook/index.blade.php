@@ -20,7 +20,7 @@
                 @foreach($reasonsToBook as $reason)
                     <tr>
                         <th scope="row">#{{$reason->id}}</th>
-                        <td><a href="{{route('reason.show', $reason->id)}}">{{$reason->user()->name}}</a></td>
+                        <td><a href="{{route('reason.show', $reason->id)}}">{{$reason->title}}</a></td>
                         <td>{{$reason->reason_id}}</td>
                         <td><a href="{{route('reason.edit', $reason->id)}}" class="btn btn-outline-primary">Edit</a></td>
                     </tr>
