@@ -43,7 +43,6 @@ class ProductController extends Controller
         return view('admin.products.index')->with('products', $products);
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -62,6 +61,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        /*
+         *TODO:
+         * [ ] Remove the bookable option from the product.
+         * Edge cases
+         * [ ] If the product is not going in a kit
+         *      [ ] The product will just go into inventory
+         * [ ] Allow the kit controller to create the kit
+         *
+         *
+         * */
         $product = new Product();
         //validate the request
         $request->validate([
@@ -71,6 +80,7 @@ class ProductController extends Controller
             'serial_number' => 'required|min:2|max:255',
         ]);
 
+        //Create the product.
         $product->title = $request->title;
         $product->brand = $request->brand;
         $product->desc = $request->desc;
@@ -107,7 +117,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('admin.products.edit', compact('product', $product));
     }
 
     /**
@@ -119,7 +129,32 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        //validate the request
+        $request->validate(
+            [
+                'title'             => 'required|min:2|max:255',
+                'brand'             => 'required|min:2|max:255',
+                'desc'              => 'required|min:2|max:255',
+                'serial_number'     => 'nullable|min:5|max:255',
+                'notes'             => 'nullable|min:2|max:255',
+                'maintenance'       => 'nullable|date|min:2|max:255',
+            ]
+        );
+
+        $product->title         = $request->title;
+        $product->brand         = $request->brand;
+        $product->desc          = $request->desc;
+        $product->serial_number = $request->serial_number;
+        $product->notes         = $request->notes;
+        $product->maintenance   = $request->maintenance;
+
+        //Set the status attribut
+        $product->setStatusAttr($request->status);
+
+        $product->update();
+
+        Session::flash('success', 'Product was successfully updated');
+        return redirect()->route('products.show', $product->id);
     }
 
     /**

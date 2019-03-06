@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\VerifyEmail;
+use mysql_xdevapi\Collection;
 
 class User extends Authenticatable
 {
@@ -101,6 +103,11 @@ class User extends Authenticatable
         return [$userRoster, $reason];
     }
 
+    /**
+     * Add the user data into the user
+     *
+     * @param $data
+     * */
     public function createUser($data)
     {
         $this->stdn = $data['stdn'];
@@ -108,6 +115,11 @@ class User extends Authenticatable
         $this->email = $data['email'];
     }
 
+    /**Check if the use is unique
+     *
+     * @param $email
+     * @return boolean
+     * */
     public function isUnique($email)
     {
 
@@ -115,14 +127,23 @@ class User extends Authenticatable
 
     }
 
+    /**
+     * Get all the reasons associated with the user
+     * @return HasMany
+     *
+     * */
     public function reasons()
     {
         return $this->hasMany('App\ReasonToBook');
     }
 
+    /**
+     * Check if the user is active or not
+     *
+     * @return boolean
+     * */
     public function isActive()
     {
-
         if (!$this->isAdmin()) {
             return $this->reasons()->where('active', 1)->count() > 0;
         }

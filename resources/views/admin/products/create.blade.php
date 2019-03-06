@@ -32,15 +32,15 @@
                 <div class="form-group">
                     <input type="checkbox" name="bookable" id="bookable">
                     <label for="bookable">
-                        Bookable
+                        Choose a kit for this product
                     </label>
                 </div>
                 <div class="form-group">
                     <select name="kit_name" id="kit_name" disabled>
-                        <option value="1">Single</option>
-                        <option value="2">kit 1</option>
-                        <option value="3">Kit 2</option>
-                        <option value="4">Kit 3</option>
+                        <option value="0">Single</option>
+                        <option value="1">kit 1</option>
+                        <option value="2">Kit 2</option>
+                        <option value="3">Kit 3</option>
                     </select>
                 </div>
 
