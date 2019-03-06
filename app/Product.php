@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -38,4 +39,13 @@ class Product extends Model
         }
     }
 
+    public function createProduct(Request $request){
+        $this->title         = $request->title;
+        $this->brand         = $request->brand;
+        $this->desc          = $request->desc;
+        $this->serial_number = $request->serial_number;
+        $this->notes         = $request->notes;
+        $this->maintenance   = $request->maintenance;
+
+    }
 }

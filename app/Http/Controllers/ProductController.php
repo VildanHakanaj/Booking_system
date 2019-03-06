@@ -141,21 +141,25 @@ class ProductController extends Controller
             ]
         );
 
-        $product->title         = $request->title;
-        $product->brand         = $request->brand;
-        $product->desc          = $request->desc;
-        $product->serial_number = $request->serial_number;
-        $product->notes         = $request->notes;
-        $product->maintenance   = $request->maintenance;
+        /*
+         *FIXME::
+         * [ ] The update will throw error if the checkbox is checked because is not an integer
+         *
+         * */
 
-        //Set the status attribut
+        //Creates the product
+        $product->createProduct($request);
+
+        //Set the status attribute
         $product->setStatusAttr($request->status);
 
+        //Update the model
         $product->update();
 
         Session::flash('success', 'Product was successfully updated');
         return redirect()->route('products.show', $product->id);
     }
+
 
     /**
      * Remove the specified resource from storage.
