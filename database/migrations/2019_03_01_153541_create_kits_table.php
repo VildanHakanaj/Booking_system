@@ -17,9 +17,11 @@ class CreateKitsTable extends Migration
         Schema::create('kits', function (Blueprint $table) {
 
             $table->increments('id');
-            $table->integer('product_id');
+            $table->unsignedInteger('product_id');
+            $table->tinyInteger('bookable')->default(1);
             $table->timestamps();
 
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

@@ -13,16 +13,13 @@
 
 /*
  *TODO
- * [ ] Create the products table
+ * [x] Create the products table
  * [ ] Create the factory for the products table
- * [ ] Run the migrations and seeds for the database
- * [ ] Create the layout of the products
- * [ ] Create the CRUD pages for the products
+ * [x] Run the migrations and seeds for the database
+ * [x] Create the layout of the products
+ * [x] Create the CRUD pages for the products
  * [ ] Create the search engine for available products
  * QUESTION
- * [ ] Should i have two table one for individual products
- *      and one for kits (two or more products bundled together)
- * [ ] Should i check if the user has any reasons to book.
  * [ ] Since the user will always have the other category will they ever have no permission to book.
  * **NOTE**
  * FOR THIS TASK TAKE A LOOK AT THE NOTEBOOK FROM THE FIRST MEETING
@@ -34,7 +31,6 @@ Route::get('/', 'PagesController@index');
 
 //Administrator paths
 Route::prefix('admin')->group(function(){
-
     //The dashboard
     Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
 
@@ -45,14 +41,18 @@ Route::prefix('admin')->group(function(){
     //Reasons pages resources
     Route::resource('reason', 'ReasonController');
 
+    /*=====================REASON TO BOOK ROUTES=====================*/
     Route::resource('reasonToBook', 'ReasonsToBookController');
+
     //To add the reason
     Route::get('reasonToBook/create/{id}', 'ReasonsToBookController@create')->name('reasonToBook.create');
     Route::get('reasonToBook/deactivate/{user}/{reason}', 'ReasonsToBookController@deactivate')->name('reasonToBook.deactivate');
 
-
-
+    /*=======================PRODUCTS ROUTES===========================*/
     Route::resource('products', 'ProductController');
+
+    /*=========================KITS ROUTES===============================*/
+    Route::resource('kits', 'KitController');
 
 });
 

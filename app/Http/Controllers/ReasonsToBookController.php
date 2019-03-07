@@ -110,6 +110,10 @@ class ReasonsToBookController extends Controller
         //
     }
 
+    /**
+     * Active and deactivate the reason based on the
+     *
+     * */
     public function deactivate(User $user, Reason $reason)
     {
         $reason = ReasonToBook::where('user_id', $user->id)->where('reason_id', $reason->id)->first();
