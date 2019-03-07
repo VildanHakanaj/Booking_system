@@ -8,16 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
 
-    //    protected $fillable = [
-    //        'title',
-    //        'brand',
-    //        'desc',
-    //        'serial_number',
-    //        'status',
-    //        'notes',
-    //        'maintenance',
-    //    ];
-
     /*
      * Gets the kit where the products is
      *
@@ -51,7 +41,6 @@ class Product extends Model
         }
     }
 
-
     /**
      * Create the product model
      *
@@ -64,6 +53,11 @@ class Product extends Model
         $this->desc = $request->desc;
         $this->serial_number = $request->serial_number;
         $this->setStatusAttr($request->status);
-        $this->setAttr(['notes' => $request->notes, 'maintenance' => $request->maintenace]);
+        //Set all the nullable attributes only if they are set
+        $this->setAttr([
+            'serial_number' => $request->serial_number,
+            'notes' => $request->notes,
+            'maintenance' => $request->maintenace
+        ]);
     }
 }

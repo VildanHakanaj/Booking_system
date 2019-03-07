@@ -40,6 +40,7 @@
 
                         <td>{{$product->notes}}</td>
 
+                        <td><a href="{{ route('products.edit', $product->id) }}" class="btn btn-outline-primary">Kit</a></td>
                         <td><a href="{{ route('products.edit', $product->id) }}" class="btn btn-outline-primary">Edit</a></td>
 
                     </tr>

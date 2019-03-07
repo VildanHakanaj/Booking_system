@@ -67,7 +67,7 @@ class ProductController extends Controller
             'title' => 'required|unique:products|min:2|max:255',
             'brand' => 'required|min:2|max:255',
             'desc' => 'required|min:5',
-            'serial_number' => 'required|min:2|max:255',
+            'serial_number' => 'nullable|min:2|max:255',
         ]);
 
         $product->createProduct($request);
