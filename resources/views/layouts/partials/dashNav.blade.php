@@ -13,5 +13,9 @@
             Reasons
             <span class="badge badge-primary ">{{$reasons->count()}}</span>
         </a>
+        <a class="nav-link" href="{{route('kits.index')}}">
+            Kits
+            <span class="badge badge-primary ">{{$kits->count()}}</span>
+        </a>
     </nav>
 </div>

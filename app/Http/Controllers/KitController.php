@@ -37,7 +37,7 @@ class KitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd("here");
     }
 
     /**

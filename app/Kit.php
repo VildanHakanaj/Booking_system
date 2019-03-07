@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kit extends Model
 {
+
+    /**
+     *TODO
+     * [ ] Create a kit
+     *
+     * */
+
     /*
      * Get all the products in the kit
      *s
