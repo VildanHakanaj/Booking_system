@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
+        //Add the admin first
         DB::table('users')->insert([
             'name' => "Vildan Hakanaj",
             'stdn' => "059373",
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
             'admin' => 1,
         ]);
 
+        //Add the default reason
         DB::table('reasons')->insert([
             'title' => "other",
             'description' => "This is the default reason for the users",
@@ -28,9 +30,11 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-
-
+        //Auto generate data for the database
         factory(App\User::class, 50)->create();
+        factory(App\Reason::class, 12)->create();
+        factory(App\ReasonToBook::class, 30)->create();
+        factory(App\Product::class, 100)->create();
 
     }
 }
