@@ -69,6 +69,7 @@ class ProductController extends Controller
             'desc' => 'required|min:5',
             'serial_number' => 'required|min:2|max:255',
         ]);
+
         $product->createProduct($request);
         //Add the product
         $product->save();
@@ -120,19 +121,9 @@ class ProductController extends Controller
             ]
         );
 
-
-        /*
-         *FIXME::
-         * [ ] The update will throw error if the checkbox is checked because is not an integer
-         *
-         * */
-
-        //Creates the product
         $product->createProduct($request);
-
         //Set the status attribute
         $product->setStatusAttr($request->status);
-
         //Update the model
         $product->update();
 
