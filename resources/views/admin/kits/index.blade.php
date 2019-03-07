@@ -3,19 +3,19 @@
     <div class="container">
         <div>
             <h1 class="text-muted">Kits</h1>
-            <a href="{{route('reason.create')}}" class="btn btn-success mb-3">Add New Kit</a>
+            <a href="{{route('kits.create')}}" class="btn btn-success mb-3">Add New Kit</a>
         </div>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">#ID</th>
-                <th scope="col">Kit Name</th>
-                <th scope="col">Bookable</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            @if($kits->count() > 0)
+        @if($kits->count() > 0)
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#ID</th>
+                    <th scope="col">Kit Name</th>
+                    <th scope="col">Bookable</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
                 @foreach($kits as $kit)
                     <tr>
                         <th scope="row">#{{$kit->id}}</th>
@@ -25,11 +25,11 @@
                         </td>
                     </tr>
                 @endforeach
-            @else
-                No Reasons in the table
-            @endif
-            </tbody>
-            {{$kits->links()}}
-        </table>
+                </tbody>
+                @else
+                    No kits created
+                @endif
+                {{$kits->links()}}
+            </table>
     </div>
 @endsection

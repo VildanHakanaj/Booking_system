@@ -14,7 +14,9 @@ class KitController extends Controller
      */
     public function index()
     {
-        //
+        $kits = Kit::orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.kits.index')->with('kits', $kits);
     }
 
     /**
@@ -24,7 +26,7 @@ class KitController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.kits.create');
     }
 
     /**

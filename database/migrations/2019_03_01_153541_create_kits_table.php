@@ -17,6 +17,7 @@ class CreateKitsTable extends Migration
         Schema::create('kits', function (Blueprint $table) {
 
             $table->increments('id');
+            $table->text('title');
             $table->unsignedInteger('product_id');
             $table->tinyInteger('bookable')->default(1);
             $table->timestamps();
