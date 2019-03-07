@@ -30,25 +30,11 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="checkbox" name="bookable" id="bookable">
+                    <input type="checkbox" name="status" id="status">
                     <label for="bookable">
-                        Choose a kit for this product
+                        Will this product be active
                     </label>
                 </div>
-                <div class="form-group">
-                    <select name="kit_name" id="kit_name" disabled>
-                        <option value="0">Single</option>
-                        <option value="1">kit 1</option>
-                        <option value="2">Kit 2</option>
-                        <option value="3">Kit 3</option>
-                    </select>
-                </div>
-
-
-                {{--<div class="form-group">--}}
-                    {{--{!! Form::checkbox('bookable', null) !!}--}}
-                    {{--{!! Form::label('bookable', 'Bookable')!!}--}}
-                {{--</div>--}}
             </div>
         </div>
 

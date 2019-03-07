@@ -61,16 +61,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        /*
-         *TODO:
-         * [ ] Remove the bookable option from the product.
-         * Edge cases
-         * [ ] If the product is not going in a kit
-         *      [ ] The product will just go into inventory
-         * [ ] Allow the kit controller to create the kit
-         *
-         *
-         * */
         $product = new Product();
         //validate the request
         $request->validate([
@@ -79,18 +69,7 @@ class ProductController extends Controller
             'desc' => 'required|min:5',
             'serial_number' => 'required|min:2|max:255',
         ]);
-
-        //Create the product.
-        $product->title = $request->title;
-        $product->brand = $request->brand;
-        $product->desc = $request->desc;
-        $product->serial_number = $request->serial_number;
-
-        //Check if the has set the product to be bookable or not
-        if ($request->bookable) {
-            $product->bookable = 1;
-        }
-
+        $product->createProduct($request);
         //Add the product
         $product->save();
 
@@ -140,6 +119,7 @@ class ProductController extends Controller
                 'maintenance'       => 'nullable|date|min:2|max:255',
             ]
         );
+
 
         /*
          *FIXME::
