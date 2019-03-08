@@ -7,17 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-
-    /*
-     * Gets the kit where the products is
-     *
-     * @return \App\Kit
-     * */
-    public function kit()
-    {
-        return $this->belongsTo('\App\Kit');
-    }
-
     /**
      * Set the status of the value
      * @param $value
@@ -59,5 +48,10 @@ class Product extends Model
             'notes' => $request->notes,
             'maintenance' => $request->maintenace
         ]);
+    }
+
+    public function kit(){
+
+        return $this->belongsTo(\App\Bookable_kit::class);
     }
 }

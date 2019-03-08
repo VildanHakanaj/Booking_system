@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Kit extends Model
 {
@@ -12,13 +13,15 @@ class Kit extends Model
      * [ ] Create a kit
      *
      * */
+    protected $fillable = ['title'];
 
-    /*
-     * Get all the products in the kit
-     *s
-     * @return \App\Product
+    /**
+     * Get the kit that it belongs
+     *
+     * @return BelongsTo
      * */
-    public function products(){
-        return $this->hasMany('\App\Product');
+    public function kit(){
+        return $this->belongsTo(\App\Bookable_kit::class);
     }
+
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Kit;
+use App\Bookable_kit;
 use Illuminate\Http\Request;
 
-class KitController extends Controller
+class BookableKitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,7 @@ class KitController extends Controller
      */
     public function index()
     {
-        $kits = Kit::orderBy('created_at', 'desc')->paginate(10);
-
-        return view('admin.kits.index')->with('kits', $kits);
+        //
     }
 
     /**
@@ -26,46 +24,27 @@ class KitController extends Controller
      */
     public function create()
     {
-        return view('admin.kits.create');
+        //
     }
-
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $kit = new Kit();
-        $request->validate(
-            [
-                'title' => 'required|min:2|max:255'
-            ]
-        );
-
-
-        $kit->title = $request->title;
-        $kit->saveOrFail();
-
-        /**
-         *TODO
-         * [ ] Create an empty kit first.
-         * [ ] Create a function to one product at a time.
-         * [ ] Look if you need to create it at the kit level
-         * */
-
-        return redirect()->route('kits.show')->with('kit', $kit);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Kit $kit
+     * @param  \App\Bookable_kit  $bookable_kit
      * @return \Illuminate\Http\Response
      */
-    public function show(Kit $kit)
+    public function show(Bookable_kit $bookable_kit)
     {
         //
     }
@@ -73,10 +52,10 @@ class KitController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Kit $kit
+     * @param  \App\Bookable_kit  $bookable_kit
      * @return \Illuminate\Http\Response
      */
-    public function edit(Kit $kit)
+    public function edit(Bookable_kit $bookable_kit)
     {
         //
     }
@@ -84,11 +63,11 @@ class KitController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Kit $kit
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Bookable_kit  $bookable_kit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Kit $kit)
+    public function update(Request $request, Bookable_kit $bookable_kit)
     {
         //
     }
@@ -96,10 +75,10 @@ class KitController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Kit $kit
+     * @param  \App\Bookable_kit  $bookable_kit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Kit $kit)
+    public function destroy(Bookable_kit $bookable_kit)
     {
         //
     }

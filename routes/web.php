@@ -13,17 +13,8 @@
 
 /*
  *TODO
- * [x] Create the products table
- * [ ] Create the factory for the products table
- * [x] Run the migrations and seeds for the database
- * [x] Create the layout of the products
- * [x] Create the CRUD pages for the products
- * [ ] Create the search engine for available products
- * QUESTION
- * [ ] Since the user will always have the other category will they ever have no permission to book.
- * **NOTE**
- * FOR THIS TASK TAKE A LOOK AT THE NOTEBOOK FROM THE FIRST MEETING
- * ALSO LOOK AT THE CALENDAR THEY ALREADY USE TO SEE WHAT KIND OF CAMERA THEY HAVE
+ * [ ] Create the kits and product relation
+ * [ ] Check out the one to many relation
  *
  * */
 //The main index path
@@ -53,6 +44,9 @@ Route::prefix('admin')->group(function(){
 
     /*=========================KITS ROUTES===============================*/
     Route::resource('kits', 'KitController');
+    Route::get('kits.addProduct', 'KitController@addProduct');
+
+
 
 });
 
