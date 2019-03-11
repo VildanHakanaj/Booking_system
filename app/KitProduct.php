@@ -7,18 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class KitProduct extends Model
 {
     protected $table = 'kit_product';
-    /*
-     * Get the products
-     * */
-    public function products(){
-        return $this->hasMany(Product::class);
-    }
 
+    public function products(){
+        return $this->hasOne('App\Product', 'id', 'product_id');
+    }
     /**
      * Get the kit
      * */
     public function kit(){
-        return $this->hasOne(Kit::class);
+        return $this->hasOne('App\Kit', 'id', 'kit_id');
     }
 
 }

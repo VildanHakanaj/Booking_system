@@ -7,9 +7,20 @@
         <div class="card bg-light mb-3 list-group">
             <div class="card-header"><h1 class="text-muted">{{$kit->tilte}}</h1></div>
             <div class="card-body">
-                <li class="list-group-item">Bookable: {{$kit->active == 1 ? 'Active' : 'Not Active'}}</li>
+                <li class="list-group-item">Bookable: {{ $kit->active == 1 ? 'Active' : 'Not Active' }}</li>
                 <li class="list-group-item">Booking window: {{$kit->booking_window}}</li>
-                <li class="list-group-item">Product nr: 12 <span class="text-danger">(To be changed with the real number)</span> </li>
+                <li class="list-group-item">
+                    Products
+                    @if($products->count() > 0)
+                        <ul>
+                            @foreach($products as $product)
+                                <li>{{$product->title}}</li>
+                            @endforeach
+                            @else
+                                <li>No products shown</li>
+                            @endif
+                        </ul>
+                </li>
                 <li class="list-group-item">Created At: {{$kit->created_at}}</li>
                 <li class="list-group-item">Updated At: {{$kit->updated_at}}</li>
             </div>

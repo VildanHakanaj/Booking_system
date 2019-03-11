@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    protected $table = 'products';
     /**
      * Set the status of the value
      * @param $value
@@ -51,7 +52,6 @@ class Product extends Model
     }
 
     public function kit(){
-
-        return $this->belongsTo(\App\Bookable_kit::class);
+        return $this->belongsTo('App\KitProduct', 'product_id', 'id');
     }
 }

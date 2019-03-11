@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Kit;
+use App\KitProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Session;
 class KitController extends Controller
 {
@@ -15,7 +17,7 @@ class KitController extends Controller
     public function index()
     {
         $kits = Kit::orderBy('created_at', 'desc')->paginate(10);
-
+;
         return view('admin.kits.index')->with('kits', $kits);
     }
 
@@ -46,7 +48,6 @@ class KitController extends Controller
             ]
         );
 
-
         $kit->createKit($request);
         $kit->save();
 
@@ -62,7 +63,8 @@ class KitController extends Controller
      */
     public function show(Kit $kit)
     {
-        return view('admin.kits.show')->with('kit', $kit);
+        $products = $kit->products();
+        return view('admin.kits.show')->with('kit', $kit)->with('products', $products);
     }
 
     /**
