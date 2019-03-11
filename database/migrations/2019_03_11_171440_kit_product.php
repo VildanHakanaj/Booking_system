@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class BookableKit extends Migration
+class KitProduct extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,7 @@ class BookableKit extends Migration
      */
     public function up()
     {
-        //Create the user table
         Schema::create('kit_product', function (Blueprint $table) {
-            //Id of the user
             $table->increments('id');
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('kit_id');
@@ -23,7 +21,6 @@ class BookableKit extends Migration
             $table->foreign('kit_id')->references('id')->on('kits');
             $table->timestamps();
         });
-
     }
 
     /**

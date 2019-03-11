@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Request;
+
 
 class Kit extends Model
 {
@@ -13,15 +15,20 @@ class Kit extends Model
      * [ ] Create a kit
      *
      * */
-    protected $fillable = ['title'];
 
-    /**
-     * Get the kit that it belongs
-     *
-     * @return BelongsTo
-     * */
-    public function kit(){
-        return $this->belongsTo(\App\Bookable_kit::class);
+
+    public function setCheckedAttribute($input, $value){
+        $this->$input = $value == "on" ? 1 : 0;
+
     }
+
+
+    public function createKit(Request $request){
+        $this->title            = $request->title;
+        $this->booking_window   = $request->booking_window;
+        $this->setCheckedAttribute('back_to_back', $request->back_to_back);
+        $this->setCheckedAttribute('status', $request->status);
+    }
+
 
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Kit;
 use Illuminate\Http\Request;
-
+use Session;
 class KitController extends Controller
 {
     /**
@@ -43,22 +43,15 @@ class KitController extends Controller
             [
                 'title' => 'required|min:2|max:255',
                 'booking_window' => 'required|min:0|max:255',
-                'back_to_back' => 'min:2|max:255',
-                'status' => 'min:2|max:255',
             ]
         );
 
 
+        $kit->createKit($request);
+        $kit->save();
 
-        dd($request->all());
-        /**
-         *TODO
-         * [ ] Create an empty kit first.
-         * [ ] Create a function to one product at a time.
-         * [ ] Look if you need to create it at the kit level
-         * */
-
-        return redirect()->route('kits.show')->with('kit', $kit);
+        Session::flash('success', 'Kit successfully created');
+        return redirect()->route('kits.show', $kit->id)->with('kit', $kit);
     }
 
     /**
@@ -69,7 +62,7 @@ class KitController extends Controller
      */
     public function show(Kit $kit)
     {
-        dd("Show Kit");
+        return view('admin.kits.show')->with('kit', $kit);
     }
 
     /**

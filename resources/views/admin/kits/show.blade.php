@@ -9,12 +9,12 @@
             <div class="card-body">
                 <li class="list-group-item">Bookable: {{$kit->active == 1 ? 'Active' : 'Not Active'}}</li>
                 <li class="list-group-item">Booking window: {{$kit->booking_window}}</li>
-                <li class="list-group-item">Product nr: {{$kit->products()->count()}}</li>
+                <li class="list-group-item">Product nr: 12 <span class="text-danger">(To be changed with the real number)</span> </li>
                 <li class="list-group-item">Created At: {{$kit->created_at}}</li>
                 <li class="list-group-item">Updated At: {{$kit->updated_at}}</li>
             </div>
             <div class="d-block text-center w-100 my-3">
-                <a href="{{route('reason.edit', $reason->id)}}" class="btn btn-primary w-25">Edit</a>
+                <a href="{{route('kits.edit', $kit->id)}}" class="btn btn-primary w-25">Edit</a>
             </div>
         </div>
     </div>
