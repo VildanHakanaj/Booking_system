@@ -41,14 +41,16 @@ class KitController extends Controller
         $kit = new Kit();
         $request->validate(
             [
-                'title' => 'required|min:2|max:255'
+                'title' => 'required|min:2|max:255',
+                'booking_window' => 'required|min:0|max:255',
+                'back_to_back' => 'min:2|max:255',
+                'status' => 'min:2|max:255',
             ]
         );
 
 
-        $kit->title = $request->title;
-        $kit->saveOrFail();
 
+        dd($request->all());
         /**
          *TODO
          * [ ] Create an empty kit first.
@@ -67,7 +69,7 @@ class KitController extends Controller
      */
     public function show(Kit $kit)
     {
-        //
+        dd("Show Kit");
     }
 
     /**
