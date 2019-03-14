@@ -75,7 +75,7 @@ class KitController extends Controller
      */
     public function edit(Kit $kit)
     {
-        //
+        return view('admin.kits.edit')->with('kit', $kit);
     }
 
     /**
@@ -87,7 +87,19 @@ class KitController extends Controller
      */
     public function update(Request $request, Kit $kit)
     {
-        //
+        $request->validate(
+            [
+                'title' => 'required|min:2|max:255',
+                'booking_window' => 'required|min:0|max:255',
+            ]
+        );
+
+        $kit->createKit($request);
+        $kit->update();
+
+        Session::flash('success', 'Kit successfully updated');
+        return redirect()->route('kits.show', $kit->id);
+
     }
 
     /**

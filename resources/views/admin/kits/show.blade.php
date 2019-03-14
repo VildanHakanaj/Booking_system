@@ -7,8 +7,8 @@
         <div class="card bg-light mb-3 list-group">
             <div class="card-header"><h1 class="text-muted">{{$kit->tilte}}</h1></div>
             <div class="card-body">
-                <li class="list-group-item">Bookable: {{ $kit->active == 1 ? 'Active' : 'Not Active' }}</li>
-                <li class="list-group-item">Booking window: {{$kit->booking_window}}</li>
+                <li class="list-group-item">Bookable: {{ $kit->status == 1 ? 'Active' : 'Not Active' }}</li>
+                <li class="list-group-item">Booking window: {{$kit->booking_window}} day(s)</li>
                 <li class="list-group-item">
                     Products
                     @if($products->count() > 0)
