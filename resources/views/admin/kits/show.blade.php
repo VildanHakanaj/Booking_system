@@ -17,7 +17,8 @@
                                 <li>{{$product->title}}</li>
                             @endforeach
                             @else
-                                <li>No products shown</li>
+                                <li class="my-3">No products shown <a href="{{route('kits.show', $kit->id)}}" class="btn btn-sm btn-success">Add product</a></li>
+
                             @endif
                         </ul>
                 </li>
