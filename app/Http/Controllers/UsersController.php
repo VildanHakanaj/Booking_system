@@ -202,10 +202,7 @@ class UsersController extends Controller
     public function show(User $user)
     {
         //Use a join to select the relation and the reason.
-        $reasons = DB::table('reason_to_book')
-            ->select('reason_to_book.active', 'reasons.title', 'reasons.id')
-            ->join('reasons', 'reason_to_book.reason_id',  '=' , 'reasons.id')
-            ->where('user_id', $user->id)->get();
+        $reasons = $user->reasons();
 
         return view('admin.users.show')->with('user', $user)->with('reasons', $reasons);
     }
@@ -280,5 +277,19 @@ class UsersController extends Controller
     public function destroy($id)
     {
 //        return redirect(route('errors.notAuthorized'));
+    }
+
+    public function search(Request $request){
+
+        if(empty($request->search)){
+            return view('admin.users.index')->with('users', User::orderBy('created_at', 'desc')->paginate(10));
+        }
+
+//        User::orderBy('created_at', 'desc')->paginate(10)
+
+        $users = User::orderBy('created_at', 'desc')->where('name', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('email', 'LIKE', '%' . $request->search . '%')->paginate(10);
+        return view('admin.users.index')->with('users', $users);
+
     }
 }

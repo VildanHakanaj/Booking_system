@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\VerifyEmail;
 use mysql_xdevapi\Collection;
+use DB;
 
 class User extends Authenticatable
 {
@@ -134,7 +135,10 @@ class User extends Authenticatable
      * */
     public function reasons()
     {
-        return $this->hasMany('App\ReasonToBook');
+        return DB::table('reason_to_book')
+            ->select('reason_to_book.active', 'reasons.title', 'reasons.id')
+            ->join('reasons', 'reason_to_book.reason_id',  '=' , 'reasons.id')
+            ->where('user_id', $this->id)->get();
     }
 
     /**

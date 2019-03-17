@@ -116,4 +116,17 @@ class ReasonController extends Controller
     {
         //
     }
+
+    public function search(Request $request){
+
+        if(empty($request->search)){
+            return view('admin.reasons.index')->with('reasons', Reason::orderBy('created_at', 'desc')->paginate(10));
+        }
+
+        $reasons = Reason::orderBy('created_at', 'desc')->where('title', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('title', 'LIKE', '%' . $request->search . '%')
+            ->paginate(10);
+        return view('admin.reasons.index')->with('reasons', $reasons);
+
+    }
 }

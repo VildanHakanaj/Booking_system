@@ -112,4 +112,15 @@ class KitController extends Controller
     {
         //
     }
+
+    public function search(Request $request){
+
+        if(empty($request->search)){
+            return view('admin.kits.index')->with('kits', Kit::orderBy('created_at', 'desc')->paginate(10));
+        }
+
+        $kits = Kit::orderBy('created_at', 'desc')->where('title', 'LIKE', '%' . $request->search . '%')->paginate(10);
+        return view('admin.kits.index')->with('kits', $kits);
+
+    }
 }

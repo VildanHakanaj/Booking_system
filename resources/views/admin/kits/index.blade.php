@@ -1,8 +1,18 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {!! Form::open(['route' => 'kits.search', 'method' => 'POST']) !!}
+                <div class="row offset-4">
+                    {!! Form::text('search', null, ['placeholder' => 'Title', 'class' => 'form-control col-md-3']) !!}
+                    {!! Form::submit('Search', ['class' => 'btn btn-sm btn-primary col-md-1']) !!}
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
         <div>
-            <h1 class="text-muted">Kits</h1>
+            <h1 class="text-muted"><a href="{{route('kits.index')}}">Kits</a></h1>
             <a href="{{route('kits.create')}}" class="btn btn-success mb-3">Add New Kit</a>
         </div>
         @if($kits->count() > 0)

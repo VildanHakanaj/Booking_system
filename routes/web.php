@@ -46,7 +46,11 @@ Route::prefix('admin')->group(function(){
     Route::resource('kits', 'KitController');
     Route::get('kits.addProduct', 'KitController@addProduct');
 
-
+    /*========================SEARCH ROUTES==============================*/
+    Route::post('users/search', 'UsersController@search')->name('users.search');
+    Route::post('kits/search', 'KitController@search')->name('kits.search');
+    Route::post('products/search', 'ProductController@search')->name('products.search');
+    Route::post('reasons/search', 'ReasonController@search')->name('reasons.search');
 
 });
 

@@ -142,4 +142,18 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function search(Request $request){
+
+        if(empty($request->search)){
+            return view('admin.product.index')->with('products', Product::orderBy('created_at', 'desc')->paginate(10));
+        }
+
+        $products = Product::orderBy('created_at', 'desc')->where('title', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('brand', 'LIKE', '%' . $request->search . '%')
+            ->orWhere('serial_number', 'LIKE', '%' . $request->search . '%')
+            ->paginate(10);
+        return view('admin.products.index')->with('products', $products);
+
+    }
 }

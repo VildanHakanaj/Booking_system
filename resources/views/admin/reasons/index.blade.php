@@ -1,8 +1,18 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {!! Form::open(['route' => 'reasons.search', 'method' => 'POST']) !!}
+                <div class="row offset-4">
+                    {!! Form::text('search', old('search', null), ['placeholder' => 'Title', 'class' => 'form-control col-md-3']) !!}
+                    {!! Form::submit('Search', ['class' => 'btn btn-sm btn-primary col-md-1']) !!}
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
         <div>
-            <h1 class="text-muted">Reasons</h1>
+            <h1 class="text-muted"><a href="{{route('reason.index')}}">Reasons</a></h1>
             <a href="{{route('reason.create')}}" class="btn btn-success mb-3">Add New Reason</a>
         </div>
         <table class="table table-hover">
