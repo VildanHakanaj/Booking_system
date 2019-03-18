@@ -54,4 +54,9 @@ class Product extends Model
     public function kit(){
         return $this->belongsTo('App\KitProduct', 'product_id', 'id');
     }
+
+    public function getAvailableProducts(){
+        return $this->where('status', 1)->orderBy('created_at', 'desc')->get();
+    }
+
 }

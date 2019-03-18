@@ -113,6 +113,13 @@ class KitController extends Controller
         //
     }
 
+    /*
+     * Search for the item in the table
+     *
+     * @params $request
+     * @return view
+     *
+     * */
     public function search(Request $request){
 
         if(empty($request->search)){
@@ -123,4 +130,5 @@ class KitController extends Controller
         return view('admin.kits.index')->with('kits', $kits);
 
     }
+
 }

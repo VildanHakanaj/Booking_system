@@ -203,7 +203,6 @@ class UsersController extends Controller
     {
         //Use a join to select the relation and the reason.
         $reasons = $user->reasons();
-
         return view('admin.users.show')->with('user', $user)->with('reasons', $reasons);
     }
 

@@ -22,7 +22,7 @@
                     <th scope="col">#ID</th>
                     <th scope="col">Kit Name</th>
                     <th scope="col">Bookable</th>
-                    <th scope="col"></th>
+                    <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody>

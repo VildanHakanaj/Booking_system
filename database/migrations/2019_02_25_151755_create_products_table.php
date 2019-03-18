@@ -19,8 +19,9 @@ class CreateProductsTable extends Migration
             $table->text('brand');
             $table->longText('desc');
             $table->text('serial_number');
+            //Check by using the status and the relation
+            //Status is strictly for active or inactive for maintenance
             $table->tinyInteger('status')->default(1);
-            $table->tinyInteger('bookable')->default(0);
             $table->longText('notes')->nullable();
             $table->date('maintenance')->nullable();
             $table->timestamps();

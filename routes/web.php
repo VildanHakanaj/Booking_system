@@ -13,8 +13,8 @@
 
 /*
  *TODO
- * [ ] Create the kits and product relation
- * [ ] Check out the one to many relation
+ * [ ] Remove the resource of the ReasonToBook
+ *      [ ] Manually set the route for the two actions
  *
  * */
 //The main index path
@@ -44,7 +44,8 @@ Route::prefix('admin')->group(function(){
 
     /*=========================KITS ROUTES===============================*/
     Route::resource('kits', 'KitController');
-    Route::get('kits.addProduct', 'KitController@addProduct');
+    Route::get('kitsProduct/create/{kit}', 'KitProductController@create')->name('kitProduct.create');
+    Route::post('kitsProduct/store', 'KitProductController@store')->name('kitProduct.store');
 
     /*========================SEARCH ROUTES==============================*/
     Route::post('users/search', 'UsersController@search')->name('users.search');
@@ -64,7 +65,9 @@ Route::prefix('auth')->group(function(){
     Route::get('completeRegistration/{user}', 'VerifyAccount@completeRegistration')->name('verify.finishRegister');
 });
 
-//
+
+
+// Not sure if i need this
 //Route::get('/completeRegistration', function(){
 //    return view('auth.verifyAccount.edit');
 //});

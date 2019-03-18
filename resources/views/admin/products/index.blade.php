@@ -28,6 +28,7 @@
                     <th scope="col">Status</th>
                     <th scope="col">Can be booked?</th>
                     <th scope="col">Notes</th>
+                    <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody>
