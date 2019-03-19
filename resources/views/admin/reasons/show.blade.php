@@ -10,6 +10,7 @@
                 <li class="list-group-item">Title: {{$reason->title}}</li>
                 <li class="list-group-item">Description: {{$reason->description}}</li>
                 <li class="list-group-item">Status: {{$reason->active == 1 ? 'Active' : 'Not Active'}}</li>
+                <li class="list-group-item">Expires: {{$reason->expires_at}}</li>
                 <li class="list-group-item">Created At: {{$reason->created_at}}</li>
                 <li class="list-group-item">Updated At: {{$reason->updated_at}}</li>
             </div>

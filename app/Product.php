@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Product extends Model
 {
@@ -55,8 +56,16 @@ class Product extends Model
         return $this->belongsTo('App\KitProduct', 'product_id', 'id');
     }
 
+    /*
+     * Gets all the items that are not in a kit and are active
+     *
+     * @return Products Collection.
+     * */
     public function getAvailableProducts(){
-        return $this->where('status', 1)->orderBy('created_at', 'desc')->get();
+            return DB::table('products')->select('products.id', 'products.title', 'products.serial_number')
+                                        ->join('kit_product','products.id','=', 'kit_product.product_id', 'left outer')
+                                        ->orWhereNull('kit_product.product_id')
+                                        ->where('products.status', 1)
+                                        ->get();
     }
-
 }

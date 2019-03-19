@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->text('serial_number');
             //Check by using the status and the relation
             //Status is strictly for active or inactive for maintenance
+            //I can check if a product is booked or not by using a left join of the relation
             $table->tinyInteger('status')->default(1);
             $table->longText('notes')->nullable();
             $table->date('maintenance')->nullable();

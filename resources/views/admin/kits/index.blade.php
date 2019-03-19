@@ -30,7 +30,7 @@
                     <tr>
                         <th scope="row">#{{$kit->id}}</th>
                         <td><a href="{{route('kits.show', $kit->id)}}">{{$kit->title}}</a></td>
-                        <td>{{$kit->active == 1 ? 'Active' : 'Not Active'}}</td>
+                        <td>{{$kit->status == 1 ? 'Active' : 'Not Active'}}</td>
                         <td><a href="{{route('kits.edit', $kit->id)}}" class="btn btn-outline-primary">Edit</a>
                         </td>
                     </tr>

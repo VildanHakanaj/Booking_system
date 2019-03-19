@@ -46,7 +46,7 @@ Route::prefix('admin')->group(function(){
     Route::resource('kits', 'KitController');
     Route::get('kitsProduct/create/{kit}', 'KitProductController@create')->name('kitProduct.create');
     Route::post('kitsProduct/store', 'KitProductController@store')->name('kitProduct.store');
-
+    Route::get('kitsProduct/removeAll/{kit}', 'KitProductController@removeAll')->name('kitProduct.removeAll');
     /*========================SEARCH ROUTES==============================*/
     Route::post('users/search', 'UsersController@search')->name('users.search');
     Route::post('kits/search', 'KitController@search')->name('kits.search');

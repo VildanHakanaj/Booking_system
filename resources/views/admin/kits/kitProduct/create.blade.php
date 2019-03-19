@@ -21,9 +21,7 @@
             <select name="product_id" id="product_id" class="form-control w-100">
                 @foreach($products as $product)
                     @if($product->title != 'other')
-
                         <option value="{{$product->id}}">{{$product->title}} ( {{$product->serial_number}} )</option>
-
                     @endif
                 @endforeach
             </select>
