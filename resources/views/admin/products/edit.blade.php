@@ -42,7 +42,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::submit('Update Reason', ['class' => 'btn btn-primary btn-lg d-block w-100']) !!}
+            {!! Form::submit('Save product', ['class' => 'btn btn-primary btn-lg d-block w-100']) !!}
         </div>
 
         {!! Form::close() !!}

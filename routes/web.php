@@ -11,17 +11,11 @@
 |
 */
 
-/*
- *TODO
- * [ ] Remove the resource of the ReasonToBook
- *      [ ] Manually set the route for the two actions
- *
- * */
 //The main index path
 Route::get('/', 'PagesController@index');
 
 //Administrator paths
-Route::prefix('admin')->group(function(){
+Route::prefix('admin')->middleware(['admin', 'auth'])->group(function(){
     //The dashboard
     Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
 
@@ -34,24 +28,25 @@ Route::prefix('admin')->group(function(){
 
     /*=====================REASON TO BOOK ROUTES=====================*/
     Route::resource('reasonToBook', 'ReasonsToBookController');
-
     //To add the reason
-    Route::get('reasonToBook/create/{id}', 'ReasonsToBookController@create')->name('reasonToBook.create');
-    Route::get('reasonToBook/deactivate/{user}/{reason}', 'ReasonsToBookController@deactivate')->name('reasonToBook.deactivate');
+    Route::get('reasonToBook/create/{id}', 'ReasonsToBookController@create')                    ->name('reasonToBook.create');
+    Route::get('reasonToBook/deactivate/{user}/{reason}', 'ReasonsToBookController@deactivate') ->name('reasonToBook.deactivate');
 
     /*=======================PRODUCTS ROUTES===========================*/
     Route::resource('products', 'ProductController');
 
     /*=========================KITS ROUTES===============================*/
     Route::resource('kits', 'KitController');
-    Route::get('kitsProduct/create/{kit}', 'KitProductController@create')->name('kitProduct.create');
-    Route::post('kitsProduct/store', 'KitProductController@store')->name('kitProduct.store');
-    Route::get('kitsProduct/removeAll/{kit}', 'KitProductController@removeAll')->name('kitProduct.removeAll');
+    Route::get('kitsProduct/create/{kit}', 'KitProductController@create')                       ->name('kitProduct.create');
+    Route::post('kitsProduct/store', 'KitProductController@store')                              ->name('kitProduct.store');
+    Route::get('kitsProduct/removeProduct/{product}', 'KitProductController@removeProduct')     ->name('kitProduct.removeProduct');
+    Route::get('kitsProduct/removeAll/{kit}', 'KitProductController@removeAll')                 ->name('kitProduct.removeAll');
+
     /*========================SEARCH ROUTES==============================*/
-    Route::post('users/search', 'UsersController@search')->name('users.search');
-    Route::post('kits/search', 'KitController@search')->name('kits.search');
-    Route::post('products/search', 'ProductController@search')->name('products.search');
-    Route::post('reasons/search', 'ReasonController@search')->name('reasons.search');
+    Route::post('users/search', 'UsersController@search')                                       ->name('users.search');
+    Route::post('kits/search', 'KitController@search')                                          ->name('kits.search');
+    Route::post('products/search', 'ProductController@search')                                  ->name('products.search');
+    Route::post('reasons/search', 'ReasonController@search')                                    ->name('reasons.search');
 
 });
 

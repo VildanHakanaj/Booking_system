@@ -13,7 +13,7 @@
                     <ul>
                         @if($products->count() > 0)
                             @foreach($products as $product)
-                                <li>{{$product->title}}</li>
+                                <li class="mb-2 d-flex justify-content-between">{{$product->title}} <a href="{{route('kitProduct.removeProduct', $product->id)}}" class="btn btn-sm btn-danger">Remove</a></li>
                             @endforeach
                         @else
                             <li class="my-3">No products in this kit</li>

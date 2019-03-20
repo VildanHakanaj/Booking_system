@@ -35,10 +35,7 @@ $('document').ready(function () {
 
     $checkbox = $('#bookable');
 
-
-
     $deactivate = $('#deactivate');
-
 
     $kit = $('#kit_name');
 
@@ -50,6 +47,4 @@ $('document').ready(function () {
             $kit.attr('disabled', true);
         }
     });
-
-
 });

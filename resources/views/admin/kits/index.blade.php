@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+    {{--@include('layouts.partials.modal')--}}
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -31,7 +32,11 @@
                         <th scope="row">#{{$kit->id}}</th>
                         <td><a href="{{route('kits.show', $kit->id)}}">{{$kit->title}}</a></td>
                         <td>{{$kit->status == 1 ? 'Active' : 'Not Active'}}</td>
-                        <td><a href="{{route('kits.edit', $kit->id)}}" class="btn btn-outline-primary">Edit</a>
+                        <td>
+                            <a href="{{route('kits.edit', $kit->id)}}" class="btn btn-sm btn-outline-primary">Edit</a>
+                            {!! Form::open( ['route' => ['kits.destroy', $kit->id], 'method' => 'DELETE']) !!}
+                            {!! Form::submit('Delete', ['class' => 'btn btn-outline-danger btn-sm', 'id' => 'delete', 'data-toggle'=>'modal', 'data-target' => '#exampleModalCenter']) !!}
+                            {!! Form::close() !!}
                         </td>
                     </tr>
                 @endforeach

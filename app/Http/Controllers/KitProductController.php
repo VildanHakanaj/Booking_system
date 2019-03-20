@@ -60,4 +60,15 @@ class KitProductController extends Controller
         return redirect()->route('kits.show', $kit->id);
     }
 
+    /*
+     * Removes a single product from the kit
+     *
+     * @params Product $product to be removed.
+     * */
+    public function removeProduct(Product $product){
+        KitProduct::where('product_id', $product->id)->delete();
+        Session::flash('success', 'Removed ' . $product->title . ' from kit');
+        return redirect()->back();
+    }
+
 }

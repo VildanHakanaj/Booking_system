@@ -110,7 +110,20 @@ class KitController extends Controller
      */
     public function destroy(Kit $kit)
     {
-        //
+        /*
+         *TODO
+         * [ ] Check if there is any items in the kit
+         *      [ ] If yes notify the user if they want to continue
+         *      [ ] If no just delete it.
+         * [ ] In the future when the booking part comes in.
+         *      [ ] Check if the kit is in any bookings
+         *          [ ] if yes then don't allow the user to delete the kit
+         *          [ ] If it it isn't then just do the above part.
+         * */
+        dd("Deleting");
+        Session::flash('success', $kit->title . 'was successfully removed');
+        return redirect()->route('kits.index');
+
     }
 
     /*
