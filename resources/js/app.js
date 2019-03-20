@@ -47,4 +47,59 @@ $('document').ready(function () {
             $kit.attr('disabled', true);
         }
     });
+
+    /*=======================DELETE KIT==========================*/
+
+    //Set all the headers to contain the CSRF token
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    // $deleteBtn= $('.deleteKit');
+
+    //Submit the form and check the deletion.
+    $modal = $('#exampleModalCenter');
+
+    $('.deleteKit').on('click', (ev) => {
+        ev.preventDefault();
+        const $buttonClicked = $(ev.target);
+        hasProduct($buttonClicked);
+    });
+
+    //Deletes the kit
+    function deleteKit($target){
+        $.ajax({
+            url: $target.attr('href'),
+            type: 'POST',
+            data: {
+              "_method": "DELETE"
+            },
+            success: () => {
+                $modal.modal('hide');
+                $target.closest('tr').remove();
+            }
+        });
+    }
+
+    //Check if it has any products
+    function hasProduct($target){
+        let url = $target.attr('href').split('/');
+        $.ajax({
+            type: 'POST',
+            url: "kits/checkProduct/" + url[url.length - 1],
+            success: (response) => {
+                if(response == 1){
+                    $modal.modal('show');
+                    $('#yes').click(()=>{
+                        deleteKit($target);
+
+                    });
+                }else{
+                    deleteKit($target);
+                }
+
+            }
+        });
+    }
 });

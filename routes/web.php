@@ -37,6 +37,8 @@ Route::prefix('admin')->middleware(['admin', 'auth'])->group(function(){
 
     /*=========================KITS ROUTES===============================*/
     Route::resource('kits', 'KitController');
+    Route::post('kits/checkProduct/{kit}', 'KitController@checkProduct')                        ->name('kitProduct.checkProduct');
+    /*-------------------------KitProduct ROUTES -------------------------*/
     Route::get('kitsProduct/create/{kit}', 'KitProductController@create')                       ->name('kitProduct.create');
     Route::post('kitsProduct/store', 'KitProductController@store')                              ->name('kitProduct.store');
     Route::get('kitsProduct/removeProduct/{product}', 'KitProductController@removeProduct')     ->name('kitProduct.removeProduct');
@@ -55,9 +57,11 @@ Auth::routes();
 
 //Complete the registration for the user.
 Route::prefix('auth')->group(function(){
+
     Route::get('verifyAccount/{token}', 'VerifyAccount@verifyAccount')->name('verify.verifyAccount');
     Route::Put('verifyAccount/{user}', 'VerifyAccount@update')->name('verify.update');
     Route::get('completeRegistration/{user}', 'VerifyAccount@completeRegistration')->name('verify.finishRegister');
+
 });
 
 

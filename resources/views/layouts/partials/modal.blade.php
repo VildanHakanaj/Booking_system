@@ -9,7 +9,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                The kit might contain items are you sure you want to continue?
+                This kit contains product in it. By continuing to remove the kit ti will make the products unavailable to be booked.
+                Are you sure you want to continue?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>

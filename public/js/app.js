@@ -36428,6 +36428,55 @@ $('document').ready(function () {
       $kit.attr('disabled', true);
     }
   });
+  /*=======================DELETE KIT==========================*/
+  //Set all the headers to contain the CSRF token
+
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  }); // $deleteBtn= $('.deleteKit');
+  //Submit the form and check the deletion.
+
+  $modal = $('#exampleModalCenter');
+  $('.deleteKit').on('click', function (ev) {
+    ev.preventDefault();
+    var $buttonClicked = $(ev.target);
+    hasProduct($buttonClicked);
+  }); //Deletes the kit
+
+  function deleteKit($target) {
+    $.ajax({
+      url: $target.attr('href'),
+      type: 'POST',
+      data: {
+        "_method": "DELETE"
+      },
+      success: function success() {
+        $modal.modal('hide');
+        $target.closest('tr').remove();
+      }
+    });
+  } //Check if it has any products
+
+
+  function hasProduct($target) {
+    var url = $target.attr('href').split('/');
+    $.ajax({
+      type: 'POST',
+      url: "kits/checkProduct/" + url[url.length - 1],
+      success: function success(response) {
+        if (response == 1) {
+          $modal.modal('show');
+          $('#yes').click(function () {
+            deleteKit($target);
+          });
+        } else {
+          deleteKit($target);
+        }
+      }
+    });
+  }
 });
 
 /***/ }),

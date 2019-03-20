@@ -17,7 +17,6 @@ class KitController extends Controller
     public function index()
     {
         $kits = Kit::orderBy('created_at', 'desc')->paginate(10);
-;
         return view('admin.kits.index')->with('kits', $kits);
     }
 
@@ -119,11 +118,18 @@ class KitController extends Controller
          *      [ ] Check if the kit is in any bookings
          *          [ ] if yes then don't allow the user to delete the kit
          *          [ ] If it it isn't then just do the above part.
+         *
+         * Right now this will delete it regardless of what the kit has.
+         *
          * */
-        dd("Deleting");
-        Session::flash('success', $kit->title . 'was successfully removed');
-        return redirect()->route('kits.index');
-
+        //Delete the relation
+        KitProduct::where('kit_id', $kit->id)->delete();
+        //Delete the model
+        Kit::where('id', $kit->id)->delete();
+        //Redirect the user back
+//        Session::flash('success', $kit->title . 'was successfully removed');
+//        return redirect()->route('kits.index');
+        return "The kit was successfully deleted";
     }
 
     /*
@@ -134,14 +140,24 @@ class KitController extends Controller
      *
      * */
     public function search(Request $request){
-
         if(empty($request->search)){
             return view('admin.kits.index')->with('kits', Kit::orderBy('created_at', 'desc')->paginate(10));
         }
-
         $kits = Kit::orderBy('created_at', 'desc')->where('title', 'LIKE', '%' . $request->search . '%')->paginate(10);
         return view('admin.kits.index')->with('kits', $kits);
+    }
 
+    /*
+     * Check if there there are items in the kit
+     *
+     * @return boolean
+     * */
+    public function checkProduct($id){
+        if(KitProduct::where('kit_id', $id)->count() > 0){
+            return 1;
+        }
+
+        return 0;
     }
 
 }

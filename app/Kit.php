@@ -25,7 +25,6 @@ class Kit extends Model
 
 
 
-
     public function setCheckedAttribute($input, $value){
         $this->$input = $value == "on" ? 1 : 0;
     }

@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('content')
-    {{--@include('layouts.partials.modal')--}}
+    @include('layouts.partials.modal')
     <div class="container">
+        @include('layouts.messages.success')
         <div class="row">
             <div class="col-md-12">
                 {!! Form::open(['route' => 'kits.search', 'method' => 'POST']) !!}
@@ -34,9 +35,7 @@
                         <td>{{$kit->status == 1 ? 'Active' : 'Not Active'}}</td>
                         <td>
                             <a href="{{route('kits.edit', $kit->id)}}" class="btn btn-sm btn-outline-primary">Edit</a>
-                            {!! Form::open( ['route' => ['kits.destroy', $kit->id], 'method' => 'DELETE']) !!}
-                            {!! Form::submit('Delete', ['class' => 'btn btn-outline-danger btn-sm', 'id' => 'delete', 'data-toggle'=>'modal', 'data-target' => '#exampleModalCenter']) !!}
-                            {!! Form::close() !!}
+                            <a href="{{route('kits.destroy', $kit->id)}}" class="btn btn-sm btn-outline-danger deleteKit">Delete</a>
                         </td>
                     </tr>
                 @endforeach
