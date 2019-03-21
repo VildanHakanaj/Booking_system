@@ -1,7 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
-
     <div class="row col-md-6 offset-3">
         <h1>Add a product to {{$kit->title}}</h1>
         {!! Form::open(['route' => 'kitProduct.store', 'method' => 'POST', 'class' => 'w-100']) !!}

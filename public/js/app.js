@@ -36443,7 +36443,12 @@ $('document').ready(function () {
     ev.preventDefault();
     var $buttonClicked = $(ev.target);
     hasProduct($buttonClicked);
-  }); //Deletes the kit
+  });
+  /*
+  * Deletes the kit from the database
+  *
+  * @params the button that was clicked
+  * */
 
   function deleteKit($target) {
     $.ajax({
@@ -36457,7 +36462,11 @@ $('document').ready(function () {
         $target.closest('tr').remove();
       }
     });
-  } //Check if it has any products
+  }
+  /*
+  * Check if the kit has any product before deleting
+  *
+  * */
 
 
   function hasProduct($target) {
@@ -36466,7 +36475,7 @@ $('document').ready(function () {
       type: 'POST',
       url: "kits/checkProduct/" + url[url.length - 1],
       success: function success(response) {
-        if (response == 1) {
+        if (response === 1) {
           $modal.modal('show');
           $('#yes').click(function () {
             deleteKit($target);

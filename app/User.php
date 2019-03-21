@@ -70,7 +70,10 @@ class User extends Authenticatable
      * @return array
      *
      *TODO
-     * [ ] Figure how to get the file from the computer
+     * [ ] Store the users in an array of arrays.
+     * [ ] Only store one of the course nubers
+     *      [ ] So it should look like this.
+     *          return [ 'user' => [], 'Course' => 'Course_Name' ];
      */
     public function parseFile()
     {

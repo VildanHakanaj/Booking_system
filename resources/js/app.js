@@ -67,7 +67,11 @@ $('document').ready(function () {
         hasProduct($buttonClicked);
     });
 
-    //Deletes the kit
+    /*
+    * Deletes the kit from the database
+    *
+    * @params the button that was clicked
+    * */
     function deleteKit($target){
         $.ajax({
             url: $target.attr('href'),
@@ -82,18 +86,23 @@ $('document').ready(function () {
         });
     }
 
-    //Check if it has any products
+
+
+
+    /*
+    * Check if the kit has any product before deleting
+    *
+    * */
     function hasProduct($target){
         let url = $target.attr('href').split('/');
         $.ajax({
             type: 'POST',
             url: "kits/checkProduct/" + url[url.length - 1],
             success: (response) => {
-                if(response == 1){
+                if(response === 1){
                     $modal.modal('show');
                     $('#yes').click(()=>{
                         deleteKit($target);
-
                     });
                 }else{
                     deleteKit($target);

@@ -124,11 +124,9 @@ class KitController extends Controller
          * */
         //Delete the relation
         KitProduct::where('kit_id', $kit->id)->delete();
+
         //Delete the model
         Kit::where('id', $kit->id)->delete();
-        //Redirect the user back
-//        Session::flash('success', $kit->title . 'was successfully removed');
-//        return redirect()->route('kits.index');
         return "The kit was successfully deleted";
     }
 
