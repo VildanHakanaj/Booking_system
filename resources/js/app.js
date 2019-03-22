@@ -72,43 +72,44 @@ $('document').ready(function () {
     *
     * @params the button that was clicked
     * */
-    function deleteKit($target){
-        $.ajax({
-            url: $target.attr('href'),
-            type: 'POST',
-            data: {
-              "_method": "DELETE"
-            },
-            success: () => {
+    function deleteKit($target) {
+        $.post($target.attr('href'), {_method: "DELETE"})
+            .done((data) => {
+                //Close the model and remove the tr
                 $modal.modal('hide');
                 $target.closest('tr').remove();
-            }
-        });
+            })
+            .fail((jqXHR) => {
+                //Print out an error
+                alert("Error: " + jqXHR.responseText);
+            });
     }
-
-
 
 
     /*
     * Check if the kit has any product before deleting
     *
+    * @param $target
+    * @return response
+    *
     * */
-    function hasProduct($target){
+    function hasProduct($target) {
+        //Split the url and get the id out of it
         let url = $target.attr('href').split('/');
-        $.ajax({
-            type: 'POST',
-            url: "kits/checkProduct/" + url[url.length - 1],
-            success: (response) => {
-                if(response === 1){
+        const id = url[url.length - 1];
+        $.post('kits/checkProduct/' + id)
+            .done((data) => {
+                if (data) {
                     $modal.modal('show');
-                    $('#yes').click(()=>{
+                    $('#yes').click(() => {
                         deleteKit($target);
                     });
-                }else{
+                } else {
                     deleteKit($target);
                 }
-
-            }
-        });
+            })
+            .fail((jqXHR) => {
+                alert("Error:: " + jqXHR.responseText);
+            });
     }
 });

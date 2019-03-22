@@ -36451,39 +36451,41 @@ $('document').ready(function () {
   * */
 
   function deleteKit($target) {
-    $.ajax({
-      url: $target.attr('href'),
-      type: 'POST',
-      data: {
-        "_method": "DELETE"
-      },
-      success: function success() {
-        $modal.modal('hide');
-        $target.closest('tr').remove();
-      }
+    $.post($target.attr('href'), {
+      _method: "DELETE"
+    }).done(function (data) {
+      //Close the model and remove the tr
+      $modal.modal('hide');
+      $target.closest('tr').remove();
+    }).fail(function (jqXHR) {
+      //Print out an error
+      alert("Error: " + jqXHR.responseText);
     });
   }
   /*
   * Check if the kit has any product before deleting
   *
+  * @param $target
+  * @return response
+  *
   * */
 
 
   function hasProduct($target) {
+    //Split the url and get the id out of it
     var url = $target.attr('href').split('/');
-    $.ajax({
-      type: 'POST',
-      url: "kits/checkProduct/" + url[url.length - 1],
-      success: function success(response) {
-        if (response === 1) {
-          $modal.modal('show');
-          $('#yes').click(function () {
-            deleteKit($target);
-          });
-        } else {
+    var id = url[url.length - 1];
+    $.post('kits/checkProduct/' + id).done(function (data) {
+      if (data) {
+        $modal.modal('show');
+        $('#yes').click(function () {
           deleteKit($target);
-        }
+        });
+      } else {
+        deleteKit($target);
       }
+    }).fail(function (jqXHR) {
+      alert("Error:: " + jqXHR.responseText);
     });
   }
 });

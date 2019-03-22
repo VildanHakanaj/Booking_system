@@ -7,6 +7,7 @@ use App\KitProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Session;
+
 class KitController extends Controller
 {
     /**
@@ -127,7 +128,6 @@ class KitController extends Controller
 
         //Delete the model
         Kit::where('id', $kit->id)->delete();
-        return "The kit was successfully deleted";
     }
 
     /*
@@ -137,8 +137,9 @@ class KitController extends Controller
      * @return view
      *
      * */
-    public function search(Request $request){
-        if(empty($request->search)){
+    public function search(Request $request)
+    {
+        if (empty($request->search)) {
             return view('admin.kits.index')->with('kits', Kit::orderBy('created_at', 'desc')->paginate(10));
         }
         $kits = Kit::orderBy('created_at', 'desc')->where('title', 'LIKE', '%' . $request->search . '%')->paginate(10);
@@ -150,12 +151,14 @@ class KitController extends Controller
      *
      * @return boolean
      * */
-    public function checkProduct($id){
-        if(KitProduct::where('kit_id', $id)->count() > 0){
-            return 1;
+    public function checkProduct($id)
+    {
+        if (KitProduct::where('kit_id', $id)->count() > 0) {
+            echo true;
+        }else{
+            echo false;
         }
 
-        return 0;
     }
 
 }
