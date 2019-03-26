@@ -50,16 +50,14 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //Get all the reasons
+        //Get all the reasons to display
         $reasons = Reason::all();
-
         //Show the form to insert users
         return view('admin.users.create')->with('reasons', $reasons);
     }
 
     /**
      * Store a newly created resource in storage.
-     *
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
@@ -92,15 +90,22 @@ class UsersController extends Controller
 
         /*==================== CHECK IF WE HAVE ROSTER ====================*/
         if (isset($request->roster)) {
+            $filename = $request->roster;
             //Get the array with data
-            $data = $user->parseFile();
+            $data = parseFile($filename);
             //Get the data for the user
-            $userData = $data[0];
+            $userData = $data['users'];
             //Get the data for the reason
-            $reasonData = $data[1];
+            $reasonData = $data['reason'];
+            $users = [];
 
             //Create the user from the roster.
-            $user->createUser($userData);
+            foreach($userData as $myUser){
+                $user = new User;
+                $user->createUser($myUser);
+
+            }
+
             //Override the request with the data from the file
             $request->merge([
                 'name' => $user->name,
