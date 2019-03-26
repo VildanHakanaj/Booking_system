@@ -21,6 +21,7 @@
                 <th scope="col">#ID</th>
                 <th scope="col">Title</th>
                 <th scope="col">Status</th>
+                <th scope="col">Expiry Date</th>
                 <th scope="col">Action</th>
             </tr>
             </thead>
@@ -33,6 +34,7 @@
                         <th scope="row">#{{$reason->id}}</th>
                         <td><a href="{{route('reason.show', $reason->id)}}">{{$reason->title}}</a></td>
                         <td>{{$reason->active == 1 ? 'Active' : 'Not Active'}}</td>
+                        <td>{{$reason->expires_at}}</td>
                         <td><a href="{{route('reason.edit', $reason->id)}}" class="btn btn-outline-primary">Edit</a></td>
                     </tr>
                 @endforeach

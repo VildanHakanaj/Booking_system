@@ -52,9 +52,9 @@ class Reason extends Model
      * */
     public function createReason($data)
     {
-        $this->title = $data['reason'];
-        $this->setExpiry($data['reason']);
-        $this->description = $data['reason'];
+        $this->title = $data;
+        $this->setExpiry($data);
+        $this->description = $data;
     }
 
     public function isUnique($title)

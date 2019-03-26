@@ -79,16 +79,19 @@ class UsersController extends Controller
          *          [ ] Check if it has a #
          *          [ ] Check if the stdn has more than it should
          * */
-        $user = new User();               //User instance
+        //User instance
+        $user = new User();
 
-        $reason = new Reason();             //Reason model
+        //Reason model
+        $reason = new Reason();
 
-        $reason_to_book = new ReasonToBook();       //Reason relations User
+        //Reason relations User
+        //Reason relations User for the default
+        $reason_to_book_default = new ReasonToBook();
 
-        $reason_to_book_default = new ReasonToBook();       //Reason relations User for the default
-
-
-        /*==================== CHECK IF WE HAVE ROSTER ====================*/
+        /***********************************
+         * CHECK IF THE ADMIN HAS A ROSTER FILE*
+         * *********************************/
         if (isset($request->roster)) {
             $filename = $request->roster;
             //Get the array with data
@@ -100,101 +103,122 @@ class UsersController extends Controller
             $users = [];
 
             //Create the user from the roster.
-            foreach($userData as $myUser){
+            foreach ($userData as $myUser) {
                 $user = new User;
                 $user->createUser($myUser);
 
+                //Override the request with the data from the file
+                $request->merge([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'stdn' => $user->stdn,
+                ])->validate([
+                    'name' => 'required|min:2|max:255',
+                    'email' => 'required|email',
+                    'stdn' => 'required|min:7|max:255',
+                ]);
+
+                array_push($users, $user);
             }
-
-            //Override the request with the data from the file
-            $request->merge([
-                'name' => $user->name,
-                'email' => $user->email,
-                'stdn' => $user->stdn,
-            ]);
-
-            //Validate the file data for user
-            $request->validate([
-                'name' => 'required|min:2|max:255',
-                'email' => 'required|email',
-                'stdn' => 'required|min:7|max:255',
-            ]);
-
             //Check if the reason already exists
-            if ($reason->isUnique($reasonData['reason'])) {
+            if ($reason->isUnique($reasonData)) {
                 //Create the reason
                 $reason->createReason($reasonData);
             } else {
                 //Get the existing reason
-                $reason = Reason::where('title', $reasonData['reason'])->first();
+                $reason = Reason::where('title', $reasonData)->first();
             }
 
         } else {  /*======== END OF THE ROSTER =============*/
 
-            /*==================== VALIDATE AND CREATE THE USER MANUALLY ==================== */
-            $request->validate([                        //Validate the request for the user
-                'name' => 'min:3|max:255',
-                'email' => 'required|email|min:3|max:255',
-                'stdn' => 'required|min:7|max:255',
-            ]);
+            /****************************************************************                                                             *
+             *          ADMIN ENTERS THE USER MANUALLY                     *
+             ***************************************************************/
 
+            //Only check if they are not admin
+            $stdnRule = $request->admin ? 'unique:users|max:7' : 'required|unique:users|min:7|max:255';
+
+            $rules = [
+                'name' => 'required|min:2|max:255',
+                'email' => 'unique:users|required|email|min:3|max:255',
+                'stdn' => $stdnRule
+            ];
+            $request->validate($rules);
             $user->createUser($request);            //Create the new user.
 
-            if (strcmp($request->title, DEFAULT_REASON) < 0) {                        //Check if the reason is set to something other then the default.
+            /*
+             * If the user is an admin then the reason part is skiped
+             * because the admin doesn't need reasons to be in the system.
+             * */
+            //Check if the user is an admin
+            if ($request->admin) {
+                //Set the admin status to true
+                $user->admin = $request->admin;
+                $user->save();
+                Session::flash('success', 'Admin created successfully');
+                return redirect()->route('users.show', $user->id);
+            }
 
-                $reason = Reason::where('title', $request->reasons)->first();            //Get the reason if exists.
-
+            //Push the user
+            array_push($users, $user);
+            //Check if the reason is set to something other then the default.
+            if (strcmp($request->title, DEFAULT_REASON) < 0) {
+                //Get the reason if exists.
+                $reason = Reason::where('title', $request->reasons)->first();
             }
         }
-
 
         /**********************************************
          * ADDING THE USER AND REASON TO THE DATABASE *
          **********************************************/
 
         /*=====================Create the user=======================*/
-        if ($request->admin) {        //Check if the user is an admin
-            $user->admin = $request->admin;            //Set the admin status to true
-        }
+        foreach ($users as $user) {
+            $reason_to_book = new ReasonToBook();
+            $reason_to_book_default = new ReasonToBook();
 
-        $user->token = str_random(25);        //Generate a random token for later verification of the user
-
-        //Check if the user does not exist
-        if ($user->isUnique($user->email)) {
-            $user->save();        //Save the user
-            $user->sendVerificationEmail();        //Send the user an email
-        } else {
-            //get the existing user.
-            $user = User::where('email', $user->email)->first();
-        }
-        /*===========================END OF CREATING THE USER====================*/
-
-        /*============RELATION CREATION============*/
-
-        if (!$user->isAdmin()) {        //Check if the user is not an admin so it can have reasons.
-
-            if ($reason->isUnique($reason->title)) {            //check if the reason doesn't exists
-                $reason->save();
-
+            //Check if the user does not exist
+            if ($user->isUnique($user->email)) {
+                //Generate a random token for later verification of the user
+                $user->token = str_random(25);
+                //Save the user
+                $user->save();
+                //Send the user an email
+                /*FIXME:: The repetition of email will throw errors maybe fixable with other providers*/
+//                $user->sendVerificationEmail();
+            } else {
+                //get the existing user.
+                $user = User::where('email', $user->email)->first();
             }
 
-            //Check if the relation doesn't exist yet
-            if ($reason_to_book_default->isUnique($user->id, Reason::where('title', 'Other')->pluck('id'))) {
-                $reason_to_book_default->createRelation($user, Reason::where('title', 'Other')->first());        //Add the default other to the user
-                $user->reasons()->save($reason_to_book_default);            //Save the relation between the user and the reason
-            }
+            /*===========================END OF CREATING THE USER====================*/
 
-            //Check if the relation already exists
-            if ($reason_to_book->isUnique($user->id, $reason->where('title', $reason->title)->pluck('id')->first())) {
-                $reason_to_book->createRelation($user, $reason->where('title', $reason->title)->first());                //Create the instance of the reason to book
-                $user->reasons()->save($reason_to_book);                //Create the relation between the user and the reason.
+            /*============RELATION CREATION============*/
+            if (!$user->isAdmin()) {        //Check if the user is not an admin so it can have reasons.
+                if ($reason->isUnique($reason->title)) {            //check if the reason doesn't exists
+                    $reason->save();
+                }
+
+                //Check if the relation doesn't exist yet
+                if ($reason_to_book_default->isUnique($user->id, Reason::where('title', 'other')->pluck('id')->first())) {
+                    //Add the default other to the user
+                    $reason_to_book_default->createRelation($user, Reason::where('title', 'other')->first());
+                    //Save the relation between the user and the reason
+                    $reason_to_book_default->save();
+                }
+
+                //Check if the relation already exists
+                if ($reason_to_book->isUnique($user->id, $reason->where('title', $reason->title)->pluck('id')->first())) {
+                    //Create the instance of the reason to book
+                    $reason_to_book->createRelation($user, $reason->where('title', $reason->title)->first());
+                    //Create the relation between the user and the reason.
+                    $reason_to_book->save();
+                }
             }
         }
         /*==========END OF THE RELATION CREATION==========*/
-
-        Session::flash('success', 'User successfully created');        //Save the message in the session
-
-        return redirect(route('users.show', $user->id));        //Redirect the admin to the show user
+        Session::flash('success', 'Users successfully created');        //Save the message in the session
+        return redirect(route('users.index'));        //Redirect the admin to the show user
         /*==========END OF THE USER NOTIFICATION==========*/
     }
 
@@ -204,7 +228,8 @@ class UsersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public
+    function show(User $user)
     {
         //Use a join to select the relation and the reason.
         $reasons = $user->reasons();
@@ -217,7 +242,8 @@ class UsersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public
+    function edit(User $user)
     {
         return view('admin.users.edit')->with('user', $user);
     }
@@ -229,7 +255,8 @@ class UsersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public
+    function update(Request $request, User $user)
     {
 
         //Validate the request
@@ -260,7 +287,8 @@ class UsersController extends Controller
     }
 
 
-    public function deactivate($id)
+    public
+    function deactivate($id)
     {
         ReasonToBook::where('user_id', $id)->update(['active' => 0]);
         Session::flash('success', 'User successfully deactivated');
@@ -278,14 +306,17 @@ class UsersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public
+    function destroy($id)
     {
 //        return redirect(route('errors.notAuthorized'));
     }
 
-    public function search(Request $request){
+    public
+    function search(Request $request)
+    {
 
-        if(empty($request->search)){
+        if (empty($request->search)) {
             return view('admin.users.index')->with('users', User::orderBy('created_at', 'desc')->paginate(10));
         }
 
