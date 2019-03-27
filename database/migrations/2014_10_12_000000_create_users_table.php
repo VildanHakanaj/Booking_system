@@ -15,7 +15,6 @@ class CreateUsersTable extends Migration
     {
         //Create the user table
         Schema::create('users', function (Blueprint $table) {
-
             //Id of the user
             $table->increments('id');
 
@@ -24,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
 
             //Student number
-            $table->integer('stdn')->unique();
+            $table->integer('stdn')->nullable()->unique();
 
             //I made the address and number nullable so the user can fill those in after they login
             $table->string('home_address')->nullable();
