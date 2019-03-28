@@ -50,9 +50,10 @@ Route::prefix('admin')->middleware(['admin', 'auth'])->group(function(){
     Route::post('products/search', 'ProductController@search')                                  ->name('products.search');
     Route::post('reasons/search', 'ReasonController@search')                                    ->name('reasons.search');
     Route::post('bookings/search', 'BookingController@search')                                   ->name('bookings.search');
-    /*========================SEARCH ROUTES==============================*/
+    /*========================BOOKING ROUTES==============================*/
     Route::resource('bookings', 'BookingController');
-
+    /*========================SETTINGS ROUTES==============================*/
+    Route::resource('bookingsSetting', 'BookingSettingsController');
 });
 
 //Authentication routes

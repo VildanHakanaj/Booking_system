@@ -22,6 +22,9 @@ class CreateBookingsTable extends Migration
             $table->boolean('checked_out')->nullable();
             $table->boolean('checked_in')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('kit_id')->references('id')->on('kits');
+
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBookingSettingsTable extends Migration
+class CreateCheckInTimesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,12 @@ class CreateBookingSettingsTable extends Migration
     public function up()
     {
         /*
-         * TODO-QUESTION:: The default times for the booking days will get stored.
+         * TODO-Question:: Should the hours be json object with the times in it or just a string is okay
          * */
-        Schema::create('booking_settings', function (Blueprint $table) {
+        Schema::create('check_in_times', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('default_booking_days');
+            $table->string('day');
+            $table->string('hours');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateBookingSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('booking_settings');
+        Schema::dropIfExists('check_in_times');
     }
 }
