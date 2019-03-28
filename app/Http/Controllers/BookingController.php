@@ -20,7 +20,8 @@ class BookingController extends Controller
      * CALENDAR
      * [ ] The calendar will be able to be clicked on and place event listeners on what to do on that dates
      * [ ] The
-     *
+     * SEARCH
+     * [ ] Finish the searching functionality
      * */
     /**
      * Display a listing of the resource.
@@ -46,7 +47,7 @@ class BookingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -57,7 +58,7 @@ class BookingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Booking  $booking
+     * @param  \App\Booking $booking
      * @return \Illuminate\Http\Response
      */
     public function show(Booking $booking)
@@ -68,7 +69,7 @@ class BookingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Booking  $booking
+     * @param  \App\Booking $booking
      * @return \Illuminate\Http\Response
      */
     public function edit(Booking $booking)
@@ -79,8 +80,8 @@ class BookingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Booking  $booking
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Booking $booking
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Booking $booking)
@@ -91,11 +92,22 @@ class BookingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Booking  $booking
+     * @param  \App\Booking $booking
      * @return \Illuminate\Http\Response
      */
     public function destroy(Booking $booking)
     {
         //
     }
+
+    function search(Request $request)
+    {
+        dd("Searching");
+//        if (empty($request->search)) {
+//            return view('admin.bookings.index')->with('bookings', Booking::orderBy('created_at', 'desc')->paginate(10));
+//        }
+//        $kits = Kit::orderBy('created_at', 'desc')->where('user_id', 'LIKE', '%' . $request->search . '%')->paginate(10);
+//        return view('admin.kits.index')->with('kits', $kits);
+    }
+
 }

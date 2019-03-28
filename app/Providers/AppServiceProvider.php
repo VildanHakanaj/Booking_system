@@ -21,7 +21,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('users', \App\User::all())
                 ->with('reasons', \App\Reason::all())
                 ->with('products', \App\Product::all())
-                ->with('kits', \App\Kit::all());
+                ->with('kits', \App\Kit::all())
+                ->with('bookings', \App\Booking::all());
 
         });
 
