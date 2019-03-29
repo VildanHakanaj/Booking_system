@@ -53,7 +53,7 @@ Route::prefix('admin')->middleware(['admin', 'auth'])->group(function(){
     /*========================BOOKING ROUTES==============================*/
     Route::resource('bookings', 'BookingController');
     /*========================SETTINGS ROUTES==============================*/
-    Route::resource('bookingsSetting', 'BookingSettingsController');
+    Route::resource('bookingSettings', 'BookingSettingsController');
 });
 
 //Authentication routes

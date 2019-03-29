@@ -15,7 +15,7 @@ class BookingSettingsController extends Controller
     public function index()
     {
         $settings = BookingSettings::all();
-        return view('admin.bookingSettings.index');
+        return view('admin.settings.index')->with('settings', $settings);
     }
 
     /**
