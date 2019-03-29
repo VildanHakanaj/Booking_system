@@ -4,53 +4,42 @@
 
     <div class="container">
         <h1>Settings</h1>
-        <div class="row"> <!-- FIRST ROW -->
-            <div class="col-md-6">
-                <div class="card p-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="monday">Monday</label>
-                                <input type="checkbox" class="align-middle " name="monday" id="monday" class="">
-                            </div>
-                            <div class="form-group">
-                                <label for="monday">Tuesday</label>
-                                <input type="checkbox" class="align-middle " name="monday" id="monday" class="">
-                            </div>
-                            <div class="form-group">
-                                <label for="monday">Wednesday</label>
-                                <input type="checkbox" class="align-middle " name="monday" id="monday" class="">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="monday">Thursday</label>
-                                <input type="checkbox" class="align-middle " name="monday" id="monday" class="">
-                            </div>
-                            <div class="form-group">
-                                <label for="monday">Friday</label>
-                                <input type="checkbox" class="align-middle " name="monday" id="monday" class="">
-                            </div>
-                            <div class="form-group">
-                                <label for="monday">Saturday</label>
-                                <input type="checkbox" class="align-middle " name="monday" id="monday" class="">
-                            </div>
-                            <div class="form-group">
-                                <label for="monday">Sunday</label>
-                                <input type="checkbox" class="align-middle " name="monday" id="monday" class="">
-                            </div>
-                        </div>
+        <div class="row settings">
+            <div class="card">
+                <div class="row m-3">
+                    <div class="form-group mr-3">
+                        <label for="monday">Monday</label>
+                        <input type="checkbox" name="monday" id="monday">
+                    </div>
+                    <div class="form-group mr-3">
+                        <label for="monday">Tuesday</label>
+                        <input type="checkbox" name="monday" id="monday">
+                    </div>
+                    <div class="form-group mr-3">
+                        <label for="monday">Wednesday</label>
+                        <input type="checkbox" name="monday" id="monday">
+                    </div>
+                    <div class="form-group mr-3">
+                        <label for="monday">Thursday</label>
+                        <input type="checkbox" name="monday" id="monday">
+                    </div>
+                    <div class="form-group mr-3">
+                        <label for="monday">Friday</label>
+                        <input type="checkbox" name="monday" id="monday">
+                    </div>
+                    <div class="form-group mr-3">
+                        <label for="monday">Saturday</label>
+                        <input type="checkbox" name="monday" id="monday">
+                    </div>
+                    <div class="form-group mr-3">
+                        <label for="monday">Sunday</label>
+                        <input type="checkbox" name="monday" id="monday">
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 card p-3">
-
-                <div class="form-group">
-                    <label for="times">Number of times</label>
-                    <input type="number" name="times" id="times" class="form-control">
-                </div>
-            </div>
         </div>
+        {{--END OF TOP ROW--}}
+
         <div class="row mt-5">
             <div class="col-md-12">
                 <div class="card p-3">
@@ -59,5 +48,6 @@
             </div>
         </div>
     </div>
-
+    </form>
+    @include('layouts.partials.ckeditor')
 @endsection

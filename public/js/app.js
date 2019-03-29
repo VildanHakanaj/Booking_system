@@ -36488,18 +36488,6 @@ $('document').ready(function () {
       alert("Error:: " + jqXHR.responseText);
     });
   }
-
-  var $times = $('#times');
-  $times.on('blur', function () {
-    $this = $(this);
-    var number = $this.val();
-    $('input[type="time"]').closest('.row').remove();
-    var timesInput = "<div class=\"row\">\n                    <div class=\"form-group col-md-6\">\n                        <label for=\"startTime\">Start</label>\n                        <input placeholder=\"\" type=\"time\" name=\"startTime\" class=\"form-control\">\n                    </div>\n\n                    <div class=\"form-group col-md-6\">\n                        <label for=\"endTime\">End</label>\n                        <input type=\"time\" name=\"endTime\" class=\"form-control\">\n                    </div>\n                </div>";
-
-    for (var i = 0; i < $this.val(); i++) {
-      $this.after(timesInput);
-    }
-  });
 });
 
 /***/ }),
