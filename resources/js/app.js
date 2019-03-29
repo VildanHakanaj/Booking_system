@@ -112,4 +112,26 @@ $('document').ready(function () {
                 alert("Error:: " + jqXHR.responseText);
             });
     }
+
+    let $times = $('#times');
+    $times.on('blur', function () {
+        $this = $(this);
+        let number = $this.val();
+        $('input[type="time"]').closest('.row').remove();
+
+        let timesInput = `<div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="startTime">Start</label>
+                        <input placeholder="" type="time" name="startTime" class="form-control">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="endTime">End</label>
+                        <input type="time" name="endTime" class="form-control">
+                    </div>
+                </div>`;
+        for (let i = 0; i < $this.val(); i++) {
+            $this.after(timesInput);
+        }
+    })
 });

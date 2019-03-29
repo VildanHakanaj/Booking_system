@@ -47,18 +47,7 @@
 
                 <div class="form-group">
                     <label for="times">Number of times</label>
-                    <input type="number" name="times" class="form-control" placeholder="2">
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="startTime">Start</label>
-                        <input placeholder="" type="time" name="startTime" class="form-control">
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <label for="endTime">End</label>
-                        <input type="time" name="endTime" class="form-control">
-                    </div>
+                    <input type="number" name="times" id="times" class="form-control">
                 </div>
             </div>
         </div>
