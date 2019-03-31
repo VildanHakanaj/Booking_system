@@ -36488,15 +36488,6 @@ $('document').ready(function () {
       alert("Error:: " + jqXHR.responseText);
     });
   }
-
-  var $weekDay = $('.settings [type="checkbox"]');
-  $weekDay.on('click', function () {
-    $this = $(this);
-
-    if ($this.is(':checked')) {
-      $('.times').prepend("\n             <div class=\"row mt-3\">\n                <div class=\"card col-md-4\">\n                <div class=\"card-header\">\n                    <h3>".concat($this.attr('id'), " Times</h3>\n                </div>\n                <textarea name=\"").concat($this.attr('name'), "\" id=\"\" cols=\"30\" rows=\"10\"></textarea>\n            </div>\n        </div>\n            "));
-    }
-  });
 });
 
 /***/ }),

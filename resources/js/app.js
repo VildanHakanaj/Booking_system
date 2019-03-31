@@ -112,27 +112,4 @@ $('document').ready(function () {
                 alert("Error:: " + jqXHR.responseText);
             });
     }
-
-    let $weekDay = $('.settings [type="checkbox"]');
-
-    $weekDay.on('click', function(){
-        $this = $(this);
-
-        if($this.is(':checked')){
-            $('.times').prepend(`
-             <div class="row mt-3">
-                <div class="card col-md-4">
-                <div class="card-header">
-                    <h3>${$this.attr('id')} Times</h3>
-                </div>
-                <textarea name="${$this.attr('name')}" id="" cols="30" rows="10"></textarea>
-            </div>
-        </div>
-            `);
-        }
-
-
-    });
-
-
 });
