@@ -4,60 +4,33 @@
 
     <div class="container">
         <h1>Settings</h1>
-        {!! Form::open(['route' => 'bookingSettings.store', 'method' => 'POST']) !!}
-            <div class="row settings">
-                <div class="card">
-                    <div class="row m-3">
-                        <div class="form-group mr-3">
-                            {!! Form::label('Monday') !!}
-                            {!! Form::checkbox('monday') !!}
-                        </div>
-                        <div class="form-group mr-3">
-                            {!! Form::label('tuesday') !!}
-                            {!! Form::checkbox('tuesday') !!}
-                        </div>
-                        <div class="form-group mr-3">
-                            {!! Form::label('Wednesday') !!}
-                            {!! Form::checkbox('wednesday') !!}
-                        </div>
-                        <div class="form-group mr-3">
-                            {!! Form::label('Thursday') !!}
-                            {!! Form::checkbox('thursday') !!}
-                        </div>
-                        <div class="form-group mr-3">
-                            {!! Form::label('Friday') !!}
-                            {!! Form::checkbox('friday') !!}
-                        </div>
-                        <div class="form-group mr-3">
-                            {!! Form::label('Saturday') !!}
-                            {!! Form::checkbox('saturday') !!}
-                        </div>
-                        <div class="form-group mr-3">
-                            {!! Form::label('Sunday') !!}
-                            {!! Form::checkbox('sunday') !!}
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="card col-md-12">
+                @if($days->count() > 0)
+                    <ul class="list-group list-group-flush">
+                        <h3 class="m-3">Days and times <a href="" class="btn btn-sm btn-success">Edit</a></h3>
+                        @foreach($days as $day)
+                            <li class="list-group-item">{{$day->day}} {{$day->hours}}</li>
+                        @endforeach
+                    </ul>
+                @endif
+                <ul class="list-group list-group-flush">
+                    <h3 class="m-3">Default Days</h3>
+                    <li class="list-group-item">Cras justo odio</li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Morbi leo risus</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="card p-3">
+                    @include('admin.settings.calendar')
                 </div>
             </div>
-            {{--END OF TOP ROW--}}
-            <div class="row mt-3">
-                <div class="col-md-4">
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Monday Times</h3>
-                        </div>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-5">
-                <div class="col-md-12">
-                    <div class="card p-3">
-                        @include('admin.settings.calendar')
-                    </div>
-                </div>
-            </div>
+        </div>
         {!! Form::close() !!}
     </div>
     @include('layouts.partials.ckeditor')

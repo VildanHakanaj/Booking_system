@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BookingSettings;
+use App\CheckInTimes;
 use Illuminate\Http\Request;
 
 class BookingSettingsController extends Controller
@@ -15,7 +16,10 @@ class BookingSettingsController extends Controller
     public function index()
     {
         $settings = BookingSettings::all();
-        return view('admin.settings.index')->with('settings', $settings);
+        $days = CheckInTimes::all();
+        return view('admin.settings.index')
+            ->with('settings', $settings)
+            ->with('days', $days);
     }
 
     /**
