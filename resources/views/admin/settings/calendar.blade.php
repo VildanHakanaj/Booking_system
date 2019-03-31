@@ -611,4 +611,4 @@
         </div>
     </div>
 </div>
-<input type="submit" class="btn btn-lg btn-success" value="Update Calendar">
+<input type="submit" name="submit" class="btn btn-lg btn-success" value="Update Calendar">
