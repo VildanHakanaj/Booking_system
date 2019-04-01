@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Calendar;
 use App\CheckInTimes;
 use Illuminate\Http\Request;
+use Session;
 
 class CheckInTimesController extends Controller
 {
-    public function create(){
-        return view('admin.settings.checkInTimes.create');
-    }
-
     public function store(Request $request){
         $array = [];
         if($request->monday){
@@ -50,10 +48,21 @@ class CheckInTimesController extends Controller
         }
 
         CheckInTimes::truncate();
+        $cal = new Calendar;
         foreach($array as $day){
-
             $day->save();
         }
+
+        $checkInDates = $cal->generateCalendar($array, date('2019-04-31'));
+        Calendar::truncate();
+        foreach($checkInDates as $checkInDate){
+            $cal = new Calendar;
+            $cal->date = $checkInDate;
+            $cal->save();
+        }
+
+        Session::flash('success', 'Successfully changed the time of the ');
+        return redirect()->route('bookingSettings.index');
 
     }
 
@@ -62,7 +71,7 @@ class CheckInTimesController extends Controller
      * */
     public function edit(){
         $checkInTime = CheckInTimes::all();
-        return view('admin.settings.checkInTimes.edit')->with('days', $checkInTime);
+        return view('admin.settings.checkInTimes.edit')->with('checkInTime', $checkInTime);
     }
 
     public function update(Request $request){

@@ -1,8 +1,8 @@
 @extends('layouts.app')
-@include('layouts.messages.success')
 @section('content')
 
     <div class="container">
+        @include('layouts.messages.success')
         <h1>Settings</h1>
         <div class="row">
             <div class="card col-md-12">
