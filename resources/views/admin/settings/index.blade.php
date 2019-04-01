@@ -8,7 +8,7 @@
             <div class="card col-md-12">
                 @if($days->count() > 0)
                     <ul class="list-group list-group-flush">
-                        <h3 class="m-3">Days and times <a href="" class="btn btn-sm btn-success">Edit</a></h3>
+                        <h3 class="m-3">Days and times <a href="{{route('checkInTimes.edit')}}" class="btn btn-sm btn-success">Edit</a></h3>
                         @foreach($days as $day)
                             <li class="list-group-item">{{$day->day}} {{$day->hours}}</li>
                         @endforeach

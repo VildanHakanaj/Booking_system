@@ -15,7 +15,7 @@
 Route::get('/', 'PagesController@index');
 
 //Administrator paths
-Route::prefix('admin')->middleware(['admin', 'auth'])->group(function(){
+Route::prefix('admin')->middleware(['admin', 'auth'])->group(function () {
     //The dashboard
     Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
 
@@ -29,45 +29,46 @@ Route::prefix('admin')->middleware(['admin', 'auth'])->group(function(){
     /*=====================REASON TO BOOK ROUTES=====================*/
     Route::resource('reasonToBook', 'ReasonsToBookController');
     //To add the reason
-    Route::get('reasonToBook/create/{id}', 'ReasonsToBookController@create')                    ->name('reasonToBook.create');
-    Route::get('reasonToBook/deactivate/{user}/{reason}', 'ReasonsToBookController@deactivate') ->name('reasonToBook.deactivate');
+    Route::get('reasonToBook/create/{id}', 'ReasonsToBookController@create')->name('reasonToBook.create');
+    Route::get('reasonToBook/deactivate/{user}/{reason}', 'ReasonsToBookController@deactivate')->name('reasonToBook.deactivate');
 
     /*=======================PRODUCTS ROUTES===========================*/
     Route::resource('products', 'ProductController');
 
     /*=========================KITS ROUTES===============================*/
     Route::resource('kits', 'KitController');
-    Route::post('kits/checkProduct/{kit}', 'KitController@checkProduct')                        ->name('kitProduct.checkProduct');
+    Route::post('kits/checkProduct/{kit}', 'KitController@checkProduct')->name('kitProduct.checkProduct');
     /*-------------------------KitProduct ROUTES -------------------------*/
-    Route::get('kitsProduct/create/{kit}', 'KitProductController@create')                       ->name('kitProduct.create');
-    Route::post('kitsProduct/store', 'KitProductController@store')                              ->name('kitProduct.store');
-    Route::get('kitsProduct/removeProduct/{product}', 'KitProductController@removeProduct')     ->name('kitProduct.removeProduct');
-    Route::get('kitsProduct/removeAll/{kit}', 'KitProductController@removeAll')                 ->name('kitProduct.removeAll');
+    Route::get('kitsProduct/create/{kit}', 'KitProductController@create')->name('kitProduct.create');
+    Route::post('kitsProduct/store', 'KitProductController@store')->name('kitProduct.store');
+    Route::get('kitsProduct/removeProduct/{product}', 'KitProductController@removeProduct')->name('kitProduct.removeProduct');
+    Route::get('kitsProduct/removeAll/{kit}', 'KitProductController@removeAll')->name('kitProduct.removeAll');
 
     /*========================SEARCH ROUTES==============================*/
-    Route::post('users/search', 'UsersController@search')                                       ->name('users.search');
-    Route::post('kits/search', 'KitController@search')                                          ->name('kits.search');
-    Route::post('products/search', 'ProductController@search')                                  ->name('products.search');
-    Route::post('reasons/search', 'ReasonController@search')                                    ->name('reasons.search');
-    Route::post('bookings/search', 'BookingController@search')                                   ->name('bookings.search');
+    Route::post('users/search', 'UsersController@search')->name('users.search');
+    Route::post('kits/search', 'KitController@search')->name('kits.search');
+    Route::post('products/search', 'ProductController@search')->name('products.search');
+    Route::post('reasons/search', 'ReasonController@search')->name('reasons.search');
+    Route::post('bookings/search', 'BookingController@search')->name('bookings.search');
     /*========================BOOKING ROUTES==============================*/
     Route::resource('bookings', 'BookingController');
     /*========================SETTINGS ROUTES==============================*/
     Route::resource('bookingSettings', 'BookingSettingsController');
+    Route::get('checkInTimes', 'CheckInTimesController@edit')->name('checkInTimes.edit');
+    Route::post('checkInTimes', 'CheckInTimesController@store')->name('checkInTimes.store');
 });
 
 //Authentication routes
 Auth::routes();
 
 //Complete the registration for the user.
-Route::prefix('auth')->group(function(){
+Route::prefix('auth')->group(function () {
 
     Route::get('verifyAccount/{token}', 'VerifyAccount@verifyAccount')->name('verify.verifyAccount');
     Route::Put('verifyAccount/{user}', 'VerifyAccount@update')->name('verify.update');
     Route::get('completeRegistration/{user}', 'VerifyAccount@completeRegistration')->name('verify.finishRegister');
 
 });
-
 
 
 // Not sure if i need this
