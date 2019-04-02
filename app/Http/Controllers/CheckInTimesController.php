@@ -11,6 +11,15 @@ class CheckInTimesController extends Controller
 {
     public function store(Request $request){
         $array = [];
+
+        /*
+         * Set all checked days with their times
+         *TODO
+         * [ ] Check if the admin is removing or changing any of the dates
+         *      [ ] Need to alert the admin if there is any issues with the bookings if they choose
+         *          remove any or change a date that already has a booking
+         * */
+
         if($request->monday){
             $checkIn = new CheckInTimes;
             $checkIn->setDay($request, 'monday', $request->monday_time);
@@ -47,14 +56,18 @@ class CheckInTimesController extends Controller
             array_push($array, $checkIn);
         }
 
+        //Delete the previous data in the table
         CheckInTimes::truncate();
+        //insert all the days and times in the check in table
         $cal = new Calendar;
         foreach($array as $day){
             $day->save();
         }
 
         $checkInDates = $cal->generateCalendar($array, date('2019-04-31'));
+        //delete the previous data from the table
         Calendar::truncate();
+        //Create and save each date in the calendar
         foreach($checkInDates as $checkInDate){
             $cal = new Calendar;
             $cal->date = $checkInDate;

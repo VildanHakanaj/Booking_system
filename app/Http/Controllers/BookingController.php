@@ -19,8 +19,7 @@ class BookingController extends Controller
      *      [ ] After the admin has selected the dates that they don't want then show the actual calendar that the user
      *          be able to see.
      * CALENDAR
-     * [ ] The calendar will be able to be clicked on and place event listeners on what to do on that dates
-     * [ ] The
+     * [ ] The calendar will be able to be clicked on and place event listeners on what to do on those dates
      * SEARCH
      * [ ] Finish the searching functionality
      * */
