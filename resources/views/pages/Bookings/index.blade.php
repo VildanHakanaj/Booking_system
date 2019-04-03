@@ -8,18 +8,21 @@
         <div class="row">
             <div class="col-md-12">
                 <h3 class="text-muted">Booking Section</h3>
-                <form action="#" method="POST" class="col-md-12 justify-content-center">
+                <form action="" method="POST" class="col-md-12 justify-content-center">
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-5">
                                 <label for="kit">Choose a kit</label>
                                 <select id="indexSearch" type="text" name="kit" class="form-control">
+                                    @if($kits->count() > 0)
+                                        <option value="all">All</option>
+                                        @foreach($kits as $kit)
+                                            <option value="{{$kit->id}}">{{$kit->title}}</option>
+                                        @endforeach
+                                    @else
+                                    @endif
                                     <option value="all"></option>
-                                    <option value="1">Kit 1</option>
-                                    <option value="2">Kit 2</option>
-                                    <option value="3">Kit 3</option>
-                                    <option value="4">Kit 4</option>
-                                    <option value="5">Kit 5</option>
+
                                 </select>
                                 <small class="small text-muted">
                                     Leave empty to see whats available
