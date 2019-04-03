@@ -34,12 +34,12 @@
                 @foreach($bookings as $booking)
                     <tr>
                         <th scope="row">#1</th>
-                        <td><a href="">vildanhakanaj@trentu.ca</a></td>
-                        <td>Kit Canon</td>
-                        <td>{{now()}}</td>
-                        <td>{{now()}}</td>
-                        <td>Yes</td>
-                        <td>No</td>
+                        <td>{{$booking->user->name}}</td>
+                        <td>{{$booking->kit->title}}</td>
+                        <td>{{$booking->start_date}}</td>
+                        <td>{{$booking->end_date}}</td>
+                        <td>{{$booking->checked_out == 0 ? 'No' : 'Yes'}}</td>
+                        <td>{{$booking->checked_in == 0  ?  'No'  : 'Yes' }}</td>
                         <td>
                             <a href="{{route('kits.destroy', $booking->id)}}" class="btn btn-sm btn-outline-danger deleteKit">Cancel</a>
                         </td>

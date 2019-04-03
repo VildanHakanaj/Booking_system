@@ -23,8 +23,6 @@ class Kit extends Model
             ->where('kit_product.kit_id', $this->id)->get();
     }
 
-
-
     public function setCheckedAttribute($input, $value){
         $this->$input = $value == "on" ? 1 : 0;
     }
@@ -36,5 +34,7 @@ class Kit extends Model
         $this->setCheckedAttribute('status', $request->status);
     }
 
-
+    public function booking(){
+        return $this->hasOne(Booking::class);
+    }
 }
