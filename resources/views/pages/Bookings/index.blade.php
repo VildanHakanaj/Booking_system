@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <label for="kit">Choose a kit</label>
-                                <select id="indexSearch" type="text" name="kit" class="form-control">
+                                <select id="indexSearch" type="text" name="kit" class="~form-control">
                                     @if($kits->count() > 0)
                                         <option value="all">All</option>
                                         @foreach($kits as $kit)

@@ -30,6 +30,23 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
+        //Add the default reason
+        DB::table('booking_settings')->insert([
+            'default_booking_days' => 3,
+        ]);
+
+        //Add the default reason
+        DB::table('check_in_times')->insert([
+            'day' => 'monday',
+            'hours' => '12:00pm-1:00pm'
+        ]);
+        //Add the default reason
+        DB::table('check_in_times')->insert([
+            'day' => 'thursday',
+            'hours' => '12:00pm-1:00pm'
+        ]);
+
+
         //Auto generate data for the database
         factory(App\User::class, 50)->create();
         factory(App\Reason::class, 12)->create();
