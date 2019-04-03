@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Booking;
+use App\Calendar;
+use App\CheckInTimes;
 use App\Kit;
 use App\KitProduct;
 use Illuminate\Http\Request;
@@ -10,6 +13,12 @@ use Session;
 
 class KitController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -161,4 +170,30 @@ class KitController extends Controller
 
     }
 
+    /*
+     *  Check if the kit is available on that date.
+     *
+     * */
+    public function checkAvailability(Request $request){
+
+        $dates = new Calendar();
+        $bookings = new Booking();
+        $kit = new Kit();
+        $request->validate([
+            'kit' => 'required',
+            'start_date' => 'required|date',
+        ]);
+
+        //Check if the date is a valid check in date
+        if(!$dates->checkIfValid($request->start_date)){
+            Session::flash('error', 'Please make sure to pick a date that is a check in date');
+            return redirect()->back();
+        }
+
+        if($request->kit === 'all'){
+            return redirect()->back()->with('kitsForBooking', $kit->allAvailable());
+        }
+
+
+    }
 }

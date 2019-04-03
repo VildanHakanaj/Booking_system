@@ -10,7 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
+ *TODO
+ * [ ] Need to sort all the controllers so that it will allow access to all
+ * */
 //The main index path
 Route::get('/', 'PagesController@index');
 
@@ -63,7 +66,6 @@ Auth::routes();
 
 //Complete the registration for the user.
 Route::prefix('auth')->group(function () {
-
     Route::get('verifyAccount/{token}', 'VerifyAccount@verifyAccount')->name('verify.verifyAccount');
     Route::Put('verifyAccount/{user}', 'VerifyAccount@update')->name('verify.update');
     Route::get('completeRegistration/{user}', 'VerifyAccount@completeRegistration')->name('verify.finishRegister');
@@ -77,3 +79,9 @@ Route::prefix('auth')->group(function () {
 //});
 //The dashboard
 Route::get('/index', 'PagesController@index')->name('home');
+
+Route::group(['middleware' => 'auth'], function () {
+    /*Kits public routes*/
+    Route::post('/kits/checkAvailability', 'KitController@checkAvailability')->name('kits.checkAvailability');
+
+});

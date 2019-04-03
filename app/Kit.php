@@ -60,4 +60,7 @@ class Kit extends Model
     }
 
 
+    public function allAvailable($start_date){
+
+    }
 }

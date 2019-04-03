@@ -29,4 +29,9 @@ class Calendar extends Model
 
         return $checkInDate;
     }
+
+    public function checkIfValid($date){
+        return $this->where('date', $date)->exists();
+    }
+
 }

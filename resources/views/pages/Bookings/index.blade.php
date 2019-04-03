@@ -6,14 +6,19 @@
             <h3>Welcome to the booking station {{auth()->user()->name}}</h3>
         </div>
         <div class="row">
+            {{--Shows the errors--}}
+            @include('layouts.messages.alert')
+            @include('layouts.messages.error')
             <div class="col-md-12">
                 <h3 class="text-muted">Booking Section</h3>
-                <form action="" method="POST" class="col-md-12 justify-content-center">
+                <form action="{{ route('kits.checkAvailability') }}" method="POST"
+                      class="col-md-12 justify-content-center">
+                    @csrf
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-5">
-                                <label for="kit">Choose a kit</label>
-                                <select id="indexSearch" type="text" name="kit" class="~form-control">
+                                <label for="kit">Choose a kit</label>~
+                                <select id="indexSearch" type="text" name="kit" class="form-control">
                                     @if($kits->count() > 0)
                                         <option value="all">All</option>
                                         @foreach($kits as $kit)
@@ -33,7 +38,8 @@
                                 <input type="date" name="start_date" class="form-control">
                             </div>
                             <div class="col-md-2">
-                                <input type="submit" value="Check Availability" class="mt-4 w-100 btn btn-success">
+                                <input type="submit" name="submit" value="Check Availability"
+                                       class="mt-4 w-100 btn btn-success">
                             </div>
                         </div>
                     </div>
@@ -41,7 +47,6 @@
             </div>
         </div>
         <div class="row">
-
             <div class="col-md-12">
                 <table class="table mb-5">
                     <thead>
@@ -51,23 +56,28 @@
                         <th scope="col">Available</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>Mark</td>
-                        <td>
-                            <ul class="list-group">
-                                <li class="list-group-item">Item 1</li>
-                                <li class="list-group-item">Item 2</li>
-                                <li class="list-group-item">Item 3</li>
-                                <li class="list-group-item">Item 4</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <a href="" class="btn btn-md btn-outline-danger">Not Available</a>
-                            <a href="" class="btn btn-md btn-outline-success">Book</a>
-                        </td>
-                    </tr>
-                    </tbody>
+                    @isset($kitForBooking)
+                        <tbody>
+                        @if($kitsForBooking->count() > 0)
+                            @foreach($kitsForBooking as $kit)
+                                <tr>
+                                    <th scope="row">{{$kit->title}}</th>
+                                    <td>
+                                        @foreach($kit->products() as $product)
+                                            <ul class="list-group">
+                                                <li class="list-group-item">{{$product->title}}</li>
+                                            </ul>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-danger">Not available</a>
+                                        <a href="#" class="btn btn-outline-success">Available</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    @endif
+                    @endisset
                 </table>
             </div>
             {{--Sidebar previous booking--}}

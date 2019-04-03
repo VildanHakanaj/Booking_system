@@ -320,10 +320,9 @@ class UsersController extends Controller
             return view('admin.users.index')->with('users', User::orderBy('created_at', 'desc')->paginate(10));
         }
 
-//        User::orderBy('created_at', 'desc')->paginate(10)
-
         $users = User::orderBy('created_at', 'desc')->where('name', 'LIKE', '%' . $request->search . '%')
             ->orWhere('email', 'LIKE', '%' . $request->search . '%')->paginate(10);
+
         return view('admin.users.index')->with('users', $users);
 
     }
