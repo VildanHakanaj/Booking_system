@@ -16,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
+        //This part will only kick in only if the blade template is recognized.
         view()->composer('layouts.partials.dashNav', function($view){
 
             $view->with('users', \App\User::all())
@@ -26,7 +27,11 @@ class AppServiceProvider extends ServiceProvider
 
         });
 
+        view()->composer('layouts.partials.previousBooking', function($view){
 
+            $view->with('currentBookings', \App\Booking::where('user_id', auth()->user()->id));
+
+        });
     }
 
     /**

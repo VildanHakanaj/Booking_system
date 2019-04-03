@@ -24,9 +24,11 @@ class BookingController extends Controller
      * [ ] Finish the searching functionality
      * */
     /**
+     *
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     *
      */
     public function index()
     {

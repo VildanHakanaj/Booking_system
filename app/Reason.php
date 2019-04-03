@@ -9,7 +9,7 @@ class Reason extends Model
 
     protected $fillable = ['title', 'description', 'expires_at'];
 
-    /**
+    /*
      * Creates the expiry date for the reason
      *
      * @param $data
@@ -57,6 +57,12 @@ class Reason extends Model
         $this->description = $data;
     }
 
+    /*
+     * Check if this model already exist
+     *
+     * @param $title
+     * @return boolean
+     * */
     public function isUnique($title)
     {
         return ($this->where('title', $title)->first()) ? false : true;
