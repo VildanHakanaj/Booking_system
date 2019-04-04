@@ -63,7 +63,7 @@
                                 <tr>
                                     <th scope="row">{{$kit->title}}</th>
                                     <td>
-                                        @foreach($kit->products() as $product)
+                                        @foreach($kit->products() as $product)s
                                             <ul class="list-group">
                                                 <li class="list-group-item">{{$product->title}}</li>
                                             </ul>

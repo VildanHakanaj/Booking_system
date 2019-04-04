@@ -72,4 +72,15 @@ class Kit extends Model
                     ->where('start_date', '=', $start_date);
         })->get();
     }
+
+    /*
+     * Check if the kit is available for that day and is not booked
+     *
+     * @param $start_date
+     * @return boolean
+     * */
+    public function isAvailable($start_date){
+       $count = Booking::where('kit_id', '=', $this->id)->where('start_date', '=', $start_date)->count();
+       return $count == 0 ? true : false;
+    }
 }

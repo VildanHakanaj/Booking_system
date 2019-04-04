@@ -164,7 +164,7 @@ class KitController extends Controller
     {
         if (KitProduct::where('kit_id', $id)->count() > 0) {
             echo true;
-        }else{
+        } else {
             echo false;
         }
 
@@ -173,8 +173,12 @@ class KitController extends Controller
     /*
      *  Check if the kit is available on that date.
      *
+     *TODO
+     * [ ] Figure out why the error with the 405 was happenening
+     * [ ] Check out the relation builder for the booking
      * */
-    public function checkAvailability(Request $request){
+    public function checkAvailability(Request $request)
+    {
 
         $dates = new Calendar();
         $bookings = new Booking();
@@ -185,17 +189,30 @@ class KitController extends Controller
         ]);
 
         //Check if the date is a valid check in date
-        if(!$dates->checkIfValid($request->start_date)){
+        if (!$dates->checkIfValid($request->start_date)) {
             Session::flash('error', 'Please make sure to pick a date that is a check in date');
             return redirect()->back();
         }
 
-        if($request->kit === 'all'){
+        //Check if the user wants to check all the available products for booking
+        if ($request->kit === 'all') {
             return redirect()->back()->with(['kitsForBooking' => $kit->allAvailable($request->start_date)]);
-            /*This will cause the page to return back to the same page*/
+
+            /*This will cause the page to return back to the same page and next request throws a 405 error*/
 //            return view('pages.bookings.index')
 //                ->with('kits', $kit->all())
 //                ->with('kitsForBooking', $kit->allAvailable($request->start_date));
         }
+
+        //Get the kit by id
+        $kit = Kit::find($request->kit);
+        //Check if the kit is available for that date
+        if ($kit->isAvailable($request->start_date)) {
+            return redirect()->back()->with(['kitsForBooking' => Kit::where('id', $request->kit), 'bookable' => true]);
+        }
+
+        //Send an error to the user
+        Session::flash('error', 'The item is already booked on ' . $request->start_date);
+        return redirect()->back();
     }
 }
