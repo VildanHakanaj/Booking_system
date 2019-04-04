@@ -63,7 +63,7 @@
                                 <tr>
                                     <th scope="row">{{$kit->title}}</th>
                                     <td>
-                                        @foreach($kit->products() as $product)s
+                                        @foreach($kit->products() as $product)
                                             <ul class="list-group">
                                                 <li class="list-group-item">{{$product->title}}</li>
                                             </ul>
@@ -90,7 +90,8 @@
                             @if(auth()->user()->bookings->count() > 0)
                                 @foreach(auth()->user()->bookings as $currentBooking)
                                     <li class="list-group-item">
-                                        Kit: {{$currentBooking->kit->title}} | Start Date: {{$currentBooking->start_date}}| End Date: {{$currentBooking->end_date}}
+                                        Kit: {{$currentBooking->kit->title}} | Start
+                                        Date: {{$currentBooking->start_date}}| End Date: {{$currentBooking->end_date}}
                                     </li>
                                 @endforeach
                             @else

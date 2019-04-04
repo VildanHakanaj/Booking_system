@@ -143,7 +143,7 @@ class KitController extends Controller
      * Search for the item in the table
      *
      * @params $request
-     * @return view
+     * @return view of index bookings
      *
      * */
     public function search(Request $request)
@@ -173,13 +173,11 @@ class KitController extends Controller
     /*
      *  Check if the kit is available on that date.
      *
-     *TODO
-     * [ ] Figure out why the error with the 405 was happenening
-     * [ ] Check out the relation builder for the booking
+     * @param Request
+     * @return
      * */
     public function checkAvailability(Request $request)
     {
-
         $dates = new Calendar();
         $bookings = new Booking();
         $kit = new Kit();
@@ -197,18 +195,13 @@ class KitController extends Controller
         //Check if the user wants to check all the available products for booking
         if ($request->kit === 'all') {
             return redirect()->back()->with(['kitsForBooking' => $kit->allAvailable($request->start_date)]);
-
-            /*This will cause the page to return back to the same page and next request throws a 405 error*/
-//            return view('pages.bookings.index')
-//                ->with('kits', $kit->all())
-//                ->with('kitsForBooking', $kit->allAvailable($request->start_date));
         }
 
         //Get the kit by id
         $kit = Kit::find($request->kit);
         //Check if the kit is available for that date
         if ($kit->isAvailable($request->start_date)) {
-            return redirect()->back()->with(['kitsForBooking' => Kit::where('id', $request->kit), 'bookable' => true]);
+            return redirect()->back()->with(['kitsForBooking' => Kit::where('id', $request->kit)->get(), 'bookable' => true]);
         }
 
         //Send an error to the user

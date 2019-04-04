@@ -11,8 +11,18 @@
 |
 */
 /*
+ *
  *TODO
  * [ ] Need to sort all the controllers so that it will allow access to all
+ * [ ] Move the booking page to a seperate page
+ * [ ] Allow home page to have 3 options
+ *      [ ] Book by date
+ *      [ ] Check available dates for products
+ *      [ ] Allow the user to explore Explore kits
+ * [ ] Find a solution for the redirect problem
+ *
+ *
+ *
  * */
 //The main index path
 Route::get('/', 'PagesController@index');
