@@ -13,9 +13,20 @@ class PagesController extends Controller
     }
 
     public function index(){
+        return view('pages.index');
+    }
+
+    public function bookings(){
         $kits = Kit::all();
         return view('pages.bookings.index')
                     ->with('kits', $kits);
+    }
+
+    public function exploreKits(){
+
+        $kits = Kit::where('status', '=', 1)->paginate(10);
+        return view('pages.bookings.exploreKits')->with('kits', $kits);
+
     }
 
     public function contactUs(){

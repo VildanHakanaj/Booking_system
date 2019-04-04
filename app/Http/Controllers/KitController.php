@@ -208,4 +208,12 @@ class KitController extends Controller
         Session::flash('error', 'The item is already booked on ' . $request->start_date);
         return redirect()->back();
     }
+
+    /*
+     * Booking
+     * */
+
+    public function bookKit(){
+
+    }
 }

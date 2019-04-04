@@ -88,10 +88,13 @@ Route::prefix('auth')->group(function () {
 //    return view('auth.verifyAccount.edit');
 //});
 //The dashboard
-Route::get('/index', 'PagesController@index')->name('home');
+Route::get('/', 'PagesController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
+
     /*Kits public routes*/
+    Route::get('/booking', 'PagesController@bookings')->name('booking');
+    Route::get('/booking/explore', 'PagesController@exploreKits')->name('booking.exploreKits');
     Route::post('/kits/checkAvailability', 'KitController@checkAvailability')->name('kits.checkAvailability');
 
 });
