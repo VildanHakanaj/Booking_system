@@ -35,7 +35,7 @@
                             </div>
                             <div class="col-md-5">
                                 <label for="start_date">Start Date</label>
-                                <input type="date" name="start_date" class="form-control">
+                                <input value="{{old('start_date')}}" type="date" name="start_date" class="form-control">
                             </div>
                             <div class="col-md-2">
                                 <input type="submit" name="submit" value="Check Availability"
@@ -56,10 +56,10 @@
                         <th scope="col">Available</th>
                     </tr>
                     </thead>
-                    @isset($kitForBooking)
-                        <tbody>
-                        @if($kitsForBooking->count() > 0)
-                            @foreach($kitsForBooking as $kit)
+                    @if(Session::has('kitsForBooking'))
+                        @if(Session::get('kitsForBooking')->count() > 0)
+                            <tbody>
+                            @foreach(Session::get('kitsForBooking') as $kit)
                                 <tr>
                                     <th scope="row">{{$kit->title}}</th>
                                     <td>
@@ -70,14 +70,13 @@
                                         @endforeach
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-outline-danger">Not available</a>
                                         <a href="#" class="btn btn-outline-success">Available</a>
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody>
+                            </tbody>
+                        @endif
                     @endif
-                    @endisset
                 </table>
             </div>
             {{--Sidebar previous booking--}}
@@ -88,9 +87,17 @@
                             <h3>Current Bookings</h3>
                         </div>
                         <ul class="list-group">
-                            <li class="list-group-item list-group-item-warning">You don't have any bookings
-                                currently
-                            </li>
+                            @if(auth()->user()->bookings->count() > 0)
+                                @foreach(auth()->user()->bookings as $currentBooking)
+                                    <li class="list-group-item">
+                                        Kit: {{$currentBooking->kit->title}} | Start Date: {{$currentBooking->start_date}}| End Date: {{$currentBooking->end_date}}
+                                    </li>
+                                @endforeach
+                            @else
+                                <li class="list-group-item list-group-item-warning">You don't have any bookings
+                                    currently
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>

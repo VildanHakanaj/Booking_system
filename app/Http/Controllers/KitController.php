@@ -191,9 +191,11 @@ class KitController extends Controller
         }
 
         if($request->kit === 'all'){
-            return redirect()->back()->with('kitsForBooking', $kit->allAvailable());
+            return redirect()->back()->with(['kitsForBooking' => $kit->allAvailable($request->start_date)]);
+            /*This will cause the page to return back to the same page*/
+//            return view('pages.bookings.index')
+//                ->with('kits', $kit->all())
+//                ->with('kitsForBooking', $kit->allAvailable($request->start_date));
         }
-
-
     }
 }

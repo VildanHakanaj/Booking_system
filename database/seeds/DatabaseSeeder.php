@@ -52,7 +52,6 @@ class DatabaseSeeder extends Seeder
         factory(App\Reason::class, 12)->create();
         factory(App\ReasonToBook::class, 30)->create();
         factory(App\Product::class, 100)->create();
-        factory(App\Kit::class, 20)->create();
-
+        factory(App\Kit::class, 5)->create();
     }
 }

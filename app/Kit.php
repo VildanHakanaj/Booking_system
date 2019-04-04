@@ -60,7 +60,16 @@ class Kit extends Model
     }
 
 
+    /*
+     * Gets all the available kits for that date
+     * @param start date
+     * @return Kit all available collection
+     * */
     public function allAvailable($start_date){
-
+        return $this->whereNotIn('id', function($query) use ($start_date){
+                $query->select('bookings.kit_id')
+                    ->from('bookings')
+                    ->where('start_date', '=', $start_date);
+        })->get();
     }
 }

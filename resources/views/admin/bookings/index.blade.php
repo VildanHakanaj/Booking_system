@@ -33,7 +33,7 @@
                 <tbody>
                 @foreach($bookings as $booking)
                     <tr>
-                        <th scope="row">#1</th>
+                        <th scope="row">{{$booking->id}}</th>
                         <td>{{$booking->user->name}}</td>
                         <td>{{$booking->kit->title}}</td>
                         <td>{{$booking->start_date}}</td>
