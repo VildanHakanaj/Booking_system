@@ -276,7 +276,7 @@ class UsersController extends Controller
 
         //Check if the user will be an admin
         if ($request->admin) {
-            $user->admin = $request->admin;
+            $user->admin = 1;
         }
 
         //Save the user
