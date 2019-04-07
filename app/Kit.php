@@ -83,4 +83,12 @@ class Kit extends Model
        $count = Booking::where('kit_id', '=', $this->id)->where('start_date', '=', $start_date)->count();
        return $count == 0 ? true : false;
     }
+
+    public function getAvailableDates(){
+        return Calendar::whereNotIn('date', function($query){
+            $query->select('bookings.start_date')
+                ->from('bookings')
+                ->where('bookings.kit_id', '=', $this->id);
+        })->get();
+    }
 }

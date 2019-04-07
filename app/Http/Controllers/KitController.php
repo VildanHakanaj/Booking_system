@@ -181,39 +181,61 @@ class KitController extends Controller
         $dates = new Calendar();
         $bookings = new Booking();
         $kit = new Kit();
-        $request->validate([
-            'kit' => 'required',
-            'start_date' => 'required|date',
-        ]);
 
-        //Check if the date is a valid check in date
+        $rules = [
+            'kit' => 'required',
+        ];
+
+        if(isset($request->start_date)){
+            $rules['start_date'] = 'date';
+        }
+
+        $request->validate($rules);
+
+
+        /*
+         * Check when a kit is available
+         * kits [X]
+         * date [ ]
+         * */
+        if(!isset($request->start_date) && $request->kit != 'all'){
+            $kit = Kit::find($request->kit);
+            $dates = $kit->getAvailableDates();
+            return redirect()->back()->with(['kitsForBooking' => Kit::where('id', $request->kit)->get(), 'availableDates' => $dates]);
+        }
+
+        /*
+         * Validate if the date is correct.
+         *
+         * */
         if (!$dates->checkIfValid($request->start_date)) {
             Session::flash('error', 'Please make sure to pick a date that is a check in date');
             return redirect()->back();
         }
 
-        //Check if the user wants to check all the available products for booking
+        /*
+         * Get all the kits that are available for a chosen date
+         * Kit  [ ]
+         * Date [X]
+         * */
         if ($request->kit === 'all') {
             return redirect()->back()->with(['kitsForBooking' => $kit->allAvailable($request->start_date)]);
         }
 
-        //Get the kit by id
+        /*
+         * Check if a kit is available on a date
+         * Kit  [x]
+         * Date [x]
+         * */
         $kit = Kit::find($request->kit);
-        //Check if the kit is available for that date
         if ($kit->isAvailable($request->start_date)) {
             return redirect()->back()->with(['kitsForBooking' => Kit::where('id', $request->kit)->get(), 'bookable' => true]);
         }
 
-        //Send an error to the user
+        /*
+         * The item is already booked
+         * */
         Session::flash('error', 'The item is already booked on ' . $request->start_date);
         return redirect()->back();
-    }
-
-    /*
-     * Booking
-     * */
-
-    public function bookKit(){
-
     }
 }

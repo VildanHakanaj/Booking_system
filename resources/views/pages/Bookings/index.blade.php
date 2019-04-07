@@ -22,7 +22,9 @@
                                     @if($kits->count() > 0)
                                         <option value="all">All</option>
                                         @foreach($kits as $kit)
+                                            @if($kit->products()->count() > 0)
                                             <option value="{{$kit->id}}">{{$kit->title}}</option>
+                                            @endif
                                         @endforeach
                                     @else
                                     @endif
@@ -36,6 +38,7 @@
                             <div class="col-md-5">
                                 <label for="start_date">Start Date</label>
                                 <input value="{{old('start_date')}}" type="date" name="start_date" class="form-control">
+                                <small class="text-info">Leave empty to get available dates</small>
                             </div>
                             <div class="col-md-2">
                                 <input type="submit" name="submit" value="Check Availability"
@@ -53,7 +56,11 @@
                     <tr>
                         <th scope="col">Kit Title</th>
                         <th scope="col">Items in the kit</th>
-                        <th scope="col">Available</th>
+                        @if(Session::has('availableDates'))
+                            <th>Dates availables</th>
+                        @else
+                            <th>Action</th>
+                        @endif
                     </tr>
                     </thead>
                     @if(Session::has('kitsForBooking'))
@@ -69,9 +76,21 @@
                                             </ul>
                                         @endforeach
                                     </td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-success">Available</a>
-                                    </td>
+                                    @if(Session::has('availableDates'))
+                                        <td>
+                                            <ul class="list-group">
+                                                @foreach(Session::get('availableDates') as $date)
+                                                    <li class="list-group-item">
+                                                        {{ $date->date }} <a href="#" class="btn btn-outline-success align-content-end">Book Now</a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
+                                        @else
+                                        <td>
+                                            <a href="#" class="btn btn-success">Book Now</a>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                             </tbody>
@@ -91,7 +110,8 @@
                                 @foreach(auth()->user()->bookings as $currentBooking)
                                     <li class="list-group-item">
                                         Kit: {{$currentBooking->kit->title}} | Start
-                                        Date: {{$currentBooking->start_date}}| End Date: {{$currentBooking->end_date}}
+                                        Date: {{$currentBooking->start_date}}| End
+                                        Date: {{$currentBooking->end_date    }}
                                     </li>
                                 @endforeach
                             @else
