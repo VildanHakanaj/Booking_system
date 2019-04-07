@@ -9,6 +9,7 @@
             {{--Shows the errors--}}
             @include('layouts.messages.alert')
             @include('layouts.messages.error')
+            @include('layouts.messages.success')
             <div class="col-md-12">
                 <h3 class="text-muted">Booking Section</h3>
                 <form action="{{ route('kits.checkAvailability') }}" method="POST"
@@ -23,7 +24,7 @@
                                         <option value="all">All</option>
                                         @foreach($kits as $kit)
                                             @if($kit->products()->count() > 0)
-                                            <option value="{{$kit->id}}">{{$kit->title}}</option>
+                                                <option value="{{$kit->id}}">{{$kit->title}}</option>
                                             @endif
                                         @endforeach
                                     @else
@@ -81,14 +82,23 @@
                                             <ul class="list-group">
                                                 @foreach(Session::get('availableDates') as $date)
                                                     <li class="list-group-item">
-                                                        {{ $date->date }} <a href="#" class="btn btn-outline-success align-content-end">Book Now</a>
+                                                        {{ $date->date }}
+                                                        {!! Form::open(['route' => 'booking.store', 'method' => 'POST']) !!}
+                                                        {!! Form::hidden('start_date', $date->date) !!}
+                                                        {!! Form::hidden('kit', $kit->id) !!}
+                                                        {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
+                                                        {!! Form::close() !!}
                                                     </li>
                                                 @endforeach
                                             </ul>
                                         </td>
-                                        @else
+                                    @else
                                         <td>
-                                            <a href="#" class="btn btn-success">Book Now</a>
+                                            {!! Form::open(['route' => 'booking.store', 'method' => 'POST']) !!}
+                                            {!! Form::hidden('start_date', Session::get('availableDate')) !!}
+                                            {!! Form::hidden('kit', $kit->id) !!}
+                                            {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
+                                            {!! Form::close() !!}
                                         </td>
                                     @endif
                                 </tr>

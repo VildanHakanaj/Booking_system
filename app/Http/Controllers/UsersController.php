@@ -81,7 +81,7 @@ class UsersController extends Controller
          * */
         //User instance
         $user = new User();
-
+        $users = [];
         //Reason model
         $reason = new Reason();
 
@@ -185,7 +185,7 @@ class UsersController extends Controller
                 $user->save();
                 //Send the user an email
                 /*FIXME:: The repetition of email will throw errors maybe fixable with other providers*/
-//                $user->sendVerificationEmail();
+                $user->sendVerificationEmail();
             } else {
                 //get the existing user.
                 $user = User::where('email', $user->email)->first();

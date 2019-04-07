@@ -96,5 +96,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/booking', 'PagesController@bookings')->name('booking');
     Route::get('/booking/explore', 'PagesController@exploreKits')->name('booking.exploreKits');
     Route::post('/kits/checkAvailability', 'KitController@checkAvailability')->name('kits.checkAvailability');
+    Route::post('/booking/store', 'BookingController@store')->name('booking.store');
 
 });

@@ -24,6 +24,7 @@
                     <th scope="col">#ID</th>
                     <th scope="col">Kit Name</th>
                     <th scope="col">Bookable</th>
+                    <th scope="col">Nr Products</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -33,6 +34,7 @@
                         <th scope="row">#{{$kit->id}}</th>
                         <td><a href="{{route('kits.show', $kit->id)}}">{{$kit->title}}</a></td>
                         <td>{{$kit->status == 1 ? 'Active' : 'Not Active'}}</td>
+                        <td>{{$kit->products()->count()}}</td>
                         <td>
                             <a href="{{route('kits.edit', $kit->id)}}" class="btn btn-sm btn-outline-primary">Edit</a>
                             <a href="{{route('kits.destroy', $kit->id)}}" class="btn btn-sm btn-outline-danger deleteKit">Delete</a>

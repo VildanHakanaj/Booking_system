@@ -219,7 +219,7 @@ class KitController extends Controller
          * Date [X]
          * */
         if ($request->kit === 'all') {
-            return redirect()->back()->with(['kitsForBooking' => $kit->allAvailable($request->start_date)]);
+            return redirect()->back()->with(['kitsForBooking' => $kit->allAvailable($request->start_date), 'availableDate' => $request->start_date]);
         }
 
         /*
@@ -229,7 +229,7 @@ class KitController extends Controller
          * */
         $kit = Kit::find($request->kit);
         if ($kit->isAvailable($request->start_date)) {
-            return redirect()->back()->with(['kitsForBooking' => Kit::where('id', $request->kit)->get(), 'bookable' => true]);
+            return redirect()->back()->with(['kitsForBooking' => Kit::where('id', $request->kit)->get(), 'availableDate' => $request->start_date]);
         }
 
         /*

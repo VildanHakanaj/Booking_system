@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Booking;
 use App\CheckInTimes;
 use Illuminate\Http\Request;
+use Session;
 
 class BookingController extends Controller
 {
@@ -54,7 +55,15 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $booking = new Booking;
+        $booking->start_date = $request->start_date;
+        $booking->end_date = $booking->calculateEndDate($request->start_date);
+        $booking->kit_id= $request->kit;
+        $booking->user_id = auth()->user()->id;
+        $booking->save();
+
+        Session::flash('success', 'You have successfully booked a kit. Please check your email to verify');
+        return redirect()->back();
     }
 
     /**
