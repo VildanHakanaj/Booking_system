@@ -37,13 +37,21 @@ class Booking extends Model
             $end_date->modify('+1 day');
         }
 
-        return $end_date;
+        return $end_date->format('Y-m-d')   ;
 
     }
 
+    /*
+     * Get all the upcoming bookings for all users
+     *
+     * */
     public function upComingBookings(){
         return $this->orderBy('start_date', 'ASC')->where('start_date', '>', date('Y-m-d'))->get();
     }
+
+    /*
+     * Get all the booking for today
+     * */
     public function currentDayBookings(){
 
         return $this->where('start_date', date('Y-m-d'))->get();

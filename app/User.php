@@ -2,12 +2,12 @@
 
 namespace App;
 
+use App\Notifications\VerifyBooking;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\VerifyEmail;
-use mysql_xdevapi\Collection;
 use DB;
 
 class User extends Authenticatable
@@ -62,6 +62,17 @@ class User extends Authenticatable
     public function sendVerificationEmail()
     {
         $this->notify(new VerifyEmail($this));
+    }
+
+    /**
+     *
+     * Sends the user the email to verify booking
+     *
+     *
+     * */
+    public function sendBookingVerification($booking)
+    {
+        $this->notify(new VerifyBooking($this, $booking));
     }
 
     /**
