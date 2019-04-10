@@ -40,4 +40,13 @@ class Booking extends Model
         return $end_date;
 
     }
+
+    public function upComingBookings(){
+        return $this->orderBy('start_date', 'ASC')->where('start_date', '>', date('Y-m-d'))->get();
+    }
+    public function currentDayBookings(){
+
+        return $this->where('start_date', date('Y-m-d'))->get();
+
+    }
 }
