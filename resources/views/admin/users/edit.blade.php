@@ -45,10 +45,12 @@
                 {!! Form::password('password_confirmation', ['class'=> 'form-control']) !!}
             </div>
         @endif
-        <div class="form-group">
-            {!! Form::label('admin', 'Admin') !!}
-            {!! Form::checkbox('admin', 'checked') !!}
-        </div>
+        @if(auth()->user()->id !== $user->id)
+            <div class="form-group">
+                {!! Form::label('admin', 'Admin') !!}
+                <input type="checkbox" name="admin" @if($user->admin == 1) checked @endif id="">
+            </div>
+        @endif
         <div class="form-group">
             {!! Form::submit('Save User', ['class' => 'btn btn-lg btn-success']) !!}
         </div>
