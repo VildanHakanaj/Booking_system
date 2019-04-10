@@ -61,7 +61,9 @@ class BookingController extends Controller
         $booking->kit_id= $request->kit;
         $booking->user_id = auth()->user()->id;
         $booking->save();
+        //Send user the verification email.
         auth()->user()->sendBookingVerification($booking);
+
         Session::flash('success', 'You have successfully booked a kit. Please check your email to verify');
         return redirect()->back();
     }

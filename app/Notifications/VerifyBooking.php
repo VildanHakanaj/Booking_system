@@ -46,7 +46,9 @@ class VerifyBooking extends Notification
      */
     public function toMail($notifiable)
     {
+        //Check in times instance
         $check_in_time = new \App\CheckInTimes;
+        //get the times slots for the start day and end date
         $startTimes = $check_in_time->where('day', '=', date('l', strtotime($this->booking->start_date)))->get()->pluck('hours');
         $endTimes = $check_in_time->where('day', '=', date('l', strtotime($this->booking->end_date)))->get()->pluck('hours');
         return (new MailMessage)
