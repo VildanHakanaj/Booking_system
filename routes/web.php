@@ -14,12 +14,19 @@
  *
  *TODO
  * [ ] Need to sort all the controllers so that it will allow access to all
- * [ ] Move the booking page to a seperate page
- * [ ] Allow home page to have 3 options
+ * [x] Move the booking page to a seperate page
+ * [x] Allow home page to have 3 options
  *      [ ] Book by date
  *      [ ] Check available dates for products
  *      [ ] Allow the user to explore Explore kits
- * [ ] Find a solution for the redirect problem
+ * [x] Find a solution for the redirect problem
+ * [ ] Allow user to cancel the bookin
+ * Admin Bookings
+ * [ ] Allow the admin to edit the bookings by pushing the date
+ * [ ] Allow the admin to cancel a booking
+ * [ ] Notify the admin if the change of times will affect any of the bookings
+ *      [ ] Send the admin a list of all the affected users from the date change so the admin can take actions
+ * [ ] Allow admin to click on the email
  *
  *
  *
