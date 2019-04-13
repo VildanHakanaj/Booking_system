@@ -122,6 +122,9 @@
                                         Kit: {{$currentBooking->kit->title}} | Start
                                         Date: {{$currentBooking->start_date}}| End
                                         Date: {{$currentBooking->end_date    }}
+                                        {!! Form::open(['route' => ['booking.remove', $currentBooking->id], 'method' => 'DELETE', 'class' => 'float-right']) !!}
+                                        {!! Form::submit('Cancel', ['class' => 'btn btn-outline-danger btn-sm']) !!}
+                                        {!! Form::close() !!}
                                     </li>
                                 @endforeach
                             @else

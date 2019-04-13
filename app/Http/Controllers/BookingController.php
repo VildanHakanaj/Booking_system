@@ -112,7 +112,9 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        //
+        $booking->delete();
+        Session::flash('success', 'Your have successfully canceled your booking');
+        return redirect()->back();
     }
 
     function search(Request $request)

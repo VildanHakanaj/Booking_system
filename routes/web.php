@@ -20,7 +20,7 @@
  *      [ ] Check available dates for products
  *      [ ] Allow the user to explore Explore kits
  * [x] Find a solution for the redirect problem
- * [ ] Allow user to cancel the bookin
+ * [ ] Allow user to cancel the bookings
  * Admin Bookings
  * [ ] Allow the admin to edit the bookings by pushing the date
  * [ ] Allow the admin to cancel a booking
@@ -98,11 +98,11 @@ Route::prefix('auth')->group(function () {
 Route::get('/', 'PagesController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
-
     /*Kits public routes*/
     Route::get('/booking', 'PagesController@bookings')->name('booking');
     Route::get('/booking/explore', 'PagesController@exploreKits')->name('booking.exploreKits');
     Route::post('/kits/checkAvailability', 'KitController@checkAvailability')->name('kits.checkAvailability');
     Route::post('/booking/store', 'BookingController@store')->name('booking.store');
+    Route::delete('/booking/remove/{booking}', 'BookingController@destroy')->name('booking.remove');
 
 });
