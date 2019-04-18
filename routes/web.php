@@ -98,6 +98,7 @@ Route::prefix('auth')->group(function () {
 Route::get('/', 'PagesController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
+
     /*Kits public routes*/
     Route::get('/booking', 'PagesController@bookings')->name('booking');
     Route::get('/booking/explore', 'PagesController@exploreKits')->name('booking.exploreKits');

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Booking;
 use App\CheckInTimes;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Session;
 
 class BookingController extends Controller
@@ -28,7 +30,7 @@ class BookingController extends Controller
      *
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      *
      */
     public function index()
@@ -40,7 +42,7 @@ class BookingController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -50,8 +52,8 @@ class BookingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -71,8 +73,8 @@ class BookingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Booking $booking
-     * @return \Illuminate\Http\Response
+     * @param Booking $booking
+     * @return Response
      */
     public function show(Booking $booking)
     {
@@ -84,31 +86,42 @@ class BookingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Booking $booking
-     * @return \Illuminate\Http\Response
+     * @param Booking $booking
+     * @return void
      */
     public function edit(Booking $booking)
     {
-        //
+        return view('admin.bookings.edit')->with('booking', $booking);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Booking $booking
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Booking $booking
+     * @return void
      */
     public function update(Request $request, Booking $booking)
     {
-        //
+        $request->validate(
+            [
+                'start_date' => 'required|date',
+                'end_date' => 'required|date'
+            ]
+        );
+        $booking->start_date = $request->start_date;
+        $booking->end_date = $request->end_date;
+        $booking->update();
+        Session::flash('success', 'Booking was successfully updated!');
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Booking $booking
-     * @return \Illuminate\Http\Response
+     * @param Booking $booking
+     * @return Response
+     * @throws Exception
      */
     public function destroy(Booking $booking)
     {
@@ -123,7 +136,7 @@ class BookingController extends Controller
 //        if (empty($request->search)) {
 //            return view('admin.bookings.index')->with('bookings', Booking::orderBy('created_at', 'desc')->paginate(10));
 //        }
-//        $kits = Kit::orderBy('created_at', 'desc')->where('user_id', 'LIKE', '%' . $request->search . '%')->paginate(10);
+
 //        return view('admin.kits.index')->with('kits', $kits);
     }
 
