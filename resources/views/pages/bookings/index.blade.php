@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
+        @include('layouts.partials.cancelModal')
         {{--Seach nav--}}
         <div class="jumbotron">
             <h3>Welcome to the booking station {{auth()->user()->name}}</h3>
@@ -123,7 +124,7 @@
                                         Kit: {{$currentBooking->kit->title}} | Start
                                         Date: {{$currentBooking->start_date}}| End
                                         Date: {{$currentBooking->end_date    }}
-                                        {!! Form::open(['route' => ['bookings.destroy', $currentBooking->id], 'method' => 'DELETE', 'class' => 'float-right deleteKit'] ) !!}
+                                        {!! Form::open(['route' => ['bookings.destroy', $currentBooking->id], 'method' => 'DELETE', 'class' => 'float-right'] ) !!}
                                         {!! Form::submit('Cancel', ['class' => 'btn btn-outline-danger btn-sm']) !!}
                                         {!! Form::close() !!}
                                     </li>

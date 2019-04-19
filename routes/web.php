@@ -30,6 +30,10 @@
  *
  *
  *
+ *FIXME::
+ * [ ] Make all the controllers with in build middleware
+ * [ ] See to split the big controller for the booking
+ *
  * */
 //The main index path
 Route::get('/', 'PagesController@index');

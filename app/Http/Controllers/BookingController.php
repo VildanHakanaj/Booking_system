@@ -13,11 +13,11 @@ class BookingController extends Controller
 {
     /*
      *TODO::
-     * [ ] Show all the booking that exist in the booking page
-     * [ ] Allow the user to create the booking and store it
-     * [ ] Allow the booking to get canceled
-     * [ ] Have a booking settings pages to show
-     * [ ] Allow the admin to choose what the days the checkin and out are.
+     * [x] Show all the booking that exist in the booking page
+     * [x] Allow the user to create the booking and store it
+     * [x] Allow the booking to get canceled
+     * [x] Have a booking settings pages to show
+     * [x] Allow the admin to choose what the days the checkin and out are.
      *      [ ] Show the calendar of the dates and allow the admin to check the dates they don't want
      *      [ ] After the admin has selected the dates that they don't want then show the actual calendar that the user
      *          be able to see.
@@ -25,7 +25,12 @@ class BookingController extends Controller
      * [ ] The calendar will be able to be clicked on and place event listeners on what to do on those dates
      * SEARCH
      * [ ] Finish the searching functionality
+     *
+     *FIXME::
+     * [ ] Fix the Search functionality
+     *
      * */
+
     /**
      *
      * Display a listing of the resource.
@@ -60,7 +65,7 @@ class BookingController extends Controller
         $booking = new Booking;
         $booking->start_date = $request->start_date;
         $booking->end_date = $booking->calculateEndDate($request->start_date);
-        $booking->kit_id= $request->kit;
+        $booking->kit_id = $request->kit;
         $booking->user_id = auth()->user()->id;
         $booking->save();
         //Send user the verification email.
@@ -126,8 +131,6 @@ class BookingController extends Controller
     public function destroy(Booking $booking)
     {
         $booking->delete();
-//        Session::flash('success', 'Your have successfully canceled your booking');
-//        return redirect()->back();
     }
 
     function search(Request $request)

@@ -36512,6 +36512,28 @@ $('document').ready(function () {
       });
     });
   });
+  /**
+   * User canceling booking
+   * needs to be fixed
+   * */
+  // let $userCancelBtn = $('.userCancelBooking');
+  // $userCancelBtn.on('submit', function (ev) {
+  //     ev.preventDefault();
+  //     const $this = $(this);
+  //     $cancelModal.modal('show');
+  //     $('#yes').on('click', function () {
+  //         console.log($this.attr('action'));
+  //         $.post($this.attr('action'), { _method: 'DELETE' })
+  //             .done(function (data) {
+  //                 console.log(data);
+  //                 $cancelModal.modal('hide');
+  //                 $this.closest('li').remove();
+  //             })
+  //             .fail((jqXHR) => {
+  //                 alert('Error:: ' + jqXHR.responseText);
+  //             })
+  //     })
+  // })
 });
 
 /***/ }),
