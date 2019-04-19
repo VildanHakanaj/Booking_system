@@ -21,6 +21,16 @@ class DatabaseSeeder extends Seeder
             'admin' => 1,
         ]);
 
+
+        //Add the user with credentials
+        DB::table('users')->insert([
+            'name' => "Ani Hakanaj",
+            'stdn' => "0593734",
+            'email' => "user@user.com",
+            'password' => bcrypt('password'),
+            'admin' => 0,
+        ]);
+
         //Add the default reason
         DB::table('reasons')->insert([
             'title' => "other",
@@ -28,6 +38,13 @@ class DatabaseSeeder extends Seeder
             'expires_at' => date('Y-04-30'),
             'created_at' => now(),
             'updated_at' => now(),
+        ]);
+
+        //Add the user with credentials
+        DB::table('reason_to_book')->insert([
+            'user_id' => 2,
+            'reason_id' => 1,
+            'active' => 1,
         ]);
 
         //Add the default reason

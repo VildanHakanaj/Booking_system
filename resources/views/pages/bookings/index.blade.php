@@ -7,6 +7,7 @@
         </div>
         <div class="row">
             {{--Shows the errors--}}
+            @include('layouts.partials.modal')
             @include('layouts.messages.alert')
             @include('layouts.messages.error')
             @include('layouts.messages.success')
@@ -122,7 +123,7 @@
                                         Kit: {{$currentBooking->kit->title}} | Start
                                         Date: {{$currentBooking->start_date}}| End
                                         Date: {{$currentBooking->end_date    }}
-                                        {!! Form::open(['route' => ['booking.remove', $currentBooking->id], 'method' => 'DELETE', 'class' => 'float-right']) !!}
+                                        {!! Form::open(['route' => ['bookings.destroy', $currentBooking->id], 'method' => 'DELETE', 'class' => 'float-right deleteKit'] ) !!}
                                         {!! Form::submit('Cancel', ['class' => 'btn btn-outline-danger btn-sm']) !!}
                                         {!! Form::close() !!}
                                     </li>
