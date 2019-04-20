@@ -23,7 +23,7 @@
                                 <label for="kit">Choose a kit</label>~
                                 <select id="indexSearch" type="text" name="kit" class="form-control">
                                     @if($kits->count() > 0)
-                                        <option value="all">All</option>
+                                        <option selected value="all">All</option>
                                         @foreach($kits as $kit)
                                             @if($kit->products()->count() > 0)
                                                 <option value="{{$kit->id}}">{{$kit->title}}</option>
@@ -70,40 +70,42 @@
                         @if(Session::get('kitsForBooking')->count() > 0)
                             <tbody>
                             @foreach(Session::get('kitsForBooking') as $kit)
-                                <tr>
-                                    <th scope="row">{{$kit->title}}</th>
-                                    <td>
-                                        @foreach($kit->products() as $product)
-                                            <ul class="list-group">
-                                                <li class="list-group-item">{{$product->title}}</li>
-                                            </ul>
-                                        @endforeach
-                                    </td>
-                                    @if(Session::has('availableDates'))
+                                @if($kit->products()->count() > 0)
+                                    <tr>
+                                        <th scope="row">{{$kit->title}}</th>
                                         <td>
-                                            <ul class="list-group">
-                                                @foreach(Session::get('availableDates') as $date)
-                                                    <li class="list-group-item">
-                                                        {{ $date->date }}
-                                                        {!! Form::open(['route' => 'userBookings.store', 'method' => 'POST']) !!}
-                                                        {!! Form::hidden('start_date', $date->date) !!}
-                                                        {!! Form::hidden('kit', $kit->id) !!}
-                                                        {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
-                                                        {!! Form::close() !!}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
+                                            @foreach($kit->products() as $product)
+                                                <ul class="list-group">
+                                                    <li class="list-group-item">{{$product->title}}</li>
+                                                </ul>
+                                            @endforeach
                                         </td>
-                                    @else
-                                        <td>
-                                            {!! Form::open(['route' => 'userBookings.store', 'method' => 'POST']) !!}
-                                            {!! Form::hidden('start_date', Session::get('availableDate')) !!}
-                                            {!! Form::hidden('kit', $kit->id) !!}
-                                            {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
-                                            {!! Form::close() !!}
-                                        </td>
-                                    @endif
-                                </tr>
+                                        @if(Session::has('availableDates'))
+                                            <td>
+                                                <ul class="list-group">
+                                                    @foreach(Session::get('availableDates') as $date)
+                                                        <li class="list-group-item">
+                                                            {{ $date->date }}
+                                                            {!! Form::open(['route' => 'userBookings.store', 'method' => 'POST']) !!}
+                                                            {!! Form::hidden('start_date', $date->date) !!}
+                                                            {!! Form::hidden('kit', $kit->id) !!}
+                                                            {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
+                                                            {!! Form::close() !!}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </td>
+                                        @else
+                                            <td>
+                                                {!! Form::open(['route' => 'userBookings.store', 'method' => 'POST']) !!}
+                                                {!! Form::hidden('start_date', Session::get('availableDate')) !!}
+                                                {!! Form::hidden('kit', $kit->id) !!}
+                                                {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
+                                                {!! Form::close() !!}
+                                            </td>
+                                        @endif
+                                    </tr>
+                                @endif
                             @endforeach
                             </tbody>
                         @endif

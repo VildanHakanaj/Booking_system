@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Booking;
+use App\Kit;
 use Session;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,10 @@ class UserBookingController extends Controller
     public function store(Request $request)
     {
         $booking = new Booking;
+        if(!Kit::find($request->kit_id)){
+            Session::flash('error', 'Something went wrong');
+            return redirect()->back();
+        }
         $booking->start_date = $request->start_date;
         $booking->end_date = $booking->calculateEndDate($request->start_date);
         $booking->kit_id = $request->kit;
@@ -36,10 +41,10 @@ class UserBookingController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroy(Booking $booking)
+    public function destroy($id)
     {
-        dd($booking);
-//        Booking::find($id)->delete();
+        Booking::find($id);
+        Booking::find($id)->delete();
         Session::flash('success', 'Booking was successfully canceled');
         return redirect()->back();
     }
