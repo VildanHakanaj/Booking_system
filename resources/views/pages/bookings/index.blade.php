@@ -85,7 +85,7 @@
                                                 @foreach(Session::get('availableDates') as $date)
                                                     <li class="list-group-item">
                                                         {{ $date->date }}
-                                                        {!! Form::open(['route' => 'booking.store', 'method' => 'POST']) !!}
+                                                        {!! Form::open(['route' => 'userBookings.store', 'method' => 'POST']) !!}
                                                         {!! Form::hidden('start_date', $date->date) !!}
                                                         {!! Form::hidden('kit', $kit->id) !!}
                                                         {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
@@ -96,7 +96,7 @@
                                         </td>
                                     @else
                                         <td>
-                                            {!! Form::open(['route' => 'booking.store', 'method' => 'POST']) !!}
+                                            {!! Form::open(['route' => 'userBookings.store', 'method' => 'POST']) !!}
                                             {!! Form::hidden('start_date', Session::get('availableDate')) !!}
                                             {!! Form::hidden('kit', $kit->id) !!}
                                             {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
@@ -124,7 +124,7 @@
                                         Kit: {{$currentBooking->kit->title}} | Start
                                         Date: {{$currentBooking->start_date}}| End
                                         Date: {{$currentBooking->end_date    }}
-                                        {!! Form::open(['route' => ['bookings.destroy', $currentBooking->id], 'method' => 'DELETE', 'class' => 'float-right'] ) !!}
+                                        {!! Form::open(['route' => ['userBookings.destroy', $currentBooking->id], 'method' => 'DELETE', 'class' => 'float-right'] ) !!}
                                         {!! Form::submit('Cancel', ['class' => 'btn btn-outline-danger btn-sm']) !!}
                                         {!! Form::close() !!}
                                     </li>

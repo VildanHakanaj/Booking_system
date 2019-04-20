@@ -9,6 +9,7 @@ class PagesController extends Controller
 {
     public function __construct()
     {
+        //User needs to be authenticated
         $this->middleware('auth');
     }
 

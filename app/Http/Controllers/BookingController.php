@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Booking;
-use App\CheckInTimes;
+use App\Calendar;
+use App\Kit;
+use App\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,7 +30,6 @@ class BookingController extends Controller
      *
      *FIXME::
      * [ ] Fix the Search functionality
-     *
      * */
 
     /**
@@ -51,7 +52,11 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::orderBy('name', 'ASC')->get();
+        $kits = Kit::orderBy('title')
+            ->where('status', '=', 1)
+            ->get();
+        return view('admin.bookings.create')->with('users', $users)->with('kits', $kits);
     }
 
     /**
@@ -60,20 +65,6 @@ class BookingController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
-    {
-        $booking = new Booking;
-        $booking->start_date = $request->start_date;
-        $booking->end_date = $booking->calculateEndDate($request->start_date);
-        $booking->kit_id = $request->kit;
-        $booking->user_id = auth()->user()->id;
-        $booking->save();
-        //Send user the verification email.
-        auth()->user()->sendBookingVerification($booking);
-
-        Session::flash('success', 'You have successfully booked a kit. Please check your email to verify');
-        return redirect()->back();
-    }
 
     /**
      * Display the specified resource.
@@ -83,9 +74,7 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-
         return view('admin.bookings.show')->with('booking', $booking);
-
     }
 
     /**
@@ -131,15 +120,89 @@ class BookingController extends Controller
     public function destroy(Booking $booking)
     {
         $booking->delete();
+        Session::flash('success', 'You have successfully canceled the booking');
+        return redirect()->back();
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $booking = new Booking();
+        /*
+         *TODO
+         * [ ] Validate reques
+         * [ ] Check if the booking exist
+         * [ ] Check the date if it's within range
+         * [ ] Check if the end date is a valid date
+         * [ ] Save the user
+         * */
+
+
+        $request->validate(
+            [
+                'start_date' => 'required|date',
+                'end_date' => 'required|date',
+                'user_id' => 'required',
+                'kit_id' => 'required'
+            ]
+        );
+
+        //Make sure the user exist
+        if(!User::find($request->user_id)){
+            Session::flash('error', 'User selected doesn\'t exist');
+            return redirect()->back();
+        }
+
+        //Check if the kit exists
+        if(!Kit::find($request->kit_id)){
+            Session::flash('error', 'Kit selected doesn\'t exist');
+            return redirect()->back();
+        }
+
+        //Check if the user already has the same booking
+//        dd(Booking::where('user_id', '=', $request->user_id)->where('kit_id', '=', $request->kit_id)->where('start_date', '=', $request->start_date)->get());
+        if(Booking::where('user_id', '=', $request->user_id)->where('kit_id', '=', $request->kit_id)->where('start_date', '=', $request->start_date)->count() > 0){
+            Session::flash('error', 'This user already has booked this item');
+            return redirect()->back();
+        }
+
+        //Validate the dates
+        $dates = new Calendar();
+        if(!$dates->where('date', $request->start_date)){
+            Session::flash('error', 'Pick a start date that\'s in the range');
+            return redirect()->back();
+        }
+        if(!$dates->where('date', $request->end_date)){
+            Session::flash('error', 'Pick an end date that\'s in the range');
+            return redirect()->back();
+        }
+
+
+
+        $booking->start_date = $request->start_date;
+        $booking->end_date = $request->end_date;
+        $booking->kit_id = $request->kit_id;
+        $booking->user_id = $request->user_id;
+        $booking->save();
+        //Send user the verification email.
+        User::find($request->user_id)->sendBookingVerification($booking);
+        Session::flash('success', 'You have successfully booked a kit for user: ' . User::find($request->user_id)->name);
+        return redirect()->back();
+    }
+
 
     function search(Request $request)
     {
+
         dd("Searching");
 //        if (empty($request->search)) {
 //            return view('admin.bookings.index')->with('bookings', Booking::orderBy('created_at', 'desc')->paginate(10));
 //        }
-
 //        return view('admin.kits.index')->with('kits', $kits);
     }
 
