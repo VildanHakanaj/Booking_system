@@ -13,26 +13,29 @@
 /*
  *
  *TODO
- * [ ] Need to sort all the controllers so that it will allow access to all
+ * [x] Need to sort all the controllers so that it will allow access to all
  * [x] Move the booking page to a seperate page
  * [x] Allow home page to have 3 options
- *      [ ] Book by date
- *      [ ] Check available dates for products
- *      [ ] Allow the user to explore Explore kits
+ *      [x] Book by date
+ *      [x] Check available dates for products
+ *      [x] Allow the user to explore Explore kits
+ *TODO
  * [x] Find a solution for the redirect problem
- * [ ] Allow user to cancel the bookings
+ * [x] Allow user to cancel the bookings
  * Admin Bookings
- * [ ] Allow the admin to edit the bookings by pushing the date
- * [ ] Allow the admin to cancel a booking
+ * [x] Allow the admin to edit the bookings by pushing the date
+ * [x] Allow the admin to cancel a booking
  * [ ] Notify the admin if the change of times will affect any of the bookings
  *      [ ] Send the admin a list of all the affected users from the date change so the admin can take actions
  * [ ] Allow admin to click on the email
+ * [ ] Allow the admin to resend an authentication email
  *
  *
  *
  *FIXME::
  * [ ] Make all the controllers with in build middleware
  * [ ] See to split the big controller for the booking
+ * [ ] Find a way to search the joined table
  *
  * */
 //The main index path
@@ -69,6 +72,7 @@ Route::prefix('admin')->middleware(['admin', 'auth'])->group(function () {
     /*=========================ADMIN KITS ROUTES===============================*/
     Route::resource('kits', 'KitController');
     Route::post('kits/checkProduct/{kit}', 'KitController@checkProduct')->name('kitProduct.checkProduct');
+
     /*-------------------------ADMIN KitProduct ROUTES -------------------------*/
     Route::get('kitsProduct/create/{kit}', 'KitProductController@create')->name('kitProduct.create');
     Route::post('kitsProduct/store', 'KitProductController@store')->name('kitProduct.store');
@@ -81,12 +85,15 @@ Route::prefix('admin')->middleware(['admin', 'auth'])->group(function () {
     Route::post('products/search', 'ProductController@search')->name('products.search');
     Route::post('reasons/search', 'ReasonController@search')->name('reasons.search');
     Route::post('bookings/search', 'BookingController@search')->name('bookings.search');
+
     /*========================ADMIN BOOKING ROUTES==============================*/
     Route::resource('bookings', 'BookingController');
+
     /*========================ADMIN SETTINGS ROUTES==============================*/
     Route::resource('bookingSettings', 'BookingSettingsController');
     Route::get('checkInTimes', 'CheckInTimesController@edit')->name('checkInTimes.edit');
     Route::post('checkInTimes', 'CheckInTimesController@store')->name('checkInTimes.store');
+
 });
 
 //Authentication routes

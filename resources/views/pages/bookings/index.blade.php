@@ -84,14 +84,16 @@
                                             <td>
                                                 <ul class="list-group">
                                                     @foreach(Session::get('availableDates') as $date)
-                                                        <li class="list-group-item">
-                                                            {{ $date->date }}
-                                                            {!! Form::open(['route' => 'userBookings.store', 'method' => 'POST']) !!}
-                                                            {!! Form::hidden('start_date', $date->date) !!}
-                                                            {!! Form::hidden('kit', $kit->id) !!}
-                                                            {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
-                                                            {!! Form::close() !!}
-                                                        </li>
+                                                        @if(strtotime($date->date) > strtotime('now'))
+                                                            <li class="list-group-item">
+                                                                {{ $date->date }}
+                                                                {!! Form::open(['route' => 'userBookings.store', 'method' => 'POST']) !!}
+                                                                {!! Form::hidden('start_date', $date->date) !!}
+                                                                {!! Form::hidden('kit', $kit->id) !!}
+                                                                {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
+                                                                {!! Form::close() !!}
+                                                            </li>
+                                                        @endif
                                                     @endforeach
                                                 </ul>
                                             </td>

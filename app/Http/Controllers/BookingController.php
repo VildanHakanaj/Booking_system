@@ -192,7 +192,7 @@ class BookingController extends Controller
         //Send user the verification email.
         User::find($request->user_id)->sendBookingVerification($booking);
         Session::flash('success', 'You have successfully booked a kit for user: ' . User::find($request->user_id)->name);
-        return redirect()->back();
+        return redirect()->route('bookings.index');
     }
 
 
