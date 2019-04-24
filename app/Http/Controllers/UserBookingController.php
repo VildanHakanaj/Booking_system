@@ -17,6 +17,7 @@ class UserBookingController extends Controller
      */
     public function store(Request $request)
     {
+//        dd("Herea");
         $booking = new Booking;
         if(!Kit::find($request->kit)){
             Session::flash('error', 'Something went wrong');
@@ -27,11 +28,13 @@ class UserBookingController extends Controller
         $booking->kit_id = $request->kit;
         $booking->user_id = auth()->user()->id;
         $booking->save();
+
         //Send user the verification email.
         auth()->user()->sendBookingVerification($booking);
 
         Session::flash('success', 'You have successfully booked a kit. Please check your email to verify');
         return redirect()->back();
+        dd("here");
     }
 
     /**

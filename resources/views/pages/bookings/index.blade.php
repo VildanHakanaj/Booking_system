@@ -5,6 +5,7 @@
         {{--Seach nav--}}
         <div class="jumbotron">
             <h3>Welcome to the booking station {{auth()->user()->name}}</h3>
+            <p>The weekdays you can book are : @foreach($times as $time) <strong class="text-danger">{{strtoupper($time->day) }},</strong>@endforeach</p>
         </div>
         <div class="row">
             {{--Shows the errors--}}

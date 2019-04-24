@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CheckInTimes;
 use App\Kit;
 use Illuminate\Http\Request;
 
@@ -23,8 +24,10 @@ class PagesController extends Controller
      * */
     public function bookings(){
         $kits = Kit::where('status', '=', 1)->get();
+        $bookingTimes = CheckInTimes::all();
         return view('pages.bookings.index')
-                    ->with('kits', $kits);
+                    ->with('kits', $kits)
+                    ->with('times', $bookingTimes);
     }
 
     /*
