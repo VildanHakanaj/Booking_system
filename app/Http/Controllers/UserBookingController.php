@@ -17,7 +17,6 @@ class UserBookingController extends Controller
      */
     public function store(Request $request)
     {
-//        dd("Herea");
         $booking = new Booking;
         if(!Kit::find($request->kit)){
             Session::flash('error', 'Something went wrong');

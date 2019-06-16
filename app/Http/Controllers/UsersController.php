@@ -67,13 +67,13 @@ class UsersController extends Controller
         /*
          *TODO
          *  Edge case
-         *      [ ] If the user already exists but the reason doesn't
-         *      [ ] If the user and the reason already exists
-         *      [ ] If the reason exits but the user doesn't
+         *      [x] If the user already exists but the reason doesn't
+         *      [x] If the user and the reason already exists
+         *      [x] If the reason exits but the user doesn't
          *  Password Protection
-         *      [ ] Store a random string hashed for each user.
-         *      [ ] The user will then update that password.
-         *      [ ] Override the old password with their new one.
+         *      [x] Store a random string hashed for each user.
+         *      [x] The user will then update that password.
+         *      [x] Override the old password with their new one.
          *  Student Number
          *      [ ] Use a regex for the number
          *          [ ] Check if it has a #
@@ -185,7 +185,7 @@ class UsersController extends Controller
                 $user->save();
                 //Send the user an email
                 /*FIXME:: The repetition of email will throw errors maybe fixable with other providers*/
-//                $user->sendVerificationEmail();
+                $user->sendVerificationEmail();
             } else {
                 //get the existing user.
                 $user = User::where('email', $user->email)->first();
