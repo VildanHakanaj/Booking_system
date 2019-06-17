@@ -26,7 +26,6 @@ class Calendar extends Model
                 }
             }
         }
-
         return $checkInDate;
     }
 

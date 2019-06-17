@@ -64,7 +64,16 @@ class CheckInTimesController extends Controller
             $day->save();
         }
 
-        $checkInDates = $cal->generateCalendar($array, date('2019-04-31'));
+        /*
+         *TODO::
+         * [ ] Allow admin to set a end date for the calendar.
+         * [ ] Prevent the user to set a previous date
+         * [ ] Don't allow the admin to set any date more than 5 months.
+         * [ ] Allow the admin to change the date
+         * [ ] Check for all the bookings that are
+         * */
+        $checkInDates = $cal->generateCalendar($array, date('2019-06-30'));
+//        dd($checkInDates);
         //delete the previous data from the table
         Calendar::truncate();
         //Create and save each date in the calendar

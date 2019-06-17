@@ -33,7 +33,6 @@
                                     @else
                                     @endif
                                     <option value="all"></option>
-
                                 </select>
                                 <small class="small text-muted">
                                     Leave empty to see whats available
@@ -41,7 +40,7 @@
                             </div>
                             <div class="col-md-5">
                                 <label for="start_date">Start Date</label>
-                                <input value="{{old('start_date')}}" type="date" name="start_date" class="form-control">
+                                <input value="{{ old('start_date') }}" type="date" name="start_date" class="form-control">
                                 <small class="text-info">Leave empty to get available dates</small>
                             </div>
                             <div class="col-md-2">
