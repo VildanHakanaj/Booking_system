@@ -56,6 +56,7 @@ class VerifyBooking extends Notification
             ->line('Pick up date is on ' . date('D', strtotime($this->booking->start_date)) . ' Time slots: ' . $startTimes)
             ->line('Return date is on ' . date('D', strtotime($this->booking->end_date)) . ' Time slots: ' . $endTimes)
             ->line('Thank you for using our application!');
+        /* TODO :: [ ] Let the admin to change the body */
     }
 
     /**

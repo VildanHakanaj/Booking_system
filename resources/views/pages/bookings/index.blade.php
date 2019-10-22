@@ -1,12 +1,15 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
+        @include('layouts.partials.cancelModal')
         {{--Seach nav--}}
         <div class="jumbotron">
             <h3>Welcome to the booking station {{auth()->user()->name}}</h3>
+            <p>The weekdays you can book are : @foreach($times as $time) <strong class="text-danger">{{strtoupper($time->day) }},</strong>@endforeach</p>
         </div>
         <div class="row">
             {{--Shows the errors--}}
+            @include('layouts.partials.modal')
             @include('layouts.messages.alert')
             @include('layouts.messages.error')
             @include('layouts.messages.success')
@@ -21,7 +24,7 @@
                                 <label for="kit">Choose a kit</label>~
                                 <select id="indexSearch" type="text" name="kit" class="form-control">
                                     @if($kits->count() > 0)
-                                        <option value="all">All</option>
+                                        <option selected value="all">All</option>
                                         @foreach($kits as $kit)
                                             @if($kit->products()->count() > 0)
                                                 <option value="{{$kit->id}}">{{$kit->title}}</option>
@@ -30,7 +33,6 @@
                                     @else
                                     @endif
                                     <option value="all"></option>
-
                                 </select>
                                 <small class="small text-muted">
                                     Leave empty to see whats available
@@ -38,7 +40,7 @@
                             </div>
                             <div class="col-md-5">
                                 <label for="start_date">Start Date</label>
-                                <input value="{{old('start_date')}}" type="date" name="start_date" class="form-control">
+                                <input value="{{ old('start_date') }}" type="date" name="start_date" class="form-control">
                                 <small class="text-info">Leave empty to get available dates</small>
                             </div>
                             <div class="col-md-2">
@@ -68,40 +70,44 @@
                         @if(Session::get('kitsForBooking')->count() > 0)
                             <tbody>
                             @foreach(Session::get('kitsForBooking') as $kit)
-                                <tr>
-                                    <th scope="row">{{$kit->title}}</th>
-                                    <td>
-                                        @foreach($kit->products() as $product)
-                                            <ul class="list-group">
-                                                <li class="list-group-item">{{$product->title}}</li>
-                                            </ul>
-                                        @endforeach
-                                    </td>
-                                    @if(Session::has('availableDates'))
+                                @if($kit->products()->count() > 0)
+                                    <tr>
+                                        <th scope="row">{{$kit->title}}</th>
                                         <td>
-                                            <ul class="list-group">
-                                                @foreach(Session::get('availableDates') as $date)
-                                                    <li class="list-group-item">
-                                                        {{ $date->date }}
-                                                        {!! Form::open(['route' => 'booking.store', 'method' => 'POST']) !!}
-                                                        {!! Form::hidden('start_date', $date->date) !!}
-                                                        {!! Form::hidden('kit', $kit->id) !!}
-                                                        {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
-                                                        {!! Form::close() !!}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
+                                            @foreach($kit->products() as $product)
+                                                <ul class="list-group">
+                                                    <li class="list-group-item">{{$product->title}}</li>
+                                                </ul>
+                                            @endforeach
                                         </td>
-                                    @else
-                                        <td>
-                                            {!! Form::open(['route' => 'booking.store', 'method' => 'POST']) !!}
-                                            {!! Form::hidden('start_date', Session::get('availableDate')) !!}
-                                            {!! Form::hidden('kit', $kit->id) !!}
-                                            {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
-                                            {!! Form::close() !!}
-                                        </td>
-                                    @endif
-                                </tr>
+                                        @if(Session::has('availableDates'))
+                                            <td>
+                                                <ul class="list-group">
+                                                    @foreach(Session::get('availableDates') as $date)
+                                                        @if(strtotime($date->date) > strtotime('now'))
+                                                            <li class="list-group-item">
+                                                                {{ $date->date }}
+                                                                {!! Form::open(['route' => 'userBookings.store', 'method' => 'POST']) !!}
+                                                                {!! Form::hidden('start_date', $date->date) !!}
+                                                                {!! Form::hidden('kit', $kit->id) !!}
+                                                                {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
+                                                                {!! Form::close() !!}
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            </td>
+                                        @else
+                                            <td>
+                                                {!! Form::open(['route' => 'userBookings.store', 'method' => 'POST']) !!}
+                                                {!! Form::hidden('start_date', Session::get('availableDate')) !!}
+                                                {!! Form::hidden('kit', $kit->id) !!}
+                                                {!! Form::submit('Book Now', ['class' => 'btn btn-outline-success']) !!}
+                                                {!! Form::close() !!}
+                                            </td>
+                                        @endif
+                                    </tr>
+                                @endif
                             @endforeach
                             </tbody>
                         @endif
@@ -122,6 +128,9 @@
                                         Kit: {{$currentBooking->kit->title}} | Start
                                         Date: {{$currentBooking->start_date}}| End
                                         Date: {{$currentBooking->end_date    }}
+                                        {!! Form::open(['route' => ['userBookings.destroy', $currentBooking->id], 'method' => 'DELETE', 'class' => 'float-right'] ) !!}
+                                        {!! Form::submit('Cancel', ['class' => 'btn btn-outline-danger btn-sm']) !!}
+                                        {!! Form::close() !!}
                                     </li>
                                 @endforeach
                             @else

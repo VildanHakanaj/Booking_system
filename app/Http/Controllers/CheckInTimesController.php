@@ -64,9 +64,23 @@ class CheckInTimesController extends Controller
             $day->save();
         }
 
-        $checkInDates = $cal->generateCalendar($array, date('2019-04-31'));
+        /*
+         *TODO::
+         * [x] Allow admin to set a end date for the calendar.
+         * [x] Prevent the user to set a previous date
+         * [x] Don't allow the admin to set any date more than 5 months.
+         * [x] Allow the admin to change the date
+         * [x] Check for all the bookings that are
+         * */
+        //get end date for the calendar
+        $end_date = $request->end_date;
+
+        //get all the dates
+        $checkInDates = $cal->generateCalendar($array, $end_date);
+
         //delete the previous data from the table
         Calendar::truncate();
+
         //Create and save each date in the calendar
         foreach($checkInDates as $checkInDate){
             $cal = new Calendar;
@@ -74,9 +88,9 @@ class CheckInTimesController extends Controller
             $cal->save();
         }
 
+        //Set the message
         Session::flash('success', 'Successfully changed the time of the ');
         return redirect()->route('bookingSettings.index');
-
     }
 
     /*

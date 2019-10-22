@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <h3 class="text-primary"><a href="{{route('kits.index')}}">< Go Back</a></h3>
+        <h3 class="text-primary"><a href="{{route('kits.index')}}"><< Kits</a></h3>
         @include('layouts.messages.success')
         <div class="card bg-light mb-3 list-group">
             <div class="card-header"><h1 class="text-muted">{{$kit->title}}</h1></div>

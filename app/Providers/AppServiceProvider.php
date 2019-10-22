@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('layouts.partials.previousBooking', function($view){
 
-            $view->with('currentBookings', \App\Booking::where('user_id', auth()->user()->id));
+            $view->with('currentBookings', Booking::where('user_id', auth()->user()->id));
 
         });
     }

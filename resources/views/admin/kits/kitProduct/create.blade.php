@@ -8,10 +8,8 @@
         <input type="hidden" name="kit_id" value="{{$kit->id}}">
 
         <div class="form-group">
-
             {!! Form::label('title', 'Kit Title') !!}
             {!! Form::text('title', $kit->title, ['disabled', 'class' => 'form-control']) !!}
-
         </div>
 
         <div class="form-group">

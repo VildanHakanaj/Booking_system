@@ -44,7 +44,7 @@ class KitController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -67,7 +67,7 @@ class KitController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Kit $kit
+     * @param \App\Kit $kit
      * @return \Illuminate\Http\Response
      */
     public function show(Kit $kit)
@@ -79,7 +79,7 @@ class KitController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Kit $kit
+     * @param \App\Kit $kit
      * @return \Illuminate\Http\Response
      */
     public function edit(Kit $kit)
@@ -90,8 +90,8 @@ class KitController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Kit $kit
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Kit $kit
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Kit $kit)
@@ -114,24 +114,11 @@ class KitController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Kit $kit
+     * @param \App\Kit $kit
      * @return \Illuminate\Http\Response
      */
     public function destroy(Kit $kit)
     {
-        /*
-         *TODO
-         * [ ] Check if there is any items in the kit
-         *      [ ] If yes notify the user if they want to continue
-         *      [ ] If no just delete it.
-         * [ ] In the future when the booking part comes in.
-         *      [ ] Check if the kit is in any bookings
-         *          [ ] if yes then don't allow the user to delete the kit
-         *          [ ] If it it isn't then just do the above part.
-         *
-         * Right now this will delete it regardless of what the kit has.
-         *
-         * */
         //Delete the relation
         KitProduct::where('kit_id', $kit->id)->delete();
 
@@ -186,11 +173,13 @@ class KitController extends Controller
             'kit' => 'required',
         ];
 
-        if(isset($request->start_date)){
+        if (isset($request->start_date)) {
             $rules['start_date'] = 'date';
         }
 
         $request->validate($rules);
+
+
 
 
         /*
@@ -198,7 +187,7 @@ class KitController extends Controller
          * kits [X]
          * date [ ]
          * */
-        if(!isset($request->start_date) && $request->kit != 'all'){
+        if (!isset($request->start_date) && $request->kit != 'all') {
             $kit = Kit::find($request->kit);
             $dates = $kit->getAvailableDates();
             return redirect()->back()->with(['kitsForBooking' => Kit::where('id', $request->kit)->get(), 'availableDates' => $dates]);
@@ -217,7 +206,7 @@ class KitController extends Controller
          * Get all the kits that are available for a chosen date
          * Kit  [ ]
          * Date [X]
-         * */
+      * */
         if ($request->kit === 'all') {
             return redirect()->back()->with(['kitsForBooking' => $kit->allAvailable($request->start_date), 'availableDate' => $request->start_date]);
         }

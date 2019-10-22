@@ -90,6 +90,11 @@
                 </textarea>
             </div>
         </div>
+        <div class="row mt-5">
+            {!! Form::label('end_date', 'End Date') !!}
+            {!! Form::date('end_date', null, ['class' => 'form-control']) !!}
+            <small class="small">Generate the calendar until this date!</small>
+        </div>
         {!! Form::submit('submit', ['class' => 'btn btn-success w-100 mt-4']) !!}
         {!! Form::close() !!}
     </div>
