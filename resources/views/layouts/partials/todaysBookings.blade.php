@@ -6,9 +6,6 @@
         @if($todaysBookings->count() > 0)
             <ul class="list-group">
                 @foreach($todaysBookings as $booking)
-                    @if($booking->end_date == date())
-
-                    @else
                         <li class="list-group-item">
                             Kit: {{$booking->kit->title}} | Start
                             Date: {{$booking->start_date}}| End
@@ -17,7 +14,6 @@
                             {!! Form::submit('Cancel', ['class' => 'btn btn-outline-danger btn-sm']) !!}
                             {!! Form::close() !!}
                         </li>
-                    @endif
                 @endforeach
             </ul>
         @else
