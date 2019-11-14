@@ -1,10 +1,7 @@
-
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
@@ -12,3 +9,25 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
+.profile-info {
+  width: 100%;
+  margin-top: 40px;
+  li {
+    font-weight: bold;
+    border-left: 5px solid $blue;
+    transition: all .1s ease-in;
+    &:hover{
+      border-left: 20px solid $blue;
+    }
+    a{
+      color: $black;
+      font-weight: 700;
+    }
+  }
+}
+
+#user-profile{
+  margin-top: 100px;
+}
+
