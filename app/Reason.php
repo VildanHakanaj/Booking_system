@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Reason extends Model
@@ -9,11 +10,10 @@ class Reason extends Model
 
     protected $fillable = ['title', 'description', 'expires_at'];
 
-    /*
-     * Creates the expiry date for the reason
-     *
-     * @param $data
-     * */
+    public function users(){
+        return $this->belongsToMany(User::class, 'reason_to_book');
+    }
+
     public function setExpiry($data)
     {
 
@@ -45,26 +45,18 @@ class Reason extends Model
         }
     }
 
-    /*
-     * Calculate the expiry of the reason
-     *
-     * @param $data
-     * */
-    public function createReason($data)
-    {
-        $this->title = $data;
-        $this->setExpiry($data);
-        $this->description = $data;
+    public function isUnique($title){
+        return ($this->where('title', $title)->first()) ? false : true;
     }
 
-    /*
-     * Check if this model already exist
-     *
-     * @param $title
-     * @return boolean
-     * */
-    public function isUnique($title)
-    {
-        return ($this->where('title', $title)->first()) ? false : true;
+    public function isActiveForUser(User $user){
+
+         return ReasonToBook::where('user_id', $user->id)->where('reason_id', $this->id)->first()->active == 1;
+    }
+
+    public static function search($query_param){
+        return Reason::latest()->where('title', 'LIKE', '%' . $query_param . '%')
+        ->orWhere('title', 'LIKE', '%' . $query_param . '%')
+        ->paginate(10);       
     }
 }

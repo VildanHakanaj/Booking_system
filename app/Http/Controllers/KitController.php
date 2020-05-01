@@ -64,8 +64,13 @@ class KitController extends Controller
      */
     public function show(Kit $kit)
     {
-        $products = $kit->products();
-        return view('admin.kits.show')->with('kit', $kit)->with('products', $products);
+        
+        return view('admin.kits.show',
+            [
+                'kit' => $kit,
+                'products' => $kit->products()->get()
+            ]
+        );
     }
 
     /**
@@ -120,10 +125,14 @@ class KitController extends Controller
     public function search(Request $request)
     {
         if (empty($request->search)) {
-            return view('admin.kits.index')->with('kits', Kit::orderBy('created_at', 'desc')->paginate(10));
+            return view('admin.kits.index')->with('kits', Kit::latest()->paginate(10));
         }
-        $kits = Kit::orderBy('created_at', 'desc')->where('title', 'LIKE', '%' . $request->search . '%')->paginate(10);
-        return view('admin.kits.index')->with('kits', $kits);
+        
+        return view('admin.kits.index',
+            [
+                'kits' => Kit::search($request->search)
+            ]    
+        );
     }
 
     /*

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class KitProduct extends Model
 {
+    protected $guarded = [];
     protected $table = 'kit_product';
 
     public function products(){

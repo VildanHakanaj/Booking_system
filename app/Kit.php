@@ -24,10 +24,7 @@ class Kit extends Model
      *
      * */
     public function products(){
-        return DB::table('products')
-            ->select('products.*')
-            ->join('kit_product', 'kit_product.product_id',  '=' , 'products.id')
-            ->where('kit_product.kit_id', $this->id)->get();
+        return $this->belongsToMany(Product::class);
     }
 
     /*
@@ -86,5 +83,9 @@ class Kit extends Model
     //Get all the kits that are available for booking
     public static function available(){
         return Kit::where('status', '=', 1)->get();
+    }
+
+    public static function search($query_param){
+        return Kit::latest()->where('title', 'LIKE', '%' . $query_param . '%')->paginate(10);
     }
 }

@@ -23,10 +23,6 @@
                     {!! Form::label('email', 'Email') !!}
                     {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'email@mail.com']) !!}
                 </div>
-                <div class="form-group">
-                    {!! Form::label('admin', 'Admin') !!}
-                    {!! Form::checkbox('admin') !!}
-                </div>
             </div>
             <div class="col-md-6">
                 {{-- REASON --}}

@@ -54,7 +54,7 @@ Route::prefix('admin')->middleware(['admin', 'auth'])->group(function () {
 
     //Users pages resources
     Route::resource('users', 'UsersController');
-    Route::get('users/deactivate/{id}', 'UsersController@deactivate')->name('users.deactivate');
+    Route::get('users/deactivate/{user}', 'UsersController@deactivate')->name('users.deactivate');
 
     //Reasons pages resources
     Route::resource('reason', 'ReasonController');

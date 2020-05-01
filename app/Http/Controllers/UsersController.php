@@ -64,21 +64,6 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        /*
-         *TODO
-         *  Edge case
-         *      [x] If the user already exists but the reason doesn't
-         *      [x] If the user and the reason already exists
-         *      [x] If the reason exits but the user doesn't
-         *  Password Protection
-         *      [x] Store a random string hashed for each user.
-         *      [x] The user will then update that password.
-         *      [x] Override the old password with their new one.
-         *  Student Number
-         *      [ ] Use a regex for the number
-         *          [ ] Check if it has a #
-         *          [ ] Check if the stdn has more than it should
-         * */
         //User instance
         $user = new User();
         $users = [];
@@ -136,38 +121,16 @@ class UsersController extends Controller
             /****************************************************************                                                             *
              *          ADMIN ENTERS THE USER MANUALLY                     *
              ***************************************************************/
-
-            //Only check if they are not admin
-            $stdnRule = $request->admin ? 'unique:users|max:7' : 'required|unique:users|min:7|max:255';
-
-            $rules = [
-                'name' => 'required|min:2|max:255',
-                'email' => 'unique:users|required|email|min:3|max:255',
-                'stdn' => $stdnRule
-            ];
-            $request->validate($rules);
-            $user->createUser($request);            //Create the new user.
-
-            /*
-             * If the user is an admin then the reason part is skiped
-             * because the admin doesn't need reasons to be in the system.
-             * */
-            //Check if the user is an admin
-            if ($request->admin) {
-                //Set the admin status to true
-                $user->admin = $request->admin;
-                $user->save();
-                Session::flash('success', 'Admin created successfully');
-                return redirect()->route('users.show', $user->id);
-            }
-
-            //Push the user
-            array_push($users, $user);
-            //Check if the reason is set to something other then the default.
-            if (strcmp($request->title, DEFAULT_REASON) < 0) {
-                //Get the reason if exists.
-                $reason = Reason::where('title', $request->reasons)->first();
-            }
+            $data = $request->validate(
+                [
+                    'name' => 'required|min:2|max:255',
+                    'email' => 'unique:users|required|email|min:3|max:255',
+                    'stdn' => 'required|unique:users|min:7|max:255'
+                ]
+            );
+            
+            $user = User::create($data);            //Create the new user.
+            $user->defaultReason();
         }
 
         /**********************************************
@@ -271,16 +234,18 @@ class UsersController extends Controller
             'home_addres' => 'min:3|max:255',
             'phone_number' => 'min:10|max:255',
         ]);
+
         $user->toggleAdmin($request->admin);
         $user->update($data);
+
         Session::flash('success', 'Successfully updated the user');
         return redirect(route('users.show', $user->id));
     }
 
 
-    public function deactivate($id)
+    public function deactivate(User $user)
     {
-        ReasonToBook::where('user_id', $id)->update(['active' => 0]);
+        $user->deactivate();
         Session::flash('success', 'User successfully deactivated');
         return redirect()->back();
     }
@@ -298,20 +263,16 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-//        return redirect(route('errors.notAuthorized'));
+
     }
 
     public function search(Request $request)
     {
-
         if (empty($request->search)) {
-            return view('admin.users.index')->with('users', User::orderBy('created_at', 'desc')->paginate(10));
+            return redirect()->route('users.index');
         }
-
-        $users = User::orderBy('created_at', 'desc')->where('name', 'LIKE', '%' . $request->search . '%')
-            ->orWhere('email', 'LIKE', '%' . $request->search . '%')->paginate(10);
-
-        return view('admin.users.index')->with('users', $users);
+        
+        return view('admin.users.index')->with('users', User::search($request->search));
 
     }
 }

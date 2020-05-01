@@ -60,19 +60,27 @@
                              data-parent="#accordion">
                             <div class="card-body">
                                 <ul class="list-group list-group-flush">
-                                    @if($reasons->count() > 0)
-                                        @foreach($reasons as $reason)
-                                            <li class="list-group-item">
-                                                <span class="font-weight-bolder">Title: </span>{{ $reason->title }}
-                                                <a href="{{route('reasonToBook.deactivate', [$user->id, $reason->id])}}"
-                                                   class="@if($reason->active == 1) badge-danger @else badge-success @endif badge-pill float-right">@if($reason->active == 1)
-                                                        Disable @else Activate @endif</a>
-                                            </li>
+                                    @forelse($reasons as $reason)
+                                        <li class="list-group-item">
+                                            <span class="font-weight-bolder">Title: </span>{{ $reason->title }}
+                                            <a 
+                                            href="{{route('reasonToBook.deactivate', [$user->id, $reason->id])}}"
+                                            class="
+                                            @if($reason->isActiveForUser($user)) 
+                                                badge-danger 
+                                            @else 
+                                                badge-success 
+                                            @endif badge-pill float-right">
 
-                                        @endforeach
-                                    @else
+                                            @if($reason->isActiveForUser($user))
+                                                Disable 
+                                            @else 
+                                                Activate 
+                                            @endif</a>
+                                        </li>
+                                    @empty
                                         <p>No Reasons associated with this user</p>
-                                    @endif
+                                    @endforelse
                                 </ul>
                             </div>
                         </div>

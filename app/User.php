@@ -75,17 +75,11 @@ class User extends Authenticatable
         $this->notify(new VerifyBooking($this, $booking));
     }
 
-    /**
-     * Add the user data into the user
-     *
-     * @param $data
-     * */
-    public function createUser($data)
-    {
-        $this->stdn = $data['stdn'];
-        $this->name = $data['name'];
-        $this->email = $data['email'];
+
+    public function defaultReason(){
+        $this->reasons()->create();
     }
+    
 
     /**Check if the use is unique
      *
@@ -98,17 +92,8 @@ class User extends Authenticatable
 
     }
 
-    /**
-     * Get all the reasons associated with the user
-     * @return HasMany
-     *
-     * */
-    public function reasons()
-    {
-        return DB::table('reason_to_book')
-            ->select('reason_to_book.active', 'reasons.title', 'reasons.id')
-            ->join('reasons', 'reason_to_book.reason_id',  '=' , 'reasons.id')
-            ->where('user_id', $this->id)->get();
+    public function reasons(){
+        return $this->belongsToMany(Reason::class, 'reason_to_book')->get();
     }
 
     /**
@@ -117,7 +102,7 @@ class User extends Authenticatable
      * @return boolean
      * */
     public function isActive()
-    {
+    { 
         if (!$this->isAdmin()) {
             return $this->reasons()->where('active', 1)->count() > 0;
         }
@@ -131,6 +116,17 @@ class User extends Authenticatable
 
     public function bookings(){
         return $this->hasMany(Booking::class);
+    }
+
+    public function deactivate(){
+        ReasonToBook::where('user_id', $this->id)->update(['active' => 0]);
+    }
+
+    public static function search($query_param){
+        return  User::latest()
+            ->where('name', 'LIKE', '%' . $query_param . '%')
+            ->orWhere('email', 'LIKE', '%' . $query_param . '%')
+            ->paginate(10);
     }
 
 }
