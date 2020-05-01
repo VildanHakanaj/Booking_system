@@ -125,6 +125,10 @@ class User extends Authenticatable
 
     }
 
+    public function toggleAdmin($value){
+        $this->admin = $value ? 1 : 0;
+    }
+
     public function bookings(){
         return $this->hasMany(Booking::class);
     }

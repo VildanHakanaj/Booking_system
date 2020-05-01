@@ -23,11 +23,9 @@ class PagesController extends Controller
      *
      * */
     public function bookings(){
-        $kits = Kit::where('status', '=', 1)->get();
-        $bookingTimes = CheckInTimes::all();
         return view('pages.bookings.index')
-                    ->with('kits', $kits)
-                    ->with('times', $bookingTimes);
+                    ->with('kits', Kit::available())
+                    ->with('times', CheckInTimes::all());
     }
 
     /*
@@ -35,6 +33,7 @@ class PagesController extends Controller
      *
      * */
     public function exploreKits(){
+        
         $kits = Kit::where('status', '=', 1)->paginate(10);
         return view('pages.bookings.exploreKits')->with('kits', $kits);
     }

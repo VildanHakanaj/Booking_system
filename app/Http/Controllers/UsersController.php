@@ -93,6 +93,8 @@ class UsersController extends Controller
          * CHECK IF THE ADMIN HAS A ROSTER FILE*
          * *********************************/
         if (isset($request->roster)) {
+
+            
             $filename = $request->roster;
             //Get the array with data
             $data = parseFile($filename);
@@ -101,7 +103,7 @@ class UsersController extends Controller
             //Get the data for the reason
             $reasonData = $data['reason'];
             $users = [];
-
+            
             //Create the user from the roster.
             foreach ($userData as $myUser) {
                 $user = new User;
@@ -228,12 +230,14 @@ class UsersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function show(User $user)
+    public function show(User $user)
     {
-        //Use a join to select the relation and the reason.
-        $reasons = $user->reasons();
-        return view('admin.users.show')->with('user', $user)->with('reasons', $reasons);
+        return view('admin.users.show', 
+            [
+                'user' => $user,
+                'reasons' => $user->reasons()
+            ]
+        );
     }
 
     /**
@@ -242,10 +246,13 @@ class UsersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function edit(User $user)
+    public function edit(User $user)
     {
-        return view('admin.users.edit')->with('user', $user);
+        return view('admin.users.edit',
+            [
+                'user' => $user
+            ]
+        );
     }
 
     /**
@@ -255,40 +262,23 @@ class UsersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function update(Request $request, User $user)
+    public function update(Request $request, User $user)
     {
-
-        //Validate the request
-        $request->validate([
+       $data = $request->validate([
             'name' => 'required|min:3|max:255',
             'stdn' => 'required|min:3|max:255',
             'email' => 'email|required|min:3|max:255',
             'home_addres' => 'min:3|max:255',
             'phone_number' => 'min:10|max:255',
         ]);
-
-        //Get all the request data
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->home_address = $request->home_address;
-        $user->phone_number = $request->phone_number;
-
-        //Check if the user will be an admin
-        if ($request->admin) {
-            $user->admin = 1;
-        }
-
-        //Save the user
-        $user->save();
-
+        $user->toggleAdmin($request->admin);
+        $user->update($data);
         Session::flash('success', 'Successfully updated the user');
         return redirect(route('users.show', $user->id));
     }
 
 
-    public
-    function deactivate($id)
+    public function deactivate($id)
     {
         ReasonToBook::where('user_id', $id)->update(['active' => 0]);
         Session::flash('success', 'User successfully deactivated');
@@ -306,14 +296,12 @@ class UsersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function destroy($id)
+    public function destroy($id)
     {
 //        return redirect(route('errors.notAuthorized'));
     }
 
-    public
-    function search(Request $request)
+    public function search(Request $request)
     {
 
         if (empty($request->search)) {

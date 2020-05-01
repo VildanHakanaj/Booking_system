@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Kit;
+use Session;
 use App\Booking;
 use App\Calendar;
-use App\CheckInTimes;
-use App\Kit;
 use App\KitProduct;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Session;
+use App\Http\Requests\KitRequest;
 
 class KitController extends Controller
 {
@@ -26,8 +25,11 @@ class KitController extends Controller
      */
     public function index()
     {
-        $kits = Kit::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.kits.index')->with('kits', $kits);
+        return view('admin.kits.index',
+            [
+                'kits' => Kit::orderBy('created_at', 'desc')->paginate(10)
+            ]
+        );
     }
 
     /**
@@ -47,21 +49,11 @@ class KitController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(KitRequest $request)
     {
-        $kit = new Kit();
-        $request->validate(
-            [
-                'title' => 'required|min:2|max:255',
-                'booking_window' => 'required|min:0|max:255',
-            ]
-        );
-
-        $kit->createKit($request);
-        $kit->save();
-
+        $kit = Kit::create($request->validated());
         Session::flash('success', 'Kit successfully created');
-        return redirect()->route('kits.show', $kit->id)->with('kit', $kit);
+        return redirect()->route('kits.show', $kit)->with('kit', $kit);
     }
 
     /**
@@ -84,7 +76,10 @@ class KitController extends Controller
      */
     public function edit(Kit $kit)
     {
-        return view('admin.kits.edit')->with('kit', $kit);
+        return view('admin.kits.edit', 
+        [
+            'kit' => $kit
+        ]);
     }
 
     /**
@@ -94,20 +89,13 @@ class KitController extends Controller
      * @param \App\Kit $kit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Kit $kit)
+    public function update(KitRequest $request, Kit $kit)
     {
-        $request->validate(
-            [
-                'title' => 'required|min:2|max:255',
-                'booking_window' => 'required|min:0|max:255',
-            ]
-        );
-
-        $kit->createKit($request);
-        $kit->update();
+        $kit->update($request->validated());
 
         Session::flash('success', 'Kit successfully updated');
-        return redirect()->route('kits.show', $kit->id);
+        
+        return redirect()->route('kits.show', $kit);
 
     }
 
@@ -119,11 +107,7 @@ class KitController extends Controller
      */
     public function destroy(Kit $kit)
     {
-        //Delete the relation
-        KitProduct::where('kit_id', $kit->id)->delete();
-
-        //Delete the model
-        Kit::where('id', $kit->id)->delete();
+       $kit->delete();
     }
 
     /*
@@ -178,9 +162,6 @@ class KitController extends Controller
         }
 
         $request->validate($rules);
-
-
-
 
         /*
          * Check when a kit is available

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
     <div class="row col-md-6 offset-3">
         @include('layouts.messages.success')
         <h1>Edit {{$kit->title}} kit</h1>
