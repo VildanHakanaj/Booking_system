@@ -73,15 +73,15 @@ class UsersController extends Controller
             if ($request->has('admin')) {
                 $validated['admin'] = $request->admin;
             }
+            
             $user = User::create($validated);
+
             if (!$user->isAdmin()) {
-                $user->addReasonToBook([Reason::getDefaultReason()->id, Reason::where('title', $request->reasons)->first()->id]);
+                $user->addReasonForNewUser($request->reasons);
             }
         }
-        // flash('success', 'Users successfully created');        //Save the message in the session
         return redirect(route('users.index'))
-                ->with('success', 'Users successfully created');        //Redirect the admin to the show user
-    }
+                ->with('success', 'Users successfully created');       
     
 
     /**

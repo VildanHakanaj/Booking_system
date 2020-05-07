@@ -113,6 +113,12 @@ class User extends Authenticatable
             ->paginate(10);
     }
 
+
+    public function addReasonForNewUser($reason)
+    {
+        $this->addReasonToBook([Reason::default()->id, Reason::where('title', $reason)->first()->id])
+    }
+
     public function addReasonToBook($reasons)
     {
         $this->reasons()->sync($reasons);
