@@ -60,6 +60,7 @@ $('document').ready(function () {
 
     //Submit the form and check the deletion.
     $modal = $('#exampleModalCenter');
+    $cancelModal = $('#cancelModalCenter');
 
     $('.deleteKit').on('click', (ev) => {
         ev.preventDefault();
@@ -112,4 +113,50 @@ $('document').ready(function () {
                 alert("Error:: " + jqXHR.responseText);
             });
     }
+
+
+    /*
+    * This code will make sure the user is sure to cancel the user
+    *
+    * Will pop up a modal box and ask user to confirm
+    * */
+    let $cancelBtn = $(".cancelBooking");
+    $cancelBtn.on('submit', function (ev) {
+        ev.preventDefault();
+        const $this = $(this);
+        $cancelModal.modal('show');
+        $('#yes').on('click', function () {
+            $.post($this.attr('action'), {_method: 'DELETE'})
+                .done(function (data) {
+                    $cancelModal.modal('hide');
+                    $this.closest('tr').remove();
+                })
+                .fail((jqXHR) => {
+                    alert('Error:: ' + jqXHR.responseText);
+                })
+        })
+    })
+
+    /**
+     * User canceling booking
+     * needs to be fixed
+     * */
+    // let $userCancelBtn = $('.userCancelBooking');
+    // $userCancelBtn.on('submit', function (ev) {
+    //     ev.preventDefault();
+    //     const $this = $(this);
+    //     $cancelModal.modal('show');
+    //     $('#yes').on('click', function () {
+    //         console.log($this.attr('action'));
+    //         $.post($this.attr('action'), { _method: 'DELETE' })
+    //             .done(function (data) {
+    //                 console.log(data);
+    //                 $cancelModal.modal('hide');
+    //                 $this.closest('li').remove();
+    //             })
+    //             .fail((jqXHR) => {
+    //                 alert('Error:: ' + jqXHR.responseText);
+    //             })
+    //     })
+    // })
 });

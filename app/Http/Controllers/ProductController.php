@@ -9,22 +9,6 @@ use Session;
 class ProductController extends Controller
 {
 
-    /**
-     *TODO
-     * [ ] Ask the user if the item will be bookable to itself or a kit
-     * [ ] Use js to add the disabled choice when the user checks the box
-     * [ ] Then set the product to a kit
-     * [ ] Only show existing kits if the user will select to choose with other kits
-     * [ ] Dont force the user to place the product in a kit right away
-     * [ ] If the product is in a kit create a function to differentiate if a product is in a kit already
-     * [ ] If the product is not in a kit dont make them to be bookable
-     * [ ] Allow the admin to change the status of the kit
-     * [ ] Allow the admin to change the kit for a product
-     *      [ ] You can allow the admin to move the product into another kit
-     *          [ ] Delete the product from the current kit and just add it in the second kit.
-     *
-     * */
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -38,9 +22,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //Get all the products
-        $products = Product::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.products.index')->with('products', $products);
+        return view('admin.products.index', 
+            [
+                'products' => Product::orderBy('created_at', 'desc')->paginate(10)
+            ]);
     }
 
     /**
@@ -61,19 +46,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = new Product();
         //validate the request
-        $request->validate([
+        $data = $request->validate([
             'title' => 'required|unique:products|min:2|max:255',
             'brand' => 'required|min:2|max:255',
             'desc' => 'required|min:5',
             'serial_number' => 'nullable|min:2|max:255',
         ]);
 
-        $product->createProduct($request);
-        //Add the product
-        $product->save();
-
+        $product = Product::create($data);
         Session::flash('success', 'Product was inserted successfully');
         return redirect()->route('products.show', $product->id);
     }
@@ -86,7 +67,11 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('admin.products.show')->with('product', $product);
+        return view('admin.products.show', 
+            [
+                'product' => $product
+            ]
+        );
     }
 
     /**
@@ -97,7 +82,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('admin.products.edit', compact('product', $product));
+        return view('admin.products.edit', 
+            [
+                'product' => $product
+            ]
+        );
     }
 
     /**
@@ -110,7 +99,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         //validate the request
-        $request->validate(
+        $data = $request->validate(
             [
                 'title'             => 'required|min:2|max:255',
                 'brand'             => 'required|min:2|max:255',
@@ -120,13 +109,8 @@ class ProductController extends Controller
                 'maintenance'       => 'nullable|date|min:2|max:255',
             ]
         );
-
-        $product->createProduct($request);
-        //Set the status attribute
         $product->setStatusAttr($request->status);
-        //Update the model
-        $product->update();
-
+        $product->update($data);
         Session::flash('success', 'Product was successfully updated');
         return redirect()->route('products.show', $product->id);
     }
@@ -140,20 +124,24 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        
     }
 
     public function search(Request $request){
 
         if(empty($request->search)){
-            return view('admin.product.index')->with('products', Product::orderBy('created_at', 'desc')->paginate(10));
+            return view('admin.products.index', 
+            [
+                'products' => Product::latest()->paginate(10)
+            ]
+        );
         }
 
-        $products = Product::orderBy('created_at', 'desc')->where('title', 'LIKE', '%' . $request->search . '%')
-            ->orWhere('brand', 'LIKE', '%' . $request->search . '%')
-            ->orWhere('serial_number', 'LIKE', '%' . $request->search . '%')
-            ->paginate(10);
-        return view('admin.products.index')->with('products', $products);
+        return view('admin.products.index', 
+            [
+                'products' => Product::search($request->search)
+            ]
+        );
 
     }
 }

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+@include('layouts.messages.alert')
     <div class="row col-md-6 offset-3">
         <h1>Add a product to {{$kit->title}}</h1>
         {!! Form::open(['route' => 'kitProduct.store', 'method' => 'POST', 'class' => 'w-100']) !!}
@@ -8,10 +9,8 @@
         <input type="hidden" name="kit_id" value="{{$kit->id}}">
 
         <div class="form-group">
-
             {!! Form::label('title', 'Kit Title') !!}
             {!! Form::text('title', $kit->title, ['disabled', 'class' => 'form-control']) !!}
-
         </div>
 
         <div class="form-group">

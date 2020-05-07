@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReasonRequest;
 use App\Reason;
 use Illuminate\Http\Request;
 use Session;
 
 class ReasonController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -22,8 +22,12 @@ class ReasonController extends Controller
      */
     public function index()
     {
-        $reasons = Reason::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.reasons.index')->with('reasons', $reasons);
+        return view(
+            'admin.reasons.index',
+            [
+                'reasons' => Reason::latest()->paginate(10)
+            ]
+        );
     }
 
     /**
@@ -33,9 +37,7 @@ class ReasonController extends Controller
      */
     public function create()
     {
-
         return view('admin.reasons.create');
-
     }
 
     /**
@@ -44,18 +46,13 @@ class ReasonController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReasonRequest $request)
     {
-        $request->validate([
-            'title'         => 'unique:reasons|required|min:2|max:255',
-            'description'   => 'min:2|max:255',
-            'expires_at'    => 'required|date',
-        ]);
+        $data = $request->validated();
+        $reason = Reason::create($data);
 
-        $reason = Reason::create($request->all());
         Session::flash('success', "The reason was sucesfully created");
         return redirect(route('reason.show', $reason));
-
     }
 
     /**
@@ -87,21 +84,11 @@ class ReasonController extends Controller
      * @param  \App\Reason  $reason
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reason $reason)
+    public function update(ReasonRequest $request, Reason $reason)
     {
         //validate the request
-        $request->validate([
-            'title' => 'required|min:2|max:255',
-            'description' => 'min:2|max:255',
-            'expires_at' => 'date',
-        ]);
-
-        $reason->title = $request->title;
-        $reason->description = $request->description;
-        $reason->expires_at = $request->expires_at;
-
-        $reason->save();
-
+        $data = $request->validated();
+        $reason->update($data);
         Session::flash('success', "Reason was successfully updated");
         return redirect(route('reason.show', $reason->id));
     }
@@ -114,19 +101,19 @@ class ReasonController extends Controller
      */
     public function destroy(Reason $reason)
     {
-        //
     }
 
-    public function search(Request $request){
-
-        if(empty($request->search)){
-            return view('admin.reasons.index')->with('reasons', Reason::orderBy('created_at', 'desc')->paginate(10));
+    public function search(Request $request)
+    {
+        if (empty($request->search)) {
+            return redirect()->route('reason.index');
         }
-
-        $reasons = Reason::orderBy('created_at', 'desc')->where('title', 'LIKE', '%' . $request->search . '%')
-            ->orWhere('title', 'LIKE', '%' . $request->search . '%')
-            ->paginate(10);
-        return view('admin.reasons.index')->with('reasons', $reasons);
-
+        
+        return view(
+            'admin.reasons.index',
+            [
+                'reasons' => Reason::search($request->search)
+            ]
+        );
     }
 }

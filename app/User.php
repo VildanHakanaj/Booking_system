@@ -3,25 +3,22 @@
 namespace App;
 
 use App\Notifications\VerifyBooking;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\VerifyEmail;
+use App\Traits\ParseRosterFile;
 use DB;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-
+    use Notifiable, ParseRosterFile;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'home_address', 'phone_number', 'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -75,40 +72,9 @@ class User extends Authenticatable
         $this->notify(new VerifyBooking($this, $booking));
     }
 
-    /**
-     * Add the user data into the user
-     *
-     * @param $data
-     * */
-    public function createUser($data)
-    {
-        $this->stdn = $data['stdn'];
-        $this->name = $data['name'];
-        $this->email = $data['email'];
-    }
-
-    /**Check if the use is unique
-     *
-     * @param $email
-     * @return boolean
-     * */
-    public function isUnique($email)
-    {
-        return ($this->where('email', $email)->first()) ? false : true;
-
-    }
-
-    /**
-     * Get all the reasons associated with the user
-     * @return HasMany
-     *
-     * */
     public function reasons()
     {
-        return DB::table('reason_to_book')
-            ->select('reason_to_book.active', 'reasons.title', 'reasons.id')
-            ->join('reasons', 'reason_to_book.reason_id',  '=' , 'reasons.id')
-            ->where('user_id', $this->id)->get();
+        return $this->belongsToMany(Reason::class, 'reason_to_book');
     }
 
     /**
@@ -122,11 +88,39 @@ class User extends Authenticatable
             return $this->reasons()->where('active', 1)->count() > 0;
         }
         return true;
-
     }
 
-    public function bookings(){
+    public function toggleAdmin($value)
+    {
+        $this->admin = $value ? 1 : 0;
+    }
+
+    public function bookings()
+    {
         return $this->hasMany(Booking::class);
     }
 
+    public function deactivate()
+    {
+        ReasonToBook::where('user_id', $this->id)->update(['active' => 0]);
+    }
+    
+    public static function search($query_param)
+    {
+        return  User::latest()
+            ->where('name', 'LIKE', '%' . $query_param . '%')
+            ->orWhere('email', 'LIKE', '%' . $query_param . '%')
+            ->paginate(10);
+    }
+
+
+    public function addReasonForNewUser($reason)
+    {
+        $this->addReasonToBook([Reason::default()->id, Reason::where('title', $reason)->first()->id])
+    }
+
+    public function addReasonToBook($reasons)
+    {
+        $this->reasons()->sync($reasons);
+    }
 }

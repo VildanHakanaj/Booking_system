@@ -1,9 +1,13 @@
 @extends('layouts.app')
 @section('content')
 
-
     <div class="row col-md-6 offset-3">
+
+        
         @include('layouts.messages.success')
+        @include('layouts.messages.alert')
+
+
         <h1>Add a new kit</h1>
         {!! Form::open(['route' => 'kits.store', 'method' => 'POST', 'class' => 'w-100']) !!}
 

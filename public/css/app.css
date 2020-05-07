@@ -10496,3 +10496,27 @@ a.text-dark:focus {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+.profile-info {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.profile-info li {
+  font-weight: bold;
+  border-left: 5px solid #3490dc;
+  transition: all 0.1s ease-in;
+}
+
+.profile-info li:hover {
+  border-left: 20px solid #3490dc;
+}
+
+.profile-info li a {
+  color: #000;
+  font-weight: 700;
+}
+
+#user-profile {
+  margin-top: 100px;
+}
+

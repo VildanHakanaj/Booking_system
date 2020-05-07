@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    @include('layouts.partials.modal')
+    @include('layouts.partials.cancelModal')
     <div class="container">
         @include('layouts.messages.success')
         <div class="row">
@@ -15,6 +15,7 @@
         </div>
         <div>
             <h1 class="text-muted"><a href="{{route('bookings.index')}}">Bookings</a></h1>
+            <a href="{{route('bookings.create')}}" class="btn btn-success mb-3">Make a booking</a>
         </div>
         @if($bookings->count() > 0)
             <table class="table table-hover">
@@ -41,9 +42,14 @@
                         <td>{{$booking->checked_out == 0 ? 'No' : 'Yes'}}</td>
                         <td>{{$booking->checked_in == 0  ?  'No'  : 'Yes' }}</td>
                         <td>
-                            <a href="{{route('kits.destroy', $booking->id)}}" class="btn btn-sm btn-outline-danger cancleBooking">Cancel Booking</a>
-                            <a href="{{route('bookings.edit', $booking->id)}}" class="btn btn-sm btn-outline-primary">Edit Booking</a>
-                            <a href="{{route('bookings.show', $booking->id)}}" class="btn btn-sm text-white btn-info">Show Details</a>
+                            {{--                            <a href="{{route('bookings.destroy', $booking->id)}}" class="btn btn-sm btn-outline-danger cancelBooking">Cancel Booking</a>--}}
+                            {!! Form::open(['route' => ['bookings.destroy', $booking->id], 'method' => 'DELETE', 'class' => 'd-inline cancelBooking']) !!}
+                            {!! Form::submit('Cancel Booking', ['class' => 'btn btn-outline-danger btn-sm']) !!}
+                            {!! Form::close() !!}
+                            <a href="{{route('bookings.edit', $booking->id)}}" class="btn btn-sm btn-outline-primary">Edit
+                                Booking</a>
+                            <a href="{{route('bookings.show', $booking->id)}}" class="btn btn-sm text-white btn-info">Show
+                                Details</a>
                         </td>
                     </tr>
                 @endforeach

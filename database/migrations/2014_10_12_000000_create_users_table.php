@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
 
             //I made the address and number nullable so the user can fill those in after they login
             $table->string('home_address')->nullable();
-            $table->string('phone_number')->nullable();
+            $table->string('phone_number')->nullable()->unique();
             $table->string('password')->nullable();
 
             //Give admin privileges to the user if true

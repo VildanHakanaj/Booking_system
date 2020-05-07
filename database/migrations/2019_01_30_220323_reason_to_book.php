@@ -19,7 +19,7 @@ class ReasonToBook extends Migration
             $table->unsignedInteger('reason_id');
             $table->boolean('active')->default(1);
             $table->timestamps();
-
+            
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('reason_id')->references('id')->on('reasons');
         });

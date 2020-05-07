@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CheckInTimes;
 use App\Kit;
 use Illuminate\Http\Request;
 
@@ -9,6 +10,7 @@ class PagesController extends Controller
 {
     public function __construct()
     {
+        //User needs to be authenticated
         $this->middleware('auth');
     }
 
@@ -21,9 +23,9 @@ class PagesController extends Controller
      *
      * */
     public function bookings(){
-        $kits = Kit::where('status', '=', 1)->get();
         return view('pages.bookings.index')
-                    ->with('kits', $kits);
+                    ->with('kits', Kit::available())
+                    ->with('times', CheckInTimes::all());
     }
 
     /*
@@ -31,6 +33,7 @@ class PagesController extends Controller
      *
      * */
     public function exploreKits(){
+        
         $kits = Kit::where('status', '=', 1)->paginate(10);
         return view('pages.bookings.exploreKits')->with('kits', $kits);
     }
