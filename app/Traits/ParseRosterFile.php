@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 trait ParseRosterFile
 {
-    protected function parseRosterFile(Request $request, $filename)
+    protected function createUsersFromRoster(Request $request, $filename)
     {
         $data = $this->getDataFromCSV($filename);
         $this->validateRosterData($request, $data);

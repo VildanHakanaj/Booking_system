@@ -61,7 +61,7 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         if ($request->hasFile('roster')) {
-            User::parseRosterFile($request, $request->roster);
+            User::createUsersFromRoster($request, $request->roster);
         } else {
             $validated = $request->validate(
                 [
@@ -81,9 +81,8 @@ class UsersController extends Controller
             }
         }
         return redirect(route('users.index'))
-                ->with('success', 'Users successfully created');       
-    
-
+                ->with('success', 'Users successfully created');
+    }
     /**
      * Display the specified resource.
      *
