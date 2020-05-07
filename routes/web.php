@@ -93,7 +93,6 @@ Route::prefix('admin')->middleware(['admin', 'auth'])->group(function () {
     Route::resource('bookingSettings', 'BookingSettingsController');
     Route::get('checkInTimes', 'CheckInTimesController@edit')->name('checkInTimes.edit');
     Route::post('checkInTimes', 'CheckInTimesController@store')->name('checkInTimes.store');
-
 });
 
 //Authentication routes
@@ -128,5 +127,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/booking', 'PagesController@bookings')->name('booking');
     Route::get('/booking/explore', 'PagesController@exploreKits')->name('booking.exploreKits');
     Route::post('/kits/checkAvailability', 'KitController@checkAvailability')->name('kits.checkAvailability');
-
 });

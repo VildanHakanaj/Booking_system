@@ -19,6 +19,7 @@ function parseFile($filename)
     //Count for the empty rows
     $count = 0;
     $users = [];
+    $reason = [];
     //Parse the csv file.
     while ($csvLine = fgetcsv($handler, 1000, ',')) {
         if ($count < 2) {

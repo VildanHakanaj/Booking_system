@@ -1,0 +1,629 @@
+diff --git a/app/Http/Controllers/KitController.php b/app/Http/Controllers/KitController.php
+index 5000cfb..160ee73 100644
+--- a/app/Http/Controllers/KitController.php
++++ b/app/Http/Controllers/KitController.php
+@@ -12,7 +12,6 @@ use App\Http\Requests\KitRequest;
+ 
+ class KitController extends Controller
+ {
+-
+     public function __construct()
+     {
+         $this->middleware('auth');
+@@ -25,7 +24,8 @@ class KitController extends Controller
+      */
+     public function index()
+     {
+-        return view('admin.kits.index',
++        return view(
++            'admin.kits.index',
+             [
+                 'kits' => Kit::orderBy('created_at', 'desc')->paginate(10)
+             ]
+@@ -64,8 +64,8 @@ class KitController extends Controller
+      */
+     public function show(Kit $kit)
+     {
+-        
+-        return view('admin.kits.show',
++        return view(
++            'admin.kits.show',
+             [
+                 'kit' => $kit,
+                 'products' => $kit->products()->get()
+@@ -81,10 +81,12 @@ class KitController extends Controller
+      */
+     public function edit(Kit $kit)
+     {
+-        return view('admin.kits.edit', 
+-        [
++        return view(
++            'admin.kits.edit',
++            [
+             'kit' => $kit
+-        ]);
++        ]
++        );
+     }
+ 
+     /**
+@@ -101,7 +103,6 @@ class KitController extends Controller
+         Session::flash('success', 'Kit successfully updated');
+         
+         return redirect()->route('kits.show', $kit);
+-
+     }
+ 
+     /**
+@@ -112,7 +113,7 @@ class KitController extends Controller
+      */
+     public function destroy(Kit $kit)
+     {
+-       $kit->delete();
++        $kit->delete();
+     }
+ 
+     /*
+@@ -128,10 +129,11 @@ class KitController extends Controller
+             return view('admin.kits.index')->with('kits', Kit::latest()->paginate(10));
+         }
+         
+-        return view('admin.kits.index',
++        return view(
++            'admin.kits.index',
+             [
+                 'kits' => Kit::search($request->search)
+-            ]    
++            ]
+         );
+     }
+ 
+@@ -147,7 +149,6 @@ class KitController extends Controller
+         } else {
+             echo false;
+         }
+-
+     }
+ 
+     /*
+diff --git a/app/Http/Controllers/ReasonController.php b/app/Http/Controllers/ReasonController.php
+index bcd12a8..f82b350 100644
+--- a/app/Http/Controllers/ReasonController.php
++++ b/app/Http/Controllers/ReasonController.php
+@@ -9,7 +9,6 @@ use Session;
+ 
+ class ReasonController extends Controller
+ {
+-
+     public function __construct()
+     {
+         $this->middleware('auth');
+@@ -23,8 +22,8 @@ class ReasonController extends Controller
+      */
+     public function index()
+     {
+-
+-        return view('admin.reasons.index', 
++        return view(
++            'admin.reasons.index',
+             [
+                 'reasons' => Reason::latest()->paginate(10)
+             ]
+@@ -49,13 +48,11 @@ class ReasonController extends Controller
+      */
+     public function store(ReasonRequest $request)
+     {
+-        
+         $data = $request->validated();
+         $reason = Reason::create($data);
+ 
+         Session::flash('success', "The reason was sucesfully created");
+         return redirect(route('reason.show', $reason));
+-
+     }
+ 
+     /**
+@@ -104,20 +101,19 @@ class ReasonController extends Controller
+      */
+     public function destroy(Reason $reason)
+     {
+-
+     }
+ 
+-    public function search(Request $request){
+-
+-        if(empty($request->search)){
++    public function search(Request $request)
++    {
++        if (empty($request->search)) {
+             return redirect()->route('reason.index');
+         }
+         
+-        return view('admin.reasons.index', 
++        return view(
++            'admin.reasons.index',
+             [
+                 'reasons' => Reason::search($request->search)
+             ]
+         );
+-
+     }
+ }
+diff --git a/app/Http/Controllers/UsersController.php b/app/Http/Controllers/UsersController.php
+index 6b45bc6..0f0f108 100644
+--- a/app/Http/Controllers/UsersController.php
++++ b/app/Http/Controllers/UsersController.php
+@@ -2,6 +2,7 @@
+ 
+ namespace App\Http\Controllers;
+ 
++use App\Http\Requests\UserRequest;
+ use App\Reason;
+ use App\User;
+ use App\ReasonToBook;
+@@ -13,22 +14,9 @@ define('DEFAULT_REASON', 'other');
+ 
+ class UsersController extends Controller
+ {
+-
+-    /**
+-     *
+-     *FIXME::
+-     * [ ] Fix the users roster file
+-     *      [ ] Needs to allow the roster to add more than one user
+-     * [ ] Add a btn to the user to make them inactive or active
+-     *      [ ] Remove all the relations between users.
+-     *
+-     *
+-     *
+-     * */
+     public function __construct()
+     {
+-        $this->middleware('auth');
+-        $this->middleware('admin');
++        $this->middleware(['auth', 'admin']);
+     }
+ 
+     /**
+@@ -38,9 +26,12 @@ class UsersController extends Controller
+      */
+     public function index()
+     {
+-        //Paginate the user by 10
+-        $users = User::orderBy('created_at', 'desc')->paginate(10);
+-        return view('admin.users.index')->with('users', $users);
++        return view(
++            'admin.users.index',
++            [
++                'users' => User::latest()->paginate(10)
++            ]
++        );
+     }
+ 
+     /**
+@@ -51,9 +42,13 @@ class UsersController extends Controller
+     public function create()
+     {
+         //Get all the reasons to display
+-        $reasons = Reason::all();
+         //Show the form to insert users
+-        return view('admin.users.create')->with('reasons', $reasons);
++        return view(
++            'admin.users.create',
++            [
++                'reasons' => Reason::all()
++            ]
++        );
+     }
+ 
+     /**
+@@ -64,58 +59,12 @@ class UsersController extends Controller
+      */
+     public function store(Request $request)
+     {
+-        //User instance
+-        $user = new User();
+-        $users = [];
+-        //Reason model
+-        $reason = new Reason();
+-
+-        //Reason relations User
+-        //Reason relations User for the default
+-        $reason_to_book_default = new ReasonToBook();
+ 
+         /***********************************
+          * CHECK IF THE ADMIN HAS A ROSTER FILE*
+          * *********************************/
+-        if (isset($request->roster)) {
+-
+-            
+-            $filename = $request->roster;
+-            //Get the array with data
+-            $data = parseFile($filename);
+-            //Get the data for the user
+-            $userData = $data['users'];
+-            //Get the data for the reason
+-            $reasonData = $data['reason'];
+-            $users = [];
+-            
+-            //Create the user from the roster.
+-            foreach ($userData as $myUser) {
+-                $user = new User;
+-                $user->createUser($myUser);
+-
+-                //Override the request with the data from the file
+-                $request->merge([
+-                    'name' => $user->name,
+-                    'email' => $user->email,
+-                    'stdn' => $user->stdn,
+-                ])->validate([
+-                    'name' => 'required|min:2|max:255',
+-                    'email' => 'required|email',
+-                    'stdn' => 'required|min:7|max:255',
+-                ]);
+-
+-                array_push($users, $user);
+-            }
+-            //Check if the reason already exists
+-            if ($reason->isUnique($reasonData)) {
+-                //Create the reason
+-                $reason->createReason($reasonData);
+-            } else {
+-                //Get the existing reason
+-                $reason = Reason::where('title', $reasonData)->first();
+-            }
+-
++        if ($request->hasFile('roster')) {
++            User::parseRosterFile($request, $request->roster);
+         } else {  /*======== END OF THE ROSTER =============*/
+ 
+             /****************************************************************                                                             *
+@@ -128,7 +77,7 @@ class UsersController extends Controller
+                     'stdn' => 'required|unique:users|min:7|max:255'
+                 ]
+             );
+-            
++
+             $user = User::create($data);            //Create the new user.
+             $user->defaultReason();
+         }
+@@ -195,7 +144,8 @@ class UsersController extends Controller
+      */
+     public function show(User $user)
+     {
+-        return view('admin.users.show', 
++        return view(
++            'admin.users.show',
+             [
+                 'user' => $user,
+                 'reasons' => $user->reasons()
+@@ -211,7 +161,8 @@ class UsersController extends Controller
+      */
+     public function edit(User $user)
+     {
+-        return view('admin.users.edit',
++        return view(
++            'admin.users.edit',
+             [
+                 'user' => $user
+             ]
+@@ -227,7 +178,7 @@ class UsersController extends Controller
+      */
+     public function update(Request $request, User $user)
+     {
+-       $data = $request->validate([
++        $data = $request->validate([
+             'name' => 'required|min:3|max:255',
+             'stdn' => 'required|min:3|max:255',
+             'email' => 'email|required|min:3|max:255',
+@@ -263,7 +214,6 @@ class UsersController extends Controller
+      */
+     public function destroy($id)
+     {
+-
+     }
+ 
+     public function search(Request $request)
+@@ -271,8 +221,7 @@ class UsersController extends Controller
+         if (empty($request->search)) {
+             return redirect()->route('users.index');
+         }
+-        
+-        return view('admin.users.index')->with('users', User::search($request->search));
+ 
++        return view('admin.users.index')->with('users', User::search($request->search));
+     }
+ }
+diff --git a/app/Reason.php b/app/Reason.php
+index 7fa1067..5b4bd11 100644
+--- a/app/Reason.php
++++ b/app/Reason.php
+@@ -7,20 +7,19 @@ use Illuminate\Database\Eloquent\Model;
+ 
+ class Reason extends Model
+ {
+-
+     protected $fillable = ['title', 'description', 'expires_at'];
+ 
+-    public function users(){
++    public function users()
++    {
+         return $this->belongsToMany(User::class, 'reason_to_book');
+     }
+ 
+-    public function setExpiry($data)
++    public static function setExpiry($title)
+     {
+-
+         //Explode the string
+-        $string = explode('-', $data);
++        $string = explode('-', $title);
+         $currentMonth = date('m');
+-
++        $expires = "";
+         //Check if the course is a half credit
+         if (stripos($string[1], 'H')) {
+ 
+@@ -28,35 +27,37 @@ class Reason extends Model
+             if (stripos($string[sizeof($string) - 1], 'W') > -1) {
+ 
+                 //Check if the winter course was added during winter other wise its for next year
+-                ($currentMonth >= 1 && ($currentMonth) <= 4) ? $this->expires_at = date('Y-04-30') :
+-                    $this->expires_at = date('Y') + 1 . date('-04-30');
++                ($currentMonth >= 1 && ($currentMonth) <= 4) ? $expires = date('Y-04-30') :
++                    $expires = date('Y') + 1 . date('-04-30');
+             } else { //Its a fall course
+ 
+                 //Add the course in the current semester
+-                $this->expires_at = date('Y-12-31');
+-
++                $expires = date('Y-12-31');
+             }
+-        } else if (strpos($string[1], 'Y')) {
++        } elseif (strpos($string[1], 'Y')) {
+ 
+             //Check the appropriate date to set the user.
+-            ($currentMonth >= 9 && $currentMonth <= 12) ? $this->expires_at = date('Y') + 1 . date('-04-30') :
+-                $this->expires_at = date('Y-04-30');
+-
++            ($currentMonth >= 9 && $currentMonth <= 12) ? $expires = date('Y') + 1 . date('-04-30') :
++                $expires = date('Y-04-30');
+         }
++
++        return $expires;
+     }
+ 
+-    public function isUnique($title){
++    public function isUnique($title)
++    {
+         return ($this->where('title', $title)->first()) ? false : true;
+     }
+ 
+-    public function isActiveForUser(User $user){
+-
+-         return ReasonToBook::where('user_id', $user->id)->where('reason_id', $this->id)->first()->active == 1;
++    public function isActiveForUser(User $user)
++    {
++        return ReasonToBook::where('user_id', $user->id)->where('reason_id', $this->id)->first()->active == 1;
+     }
+ 
+-    public static function search($query_param){
++    public static function search($query_param)
++    {
+         return Reason::latest()->where('title', 'LIKE', '%' . $query_param . '%')
+         ->orWhere('title', 'LIKE', '%' . $query_param . '%')
+-        ->paginate(10);       
++        ->paginate(10);
+     }
+ }
+diff --git a/app/User.php b/app/User.php
+index 816c21c..d734ade 100644
+--- a/app/User.php
++++ b/app/User.php
+@@ -3,25 +3,22 @@
+ namespace App;
+ 
+ use App\Notifications\VerifyBooking;
+-use Illuminate\Database\Eloquent\Relations\HasMany;
+ use Illuminate\Notifications\Notifiable;
+ use Illuminate\Contracts\Auth\MustVerifyEmail;
+ use Illuminate\Foundation\Auth\User as Authenticatable;
+ use App\Notifications\VerifyEmail;
++use App\Traits\ParseRosterFile;
+ use DB;
+ 
+ class User extends Authenticatable
+ {
+-    use Notifiable;
+-
++    use Notifiable, ParseRosterFile;
+     /**
+      * The attributes that are mass assignable.
+      *
+      * @var array
+      */
+-    protected $fillable = [
+-        'name', 'email', 'home_address', 'phone_number', 'password',
+-    ];
++    protected $guarded = [];
+ 
+     /**
+      * The attributes that should be hidden for arrays.
+@@ -39,7 +36,7 @@ class User extends Authenticatable
+      * */
+     public function isAdmin()
+     {
+-        return $this->admin == 1 ? true : false;
++        return $this->admin == 1;
+     }
+ 
+     /**
+@@ -76,10 +73,11 @@ class User extends Authenticatable
+     }
+ 
+ 
+-    public function defaultReason(){
+-        $this->reasons()->create();
++    public function defaultReason()
++    {
++        Reason::create();
+     }
+-    
++
+ 
+     /**Check if the use is unique
+      *
+@@ -89,10 +87,10 @@ class User extends Authenticatable
+     public function isUnique($email)
+     {
+         return ($this->where('email', $email)->first()) ? false : true;
+-
+     }
+ 
+-    public function reasons(){
++    public function reasons()
++    {
+         return $this->belongsToMany(Reason::class, 'reason_to_book')->get();
+     }
+ 
+@@ -102,31 +100,33 @@ class User extends Authenticatable
+      * @return boolean
+      * */
+     public function isActive()
+-    { 
++    {
+         if (!$this->isAdmin()) {
+             return $this->reasons()->where('active', 1)->count() > 0;
+         }
+         return true;
+-
+     }
+ 
+-    public function toggleAdmin($value){
++    public function toggleAdmin($value)
++    {
+         $this->admin = $value ? 1 : 0;
+     }
+ 
+-    public function bookings(){
++    public function bookings()
++    {
+         return $this->hasMany(Booking::class);
+     }
+ 
+-    public function deactivate(){
++    public function deactivate()
++    {
+         ReasonToBook::where('user_id', $this->id)->update(['active' => 0]);
+     }
+-
+-    public static function search($query_param){
++    
++    public static function search($query_param)
++    {
+         return  User::latest()
+             ->where('name', 'LIKE', '%' . $query_param . '%')
+             ->orWhere('email', 'LIKE', '%' . $query_param . '%')
+             ->paginate(10);
+     }
+-
+ }
+diff --git a/app/helpers.php b/app/helpers.php
+index b3b6b45..4e25354 100644
+--- a/app/helpers.php
++++ b/app/helpers.php
+@@ -19,6 +19,7 @@ function parseFile($filename)
+     //Count for the empty rows
+     $count = 0;
+     $users = [];
++    $reason = [];
+     //Parse the csv file.
+     while ($csvLine = fgetcsv($handler, 1000, ',')) {
+         if ($count < 2) {
+diff --git a/database/migrations/2014_10_12_000000_create_users_table.php b/database/migrations/2014_10_12_000000_create_users_table.php
+index fa1d21e..1c334d7 100644
+--- a/database/migrations/2014_10_12_000000_create_users_table.php
++++ b/database/migrations/2014_10_12_000000_create_users_table.php
+@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
+ 
+             //I made the address and number nullable so the user can fill those in after they login
+             $table->string('home_address')->nullable();
+-            $table->string('phone_number')->nullable();
++            $table->string('phone_number')->nullable()->unique();
+             $table->string('password')->nullable();
+ 
+             //Give admin privileges to the user if true
+diff --git a/database/migrations/2019_01_30_220120_create_reasons_table.php b/database/migrations/2019_01_30_220120_create_reasons_table.php
+index 6f083f9..25b59d2 100644
+--- a/database/migrations/2019_01_30_220120_create_reasons_table.php
++++ b/database/migrations/2019_01_30_220120_create_reasons_table.php
+@@ -16,7 +16,7 @@ class CreateReasonsTable extends Migration
+         Schema::create('reasons', function (Blueprint $table) {
+             $table->increments('id');
+             $table->string('title');
+-            $table->text('description');
++            $table->text('description')->nullable();
+             $table->boolean('active')->default(1);
+             $table->date('expires_at');
+             $table->timestamps();
+diff --git a/database/migrations/2019_01_30_220323_reason_to_book.php b/database/migrations/2019_01_30_220323_reason_to_book.php
+index b338be9..59f39bd 100644
+--- a/database/migrations/2019_01_30_220323_reason_to_book.php
++++ b/database/migrations/2019_01_30_220323_reason_to_book.php
+@@ -19,7 +19,9 @@ class ReasonToBook extends Migration
+             $table->unsignedInteger('reason_id');
+             $table->boolean('active')->default(1);
+             $table->timestamps();
+-
++            
++            $table->unique(['user_id', 'reason_id']);
++            
+             $table->foreign('user_id')->references('id')->on('users');
+             $table->foreign('reason_id')->references('id')->on('reasons');
+         });
+diff --git a/database/seeds/DatabaseSeeder.php b/database/seeds/DatabaseSeeder.php
+index c74d8b0..0821ea1 100644
+--- a/database/seeds/DatabaseSeeder.php
++++ b/database/seeds/DatabaseSeeder.php
+@@ -2,6 +2,7 @@
+ 
+ use Illuminate\Database\Seeder;
+ use Illuminate\Support\Facades\DB;
++
+ class DatabaseSeeder extends Seeder
+ {
+     /**
+@@ -65,10 +66,10 @@ class DatabaseSeeder extends Seeder
+ 
+ 
+         //Auto generate data for the database
+-        factory(App\User::class, 50)->create();
+-        factory(App\Reason::class, 12)->create();
+-        factory(App\ReasonToBook::class, 30)->create();
+-        factory(App\Product::class, 100)->create();
+-        factory(App\Kit::class, 5)->create();
++        factory(App\User::class, 3)->create();
++        factory(App\Reason::class, 3)->create();
++        factory(App\ReasonToBook::class, 3)->create();
++        factory(App\Product::class, 3)->create();
++        factory(App\Kit::class, 3)->create();
+     }
+ }
+diff --git a/routes/web.php b/routes/web.php
+index 5bd72f4..0b10688 100644
+--- a/routes/web.php
++++ b/routes/web.php
+@@ -93,7 +93,6 @@ Route::prefix('admin')->middleware(['admin', 'auth'])->group(function () {
+     Route::resource('bookingSettings', 'BookingSettingsController');
+     Route::get('checkInTimes', 'CheckInTimesController@edit')->name('checkInTimes.edit');
+     Route::post('checkInTimes', 'CheckInTimesController@store')->name('checkInTimes.store');
+-
+ });
+ 
+ //Authentication routes
+@@ -128,5 +127,4 @@ Route::group(['middleware' => 'auth'], function () {
+     Route::get('/booking', 'PagesController@bookings')->name('booking');
+     Route::get('/booking/explore', 'PagesController@exploreKits')->name('booking.exploreKits');
+     Route::post('/kits/checkAvailability', 'KitController@checkAvailability')->name('kits.checkAvailability');
+-
+ });

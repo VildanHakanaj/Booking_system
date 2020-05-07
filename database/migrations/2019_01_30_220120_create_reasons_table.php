@@ -16,7 +16,7 @@ class CreateReasonsTable extends Migration
         Schema::create('reasons', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->date('expires_at');
             $table->timestamps();

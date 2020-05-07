@@ -9,7 +9,6 @@ use Session;
 
 class ReasonController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -23,8 +22,8 @@ class ReasonController extends Controller
      */
     public function index()
     {
-
-        return view('admin.reasons.index', 
+        return view(
+            'admin.reasons.index',
             [
                 'reasons' => Reason::latest()->paginate(10)
             ]
@@ -49,13 +48,11 @@ class ReasonController extends Controller
      */
     public function store(ReasonRequest $request)
     {
-        
         $data = $request->validated();
         $reason = Reason::create($data);
 
         Session::flash('success', "The reason was sucesfully created");
         return redirect(route('reason.show', $reason));
-
     }
 
     /**
@@ -104,20 +101,19 @@ class ReasonController extends Controller
      */
     public function destroy(Reason $reason)
     {
-
     }
 
-    public function search(Request $request){
-
-        if(empty($request->search)){
+    public function search(Request $request)
+    {
+        if (empty($request->search)) {
             return redirect()->route('reason.index');
         }
         
-        return view('admin.reasons.index', 
+        return view(
+            'admin.reasons.index',
             [
                 'reasons' => Reason::search($request->search)
             ]
         );
-
     }
 }

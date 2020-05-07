@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -65,10 +66,10 @@ class DatabaseSeeder extends Seeder
 
 
         //Auto generate data for the database
-        factory(App\User::class, 50)->create();
-        factory(App\Reason::class, 12)->create();
-        factory(App\ReasonToBook::class, 30)->create();
-        factory(App\Product::class, 100)->create();
-        factory(App\Kit::class, 5)->create();
+        factory(App\User::class, 3)->create();
+        factory(App\Reason::class, 3)->create();
+        factory(App\ReasonToBook::class, 3)->create();
+        factory(App\Product::class, 3)->create();
+        factory(App\Kit::class, 3)->create();
     }
 }

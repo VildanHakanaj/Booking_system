@@ -12,7 +12,6 @@ use App\Http\Requests\KitRequest;
 
 class KitController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -25,7 +24,8 @@ class KitController extends Controller
      */
     public function index()
     {
-        return view('admin.kits.index',
+        return view(
+            'admin.kits.index',
             [
                 'kits' => Kit::orderBy('created_at', 'desc')->paginate(10)
             ]
@@ -64,8 +64,8 @@ class KitController extends Controller
      */
     public function show(Kit $kit)
     {
-        
-        return view('admin.kits.show',
+        return view(
+            'admin.kits.show',
             [
                 'kit' => $kit,
                 'products' => $kit->products()->get()
@@ -81,10 +81,12 @@ class KitController extends Controller
      */
     public function edit(Kit $kit)
     {
-        return view('admin.kits.edit', 
-        [
+        return view(
+            'admin.kits.edit',
+            [
             'kit' => $kit
-        ]);
+        ]
+        );
     }
 
     /**
@@ -101,7 +103,6 @@ class KitController extends Controller
         Session::flash('success', 'Kit successfully updated');
         
         return redirect()->route('kits.show', $kit);
-
     }
 
     /**
@@ -112,7 +113,7 @@ class KitController extends Controller
      */
     public function destroy(Kit $kit)
     {
-       $kit->delete();
+        $kit->delete();
     }
 
     /*
@@ -128,10 +129,11 @@ class KitController extends Controller
             return view('admin.kits.index')->with('kits', Kit::latest()->paginate(10));
         }
         
-        return view('admin.kits.index',
+        return view(
+            'admin.kits.index',
             [
                 'kits' => Kit::search($request->search)
-            ]    
+            ]
         );
     }
 
@@ -147,7 +149,6 @@ class KitController extends Controller
         } else {
             echo false;
         }
-
     }
 
     /*
