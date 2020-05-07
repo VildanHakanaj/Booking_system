@@ -17,11 +17,6 @@ class KitController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return view(
@@ -32,36 +27,17 @@ class KitController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('admin.kits.create');
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(KitRequest $request)
     {
         $kit = Kit::create($request->validated());
-        Session::flash('success', 'Kit successfully created');
-        return redirect()->route('kits.show', $kit)->with('kit', $kit);
+        return redirect(route('kits.show', $kit))->with('kit', $kit)->with('success', 'Kit successfully created');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Kit $kit
-     * @return \Illuminate\Http\Response
-     */
     public function show(Kit $kit)
     {
         return view(
@@ -73,56 +49,28 @@ class KitController extends Controller
         );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Kit $kit
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Kit $kit)
     {
         return view(
             'admin.kits.edit',
             [
-            'kit' => $kit
-        ]
+                'kit' => $kit
+            ]
         );
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Kit $kit
-     * @return \Illuminate\Http\Response
-     */
     public function update(KitRequest $request, Kit $kit)
     {
         $kit->update($request->validated());
-
-        Session::flash('success', 'Kit successfully updated');
-        
-        return redirect()->route('kits.show', $kit);
+        return redirect(route('kits.show', $kit))->with('success', 'Kit successfully updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Kit $kit
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Kit $kit)
     {
         $kit->delete();
     }
 
-    /*
-     * Search for the item in the table
-     *
-     * @params $request
-     * @return view of index bookings
-     *
-     * */
+    
     public function search(Request $request)
     {
         if (empty($request->search)) {
@@ -144,11 +92,7 @@ class KitController extends Controller
      * */
     public function checkProduct($id)
     {
-        if (KitProduct::where('kit_id', $id)->count() > 0) {
-            echo true;
-        } else {
-            echo false;
-        }
+        echo KitProduct::where('kit_id', $id)->count() > 0 ? true : false;
     }
 
     /*
